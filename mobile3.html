@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador Multi-Plataforma</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .mobile-container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .mobile-header {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+        }
+        .comparison-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .offer-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            position: relative;
+        }
+        .offer-card.best {
+            border: 2px solid #8b5cf6;
+            background: #faf5ff;
+        }
+        .offer-card.winner {
+            border: 2px solid #16a34a;
+            background: #f0fdf4;
+        }
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: 10px;
+            background: #8b5cf6;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .badge.winner {
+            background: #16a34a;
+        }
+        .search-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            flex-direction: column;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #8b5cf6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .provider-logo {
+            width: 40px;
+            height: 40px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+        .rating-stars {
+            color: #fbbf24;
+            font-size: 0.9rem;
+        }
+        .comparison-metric {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .metric-label {
+            color: #64748b;
+        }
+        .metric-value {
+            font-weight: 500;
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #16a34a;
+            animation: pulse 2s infinite;
+            margin-right: 0.5rem;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="mobile-header">
+            <a href="index.html" style="position: absolute; top: 1rem; left: 1rem; color: white; text-decoration: none;">← Voltar</a>
+            <h2>⚖️ Comparador Multi-Plataforma</h2>
+            <p>IA encontra as melhores ofertas</p>
+        </div>
+
+        <div class="comparison-card">
+            <h3>🎯 Sua Solicitação</h3>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <div style="font-size: 0.8rem; color: #64748b;">Valor desejado</div>
+                        <div style="font-weight: bold; font-size: 1.2rem;">R$ 22.000</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8rem; color: #64748b;">Prazo máximo</div>
+                        <div style="font-weight: bold; font-size: 1.2rem;">24 horas</div>
+                    </div>
+                </div>
+            </div>
+            <button style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500;" onclick="startComparison()">
+                🔍 Buscar Melhores Ofertas
+            </button>
+        </div>
+
+        <div id="searchingSection" style="display: none;" class="comparison-card">
+            <div class="search-animation">
+                <div class="spinner"></div>
+                <p style="margin: 1rem 0; text-align: center; color: #64748b;" id="searchStatus">
+                    Consultando parceiros...
+                </p>
+                <div style="font-size: 0.8rem; color: #8b5cf6;" id="searchDetail">
+                    Analisando 15 instituições financeiras
+                </div>
+            </div>
+        </div>
+
+        <div id="resultsSection" style="display: none;" class="comparison-card">
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <div class="pulse-dot"></div>
+                <div>
+                    <h3 style="margin: 0;">🏆 3 Melhores Ofertas Encontradas</h3>
+                    <p style="font-size: 0.9rem; color: #64748b; margin: 0;">Classificadas por custo-benefício</p>
+                </div>
+            </div>
+
+            <div class="offer-card winner">
+                <div class="badge winner">🥇 MELHOR</div>
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div class="provider-logo" style="background: #dcfce7; color: #16a34a;">🏦</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: bold; font-size: 1.1rem;">Banco Digital Alpha</div>
+                        <div class="rating-stars">⭐⭐⭐⭐⭐ 4.9 (2.3k avaliações)</div>
+                    </div>
+                </div>
+                
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <div style="font-size: 0.8rem; color: #16a34a;">Taxa oferecida</div>
+                            <div style="font-weight: bold; font-size: 1.3rem; color: #16a34a;">1,8%</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.8rem; color: #16a34a;">Você recebe</div>
+                            <div style="font-weight: bold; font-size: 1.3rem; color: #16a34a;">R$ 21.604</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-metric">
+                    <span class="metric-label">⚡ Velocidade:</span>
+                    <span class="metric-value" style="color: #16a34a;">2-4 horas</span>
+                </div>
+                <div class="comparison-metric">
+                    <span class="metric-label">🏆 Confiabilidade:</span>
+                    <span class="metric-value" style="color: #16a34a;">98% aprovação</span>
+                </div>
+                <div class="comparison-metric">
+                    <span class="metric-label">💰 Economia vs mercado:</span>
+                    <span class="metric-value" style="color: #16a34a;">R$ 286</span>
+                </div>
+
+                <button style="background: #16a34a; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500; margin-top: 1rem;" onclick="selectOffer('alpha')">
+                    ✅ Escolher Esta Oferta
+                </button>
+            </div>
+
+            <div class="offer-card best">
+                <div class="badge">🥈 2º LUGAR</div>
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div class="provider-logo" style="background: #fef3c7; color: #f59e0b;">🏛️</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: bold; font-size: 1.1rem;">Fintech Express</div>
+                        <div class="rating-stars">⭐⭐⭐⭐ 4.7 (1.8k avaliações)</div>
+                    </div>
+                </div>
+                
+                <div style="background: #faf5ff; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <div style="font-size: 0.8rem; color: #8b5cf6;">Taxa oferecida</div>
+                            <div style="font-weight: bold; font-size: 1.3rem; color: #8b5cf6;">2,1%</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.8rem; color: #8b5cf6;">Você recebe</div>
+                            <div style="font-weight: bold; font-size: 1.3rem; color: #8b5cf6;">R$ 21.538</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-metric">
+                    <span class="metric-label">⚡ Velocidade:</span>
+                    <span class="metric-value" style="color: #8b5cf6;">15 minutos</span>
+                </div>
+                <div class="comparison-metric">
+                    <span class="metric-label">🏆 Confiabilidade:</span>
+                    <span class="metric-value">95% aprovação</span>
+                </div>
+                <div class="comparison-metric">
+                    <span class="metric-label">💰 Diferença vs melhor:</span>
+                    <span class="metric-value" style="color: #f59e0b;">-R$ 66</span>
+                </div>
+
+                <button style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500; margin-top: 1rem;" onclick="selectOffer('express')">
+                    ⚡ Escolher (Mais Rápido)
+                </button>
+            </div>
+
+            <div class="offer-card">
+                <div class="badge" style="background: #6b7280;">🥉 3º LUGAR</div>
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div class="provider-logo" style="background: #e5e7eb; color: #6b7280;">🏢</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: bold; font-size: 1.1rem;">Banco Tradicional</div>
+                        <div class="rating-stars">⭐⭐⭐⭐ 4.2 (950 avaliações)</div>
+                    </div>
+                </div>
+                
+                <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">Taxa oferecida</div>
+                            <div style="font-weight: bold; font-size: 1.3rem; color: #6b7280;">2,5%</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">Você recebe</div>
+                            <div style="font-weight: bold; font-size: 1.3rem; color: #6b7280;">R$ 21.450</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-metric">
+                    <span class="metric-label">⚡ Velocidade:</span>
+                    <span class="metric-value">6-8 horas</span>
+                </div>
+                <div class="comparison-metric">
+                    <span class="metric-label">🏆 Confiabilidade:</span>
+                    <span class="metric-value">92% aprovação</span>
+                </div>
+                <div class="comparison-metric">
+                    <span class="metric-label">💰 Diferença vs melhor:</span>
+                    <span class="metric-value" style="color: #dc2626;">-R$ 154</span>
+                </div>
+
+                <button style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500; margin-top: 1rem;" onclick="selectOffer('tradicional')">
+                    Escolher Esta
+                </button>
+            </div>
+        </div>
+
+        <div id="analysisSection" style="display: none;" class="comparison-card">
+            <h3>🧠 Análise da IA</h3>
+            <div style="background: #f0fdf4; border-left: 4px solid #16a34a; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <h4 style="color: #16a34a; margin-bottom: 0.5rem;">💡 Recomendação</h4>
+                <p><strong>Banco Digital Alpha</strong> oferece o melhor custo-benefício para seu perfil.</p>
+                <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.9rem;">
+                    <li>Menor taxa do mercado (1,8%)</li>
+                    <li>Alta confiabilidade (98% aprovação)</li>
+                    <li>Velocidade adequada (2-4h)</li>
+                    <li>Economia de R$ 286 vs média</li>
+                </ul>
+            </div>
+
+            <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <h4 style="color: #f59e0b; margin-bottom: 0.5rem;">⚡ Alternativa Rápida</h4>
+                <p><strong>Fintech Express</strong> se você precisa do dinheiro em minutos.</p>
+                <p style="font-size: 0.9rem; color: #6b7280;">
+                    Taxa apenas 0,3% maior que a melhor oferta, mas liberação em 15 minutos.
+                </p>
+            </div>
+
+            <div style="background: #fef2f2; border-left: 4px solid #dc2626; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <h4 style="color: #dc2626; margin-bottom: 0.5rem;">❌ Não Recomendado</h4>
+                <p><strong>Aguardar</strong> - No momento não há vantagem em esperar.</p>
+                <p style="font-size: 0.9rem; color: #6b7280;">
+                    Projeção indica que taxas devem subir nos próximos dias.
+                </p>
+            </div>
+        </div>
+
+        <div id="comparisonTableSection" style="display: none;" class="comparison-card">
+            <h3>📊 Comparação Detalhada</h3>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; font-size: 0.8rem; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #f8fafc;">
+                            <th style="padding: 0.5rem; text-align: left;">Critério</th>
+                            <th style="padding: 0.5rem; color: #16a34a;">Alpha</th>
+                            <th style="padding: 0.5rem; color: #8b5cf6;">Express</th>
+                            <th style="padding: 0.5rem; color: #6b7280;">Tradicional</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0.5rem; font-weight: 500;">Taxa</td>
+                            <td style="padding: 0.5rem; color: #16a34a; font-weight: bold;">1,8%</td>
+                            <td style="padding: 0.5rem;">2,1%</td>
+                            <td style="padding: 0.5rem;">2,5%</td>
+                        </tr>
+                        <tr style="background: #f8fafc;">
+                            <td style="padding: 0.5rem; font-weight: 500;">Valor líquido</td>
+                            <td style="padding: 0.5rem; color: #16a34a; font-weight: bold;">R$ 21.604</td>
+                            <td style="padding: 0.5rem;">R$ 21.538</td>
+                            <td style="padding: 0.5rem;">R$ 21.450</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem; font-weight: 500;">Velocidade</td>
+                            <td style="padding: 0.5rem;">2-4h</td>
+                            <td style="padding: 0.5rem; color: #16a34a; font-weight: bold;">15min</td>
+                            <td style="padding: 0.5rem;">6-8h</td>
+                        </tr>
+                        <tr style="background: #f8fafc;">
+                            <td style="padding: 0.5rem; font-weight: 500;">Aprovação</td>
+                            <td style="padding: 0.5rem; color: #16a34a; font-weight: bold;">98%</td>
+                            <td style="padding: 0.5rem;">95%</td>
+                            <td style="padding: 0.5rem;">92%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem; font-weight: 500;">Score Geral</td>
+                            <td style="padding: 0.5rem; color: #16a34a; font-weight: bold;">9.2/10</td>
+                            <td style="padding: 0.5rem;">8.7/10</td>
+                            <td style="padding: 0.5rem;">7.5/10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="selectedSection" style="display: none;" class="comparison-card">
+            <div style="text-align: center; padding: 2rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+                <h3>Excelente Escolha!</h3>
+                <p style="color: #64748b;" id="selectedDetails">Processando sua operação...</p>
+                <div style="width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin: 1rem 0;">
+                    <div id="selectedProgressBar" style="width: 0%; height: 100%; background: #16a34a; border-radius: 4px; transition: width 0.5s ease;"></div>
+                </div>
+                <p id="selectedStatusText">Enviando dados para o banco...</p>
+            </div>
+        </div>
+
+        <div style="background: white; margin: 1rem; border-radius: 12px; padding: 1rem;">
+            <button style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500;" onclick="showDetailedComparison()">
+                📊 Ver Comparação Detalhada
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function startComparison() {
+            document.getElementById('searchingSection').style.display = 'block';
+            document.getElementById('searchingSection').scrollIntoView({ behavior: 'smooth' });
+            
+            const statuses = [
+                'Consultando parceiros...',
+                'Analisando perfil de crédito...',
+                'Calculando ofertas personalizadas...',
+                'Priorizando por custo-benefício...',
+                'Finalizando comparação...'
+            ];
+            
+            const details = [
+                'Analisando 15 instituições financeiras',
+                'Score A+ detectado - melhores condições disponíveis',
+                'Negociando taxas preferenciais',
+                'Aplicando critérios de velocidade e confiabilidade',
+                'Preparando top 3 ofertas'
+            ];
+            
+            let currentStatus = 0;
+            const interval = setInterval(() => {
+                if (currentStatus < statuses.length) {
+                    document.getElementById('searchStatus').innerText = statuses[currentStatus];
+                    document.getElementById('searchDetail').innerText = details[currentStatus];
+                    currentStatus++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('resultsSection').style.display = 'block';
+                        document.getElementById('analysisSection').style.display = 'block';
+                        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+                    }, 500);
+                }
+            }, 1500);
+        }
+
+        function selectOffer(provider) {
+            document.getElementById('selectedSection').style.display = 'block';
+            document.getElementById('selectedSection').scrollIntoView({ behavior: 'smooth' });
+            
+            const providerNames = {
+                'alpha': 'Banco Digital Alpha',
+                'express': 'Fintech Express',
+                'tradicional': 'Banco Tradicional'
+            };
+            
+            document.getElementById('selectedDetails').innerText = 
+                `Conectando com ${providerNames[provider]}...`;
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 25;
+                document.getElementById('selectedProgressBar').style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    document.getElementById('selectedStatusText').innerHTML = 
+                        '✅ <strong>Aprovado!</strong><br><small>Valor será creditado em breve</small>';
+                }
+            }, 1000);
+        }
+
+        function showDetailedComparison() {
+            document.getElementById('comparisonTableSection').style.display = 'block';
+            document.getElementById('comparisonTableSection').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html> 

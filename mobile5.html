@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatização Inteligente</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .mobile-container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .mobile-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+        }
+        .auto-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .schedule-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            position: relative;
+        }
+        .schedule-item.active {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+        .schedule-item.pending {
+            border-color: #f59e0b;
+            background: #fffbeb;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #10b981;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .automation-rule {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+        .rule-condition {
+            background: #eff6ff;
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .execution-log {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .log-entry {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+        }
+        .status-success { background: #16a34a; }
+        .status-pending { background: #f59e0b; }
+        .status-cancelled { background: #dc2626; }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="mobile-header">
+            <a href="index.html" style="position: absolute; top: 1rem; left: 1rem; color: white; text-decoration: none;">← Voltar</a>
+            <h2>🤖 Automatização Inteligente</h2>
+            <p>IA programa antecipações quando necessário</p>
+        </div>
+
+        <div class="auto-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div>
+                    <h3 style="margin: 0;">Automação Ativa</h3>
+                    <p style="color: #64748b; font-size: 0.9rem; margin: 0;">Antecipações programadas apenas para emergências</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked onchange="toggleAutomation(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div style="background: #f0fdf4; border-left: 4px solid #16a34a; padding: 1rem; border-radius: 8px;">
+                <div style="display: flex; align-items: center;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">✅</span>
+                    <div>
+                        <strong>Sistema Ativo</strong>
+                        <p style="font-size: 0.9rem; margin: 0.25rem 0 0 0; color: #16a34a;">
+                            Monitorando seu fluxo de caixa 24/7
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="auto-card">
+            <h3>⚙️ Regras de Automação</h3>
+            <p style="color: #64748b; margin-bottom: 1rem;">Configure quando a IA pode agir automaticamente</p>
+
+            <div class="automation-rule">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <strong>Emergência Crítica</strong>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="rule-condition">
+                    <strong>SE:</strong> Saldo ficar negativo em 48h
+                </div>
+                <div class="rule-condition">
+                    <strong>ENTÃO:</strong> Antecipar automaticamente o mínimo necessário (máx. R$ 5.000)
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 0.5rem;">
+                    💡 Você será notificado antes da execução
+                </div>
+            </div>
+
+            <div class="automation-rule">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <strong>Oportunidade de Taxa</strong>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="rule-condition">
+                    <strong>SE:</strong> Taxa abaixo de 1,5% disponível
+                </div>
+                <div class="rule-condition">
+                    <strong>ENTÃO:</strong> Sugerir antecipação (aguarda aprovação)
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 0.5rem;">
+                    💡 Apenas sugestão, decisão sempre sua
+                </div>
+            </div>
+
+            <div class="automation-rule">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <strong>Pagamento Programado</strong>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="rule-condition" style="background: #f3f4f6;">
+                    <strong>SE:</strong> Conta importante com vencimento em 3 dias
+                </div>
+                <div class="rule-condition" style="background: #f3f4f6;">
+                    <strong>ENTÃO:</strong> Antecipar valor exato da conta
+                </div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 0.5rem;">
+                    ⚠️ Inativo - configure contas importantes primeiro
+                </div>
+            </div>
+        </div>
+
+        <div class="auto-card">
+            <h3>📅 Agenda de Obrigações</h3>
+            <p style="color: #64748b; margin-bottom: 1rem;">IA mapeia suas contas para automação inteligente</p>
+
+            <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">⏰</span>
+                    <div>
+                        <strong>Próxima Verificação</strong>
+                        <p style="font-size: 0.9rem; margin: 0.25rem 0 0 0; color: #f59e0b;">
+                            Amanhã às 09:00 - Análise de fluxo
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="schedule-item active">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>Fornecedor Principal</strong>
+                        <div style="font-size: 0.9rem; color: #64748b;">Vencimento: 15/11 (3 dias)</div>
+                        <div style="font-size: 0.9rem; font-weight: bold; color: #16a34a;">R$ 2.800 - Monitorado ✓</div>
+                    </div>
+                    <div style="background: #16a34a; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem;">
+                        AUTO
+                    </div>
+                </div>
+            </div>
+
+            <div class="schedule-item pending">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>Aluguel + Energia</strong>
+                        <div style="font-size: 0.9rem; color: #64748b;">Vencimento: 18/11 (6 dias)</div>
+                        <div style="font-size: 0.9rem; font-weight: bold; color: #f59e0b;">R$ 1.650 - Aguardando</div>
+                    </div>
+                    <button style="background: #f59e0b; color: white; border: none; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem;" onclick="addToAutomation()">
+                        + AUTO
+                    </button>
+                </div>
+            </div>
+
+            <div class="schedule-item">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong>Impostos DAS</strong>
+                        <div style="font-size: 0.9rem; color: #64748b;">Vencimento: 20/11 (8 dias)</div>
+                        <div style="font-size: 0.9rem; font-weight: bold;">R$ 890 - Manual</div>
+                    </div>
+                    <button style="background: #e5e7eb; color: #6b7280; border: none; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem;" onclick="addToAutomation()">
+                        + AUTO
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="auto-card">
+            <h3>📊 Histórico de Execuções</h3>
+            <div class="execution-log">
+                <div class="log-entry">
+                    <div class="status-dot status-success"></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500;">Antecipação Automática Executada</div>
+                        <div style="font-size: 0.8rem; color: #64748b;">05/11 - R$ 1.200 para cobrir fornecedor</div>
+                    </div>
+                    <div style="color: #16a34a; font-size: 0.8rem;">✓</div>
+                </div>
+
+                <div class="log-entry">
+                    <div class="status-dot status-success"></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500;">Oportunidade Detectada</div>
+                        <div style="font-size: 0.8rem; color: #64748b;">03/11 - Taxa 1,3% sugerida (aprovada)</div>
+                    </div>
+                    <div style="color: #16a34a; font-size: 0.8rem;">✓</div>
+                </div>
+
+                <div class="log-entry">
+                    <div class="status-dot status-cancelled"></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500;">Execução Cancelada</div>
+                        <div style="font-size: 0.8rem; color: #64748b;">01/11 - Você recusou antecipação de R$ 5.000</div>
+                    </div>
+                    <div style="color: #dc2626; font-size: 0.8rem;">✗</div>
+                </div>
+
+                <div class="log-entry">
+                    <div class="status-dot status-pending"></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500;">Aguardando Confirmação</div>
+                        <div style="font-size: 0.8rem; color: #64748b;">Agora - Taxa excelente disponível</div>
+                    </div>
+                    <div style="color: #f59e0b; font-size: 0.8rem;">⏳</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="auto-card">
+            <h3>⚡ Execução Pendente</h3>
+            <div style="background: #fffbeb; border: 1px solid #f59e0b; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">🚨</span>
+                    <div>
+                        <strong>Ação Requerida</strong>
+                        <p style="color: #6b7280; font-size: 0.9rem; margin: 0.25rem 0 0 0;">
+                            Taxa excepcional detectada - 1,3%
+                        </p>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Valor sugerido</div>
+                            <div style="font-weight: bold; font-size: 1.2rem;">R$ 15.000</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Você recebe</div>
+                            <div style="font-weight: bold; font-size: 1.2rem; color: #16a34a;">R$ 14.805</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <div style="font-size: 0.9rem; color: #6b7280; margin-bottom: 0.5rem;">💡 Por que a IA recomenda:</div>
+                    <ul style="font-size: 0.9rem; margin-left: 1.5rem; color: #6b7280;">
+                        <li>Taxa 40% abaixo da média do mercado</li>
+                        <li>Oportunidade rara (última vez em março)</li>
+                        <li>Valor adequado para seu perfil</li>
+                    </ul>
+                </div>
+
+                <div style="display: flex; gap: 0.5rem;">
+                    <button style="background: #16a34a; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; flex: 1; font-weight: 500;" onclick="approveAutomation()">
+                        ✅ Aprovar
+                    </button>
+                    <button style="background: #dc2626; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; flex: 1; font-weight: 500;" onclick="rejectAutomation()">
+                        ❌ Recusar
+                    </button>
+                </div>
+                
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button style="background: none; border: none; color: #6b7280; font-size: 0.9rem; text-decoration: underline;" onclick="customizeAmount()">
+                        Personalizar valor
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="executionSection" style="display: none;" class="auto-card">
+            <div style="text-align: center; padding: 2rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🤖</div>
+                <h3>Automação Executando</h3>
+                <p style="color: #64748b;">Processando sua aprovação...</p>
+                <div style="width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin: 1rem 0;">
+                    <div id="autoProgressBar" style="width: 0%; height: 100%; background: #10b981; border-radius: 4px; transition: width 0.5s ease;"></div>
+                </div>
+                <p id="autoStatusText">Conectando com o parceiro...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleAutomation(checkbox) {
+            if (checkbox.checked) {
+                alert('✅ Automação ativada!\n\nA IA irá monitorar seu fluxo de caixa e agir apenas conforme suas regras configuradas.');
+            } else {
+                alert('⚠️ Automação desativada.\n\nVocê precisará gerenciar todas as antecipações manualmente.');
+            }
+        }
+
+        function addToAutomation() {
+            alert('✅ Conta adicionada à automação!\n\nA IA irá monitorar esta obrigação e sugerir antecipações quando necessário.');
+        }
+
+        function approveAutomation() {
+            document.getElementById('executionSection').style.display = 'block';
+            document.getElementById('executionSection').scrollIntoView({ behavior: 'smooth' });
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 20;
+                document.getElementById('autoProgressBar').style.width = progress + '%';
+                
+                const statuses = [
+                    'Conectando com o parceiro...',
+                    'Validando condições...',
+                    'Executando operação...',
+                    'Confirmando transação...',
+                    'Concluído!'
+                ];
+                
+                document.getElementById('autoStatusText').innerText = statuses[Math.floor(progress/20) - 1] || statuses[4];
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    document.getElementById('autoStatusText').innerHTML = '✅ <strong>Automação executada!</strong><br><small>R$ 14.805 creditados em sua conta</small>';
+                }
+            }, 1000);
+        }
+
+        function rejectAutomation() {
+            alert('❌ Operação cancelada!\n\nA IA continuará monitorando outras oportunidades para você.');
+        }
+
+        function customizeAmount() {
+            const newAmount = prompt('Digite o valor desejado (R$):', '15000');
+            if (newAmount && newAmount > 0) {
+                alert(`✅ Valor personalizado: R$ ${parseFloat(newAmount).toLocaleString()}\n\nA IA recalculará as condições com o novo valor.`);
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negociação Dinâmica</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <h2>💰 Negociação Dinâmica</h2>
+        <a href="index.html" class="back-btn">← Voltar</a>
+    </nav>
+
+    <div class="prototype-container">
+        <div class="demo-section fade-in">
+            <h3>🎯 Solicitação de Antecipação</h3>
+            <div class="input-group">
+                <label>Valor desejado</label>
+                <input type="number" id="amount" value="30000" placeholder="Digite o valor">
+            </div>
+            <div class="input-group">
+                <label>Prazo preferencial</label>
+                <select id="timeframe">
+                    <option value="immediate">Imediato (até 30min)</option>
+                    <option value="fast">Rápido (até 4h)</option>
+                    <option value="standard" selected>Padrão (até 24h)</option>
+                    <option value="flexible">Flexível (até 3 dias)</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="startNegotiation()">🚀 Iniciar Negociação</button>
+        </div>
+
+        <div class="demo-section fade-in" id="negotiationSection" style="display: none;">
+            <h3>⚡ IA Negociando em Tempo Real</h3>
+            <div class="info-card">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="negotiationProgress" style="width: 0%"></div>
+                </div>
+                <p id="negotiationStatus">Iniciando busca por melhores ofertas...</p>
+            </div>
+
+            <div id="negotiationLog" style="max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #f9fafb;">
+                <!-- Log de negociação será inserido aqui -->
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="offersSection" style="display: none;">
+            <h3>💎 Ofertas Negociadas</h3>
+            <div class="info-card success">
+                <h4>🏆 Melhor Oferta Negociada</h4>
+                <div id="bestOffer" style="background: #f0fdf4; padding: 1.5rem; border-radius: 12px; border-left: 4px solid #10b981; margin: 1rem 0;">
+                    <!-- Melhor oferta será inserida aqui -->
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h4>📊 Comparativo de Ofertas</h4>
+                <div id="offersComparison">
+                    <!-- Comparativo será inserido aqui -->
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <h5>💡 Análise da IA:</h5>
+                    <p id="aiRecommendation"></p>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button class="btn btn-success" onclick="acceptBestOffer()">✅ Aceitar Melhor Oferta</button>
+                <button class="btn btn-warning" onclick="continueBargaining()">🔄 Continuar Negociando</button>
+                <button class="btn btn-secondary" onclick="customizeOffer()">⚙️ Personalizar Oferta</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="bargainingSection" style="display: none;">
+            <h3>🎪 Negociação Avançada</h3>
+            <div class="info-card warning">
+                <h4>🔥 Rodada Extra de Negociação</h4>
+                <p>A IA detectou que você pode conseguir condições ainda melhores!</p>
+                
+                <div style="background: #fffbeb; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h5>🎯 Estratégias Disponíveis:</h5>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <button class="btn btn-secondary" onclick="useStrategy('volume')">
+                            📈 Negociar por Volume<br><small>Propor valor maior para melhor taxa</small>
+                        </button>
+                        <button class="btn btn-secondary" onclick="useStrategy('timing')">
+                            ⏰ Flexibilidade de Prazo<br><small>Aceitar prazo maior para taxa menor</small>
+                        </button>
+                        <button class="btn btn-secondary" onclick="useStrategy('loyalty')">
+                            🤝 Histórico de Cliente<br><small>Usar bom histórico como barganha</small>
+                        </button>
+                        <button class="btn btn-secondary" onclick="useStrategy('competitor')">
+                            ⚔️ Oferta Concorrente<br><small>Mostrar oferta de competidor</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="strategyResult" style="display: none;" class="info-card success">
+                <!-- Resultado da estratégia será inserido aqui -->
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="finalOfferSection" style="display: none;">
+            <h3>🎊 Negociação Concluída</h3>
+            <div class="info-card success">
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem;">🏆</div>
+                    <h3 style="color: #10b981; margin: 1rem 0;">Excelente Negociação!</h3>
+                    <div id="finalDeal">
+                        <!-- Acordo final será inserido aqui -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <div class="value" style="color: #10b981;" id="savings">-</div>
+                    <div class="label">Economia Total</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value" style="color: #6366f1;" id="improvement">-</div>
+                    <div class="label">Melhoria da Taxa</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value" style="color: #f59e0b;" id="negotiationTime">-</div>
+                    <div class="label">Tempo de Negociação</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value" style="color: #8b5cf6;" id="offersAnalyzed">-</div>
+                    <div class="label">Ofertas Analisadas</div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="confirmFinalDeal()">✅ Confirmar e Processar</button>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>📈 Histórico de Negociações</h3>
+            <div class="info-card">
+                <h4>🏆 Seus Melhores Negócios</h4>
+                
+                <div style="border-left: 4px solid #10b981; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>Hoje</strong> - R$ 30.000 antecipados</p>
+                    <p>Taxa negociada: 2,1% (vs 3,0% inicial) | Economia: R$ 270</p>
+                    <small>Estratégia: Histórico de cliente + Volume</small>
+                </div>
+
+                <div style="border-left: 4px solid #6366f1; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>15/05/2024</strong> - R$ 45.000 antecipados</p>
+                    <p>Taxa negociada: 1,9% (vs 2,8% inicial) | Economia: R$ 405</p>
+                    <small>Estratégia: Oferta concorrente + Prazo flexível</small>
+                </div>
+
+                <div style="border-left: 4px solid #f59e0b; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>28/04/2024</strong> - R$ 20.000 antecipados</p>
+                    <p>Taxa negociada: 2,3% (vs 3,2% inicial) | Economia: R$ 180</p>
+                    <small>Estratégia: Volume + Histórico</small>
+                </div>
+
+                <div class="mt-2">
+                    <p><strong>💰 Economia total dos últimos 6 meses:</strong> R$ 2.340</p>
+                    <p><strong>📊 Taxa média conseguida:</strong> 2,1% (vs 3,1% de mercado)</p>
+                    <p><strong>🎯 Taxa de sucesso em negociações:</strong> 94%</p>
+                </div>
+
+                <button class="btn btn-secondary mt-2">📊 Ver Relatório Completo</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>🤖 Configurações da IA Negociadora</h3>
+            <div class="info-card">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    <div>
+                        <h5>🎯 Agressividade da Negociação</h5>
+                        <input type="range" min="1" max="5" value="3" style="width: 100%;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                            <span>Conservadora</span>
+                            <span>Moderada</span>
+                            <span>Agressiva</span>
+                        </div>
+                        <small>Moderada: Equilibra velocidade e melhores taxas</small>
+                    </div>
+                    <div>
+                        <h5>⏰ Tempo Máximo de Negociação</h5>
+                        <select style="width: 100%; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 4px;">
+                            <option>5 minutos (Rápido)</option>
+                            <option selected>15 minutos (Recomendado)</option>
+                            <option>30 minutos (Completo)</option>
+                            <option>60 minutos (Exaustivo)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <h5>🎪 Estratégias Preferidas</h5>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked> Usar histórico de cliente
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked> Negociar por volume
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox"> Mostrar ofertas concorrentes
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked> Flexibilidade de prazo
+                        </label>
+                    </div>
+                    <div>
+                        <h5>💰 Meta de Melhoria</h5>
+                        <select style="width: 100%; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 4px;">
+                            <option>0,2% melhoria (Realista)</option>
+                            <option selected>0,5% melhoria (Ambiciosa)</option>
+                            <option>0,8% melhoria (Agressiva)</option>
+                            <option>Melhor possível</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary mt-2">💾 Salvar Configurações</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let negotiationStep = 0;
+        let currentOffers = [];
+        let bestRate = 3.0;
+        let originalRate = 3.0;
+
+        function startNegotiation() {
+            document.getElementById('negotiationSection').style.display = 'block';
+            document.getElementById('negotiationSection').scrollIntoView({ behavior: 'smooth' });
+            
+            simulateNegotiation();
+        }
+
+        function simulateNegotiation() {
+            const steps = [
+                'Analisando seu perfil de crédito...',
+                'Consultando 15 parceiros financeiros...',
+                'Aplicando estratégias de negociação...',
+                'Comparando ofertas recebidas...',
+                'Identificando melhor proposta...',
+                'Preparando relatório final...'
+            ];
+
+            const logMessages = [
+                '🔍 Analisando perfil: Score A+ detectado',
+                '📞 Enviando solicitações para parceiros...',
+                '💬 Banco A oferece 2,8% - Negociando...',
+                '💬 Fintech B oferece 2,5% - Contra-proposta enviada',
+                '💬 Banco A melhora para 2,6%',
+                '💬 Fintech C entra com 2,3%',
+                '🎯 Aplicando estratégia "histórico de cliente"',
+                '💬 Fintech B reduz para 2,2%',
+                '💬 Banco A contra-ataca com 2,1%',
+                '🏆 Melhor oferta: 2,1% do Banco A'
+            ];
+
+            let progress = 0;
+            let logIndex = 0;
+
+            const interval = setInterval(() => {
+                if (progress < 100) {
+                    progress += Math.random() * 20;
+                    progress = Math.min(progress, 100);
+                    
+                    document.getElementById('negotiationProgress').style.width = progress + '%';
+                    document.getElementById('negotiationStatus').innerText = 
+                        steps[Math.floor((progress / 100) * steps.length)] || steps[steps.length - 1];
+
+                    // Adicionar mensagens ao log
+                    if (logIndex < logMessages.length && Math.random() > 0.3) {
+                        const logDiv = document.getElementById('negotiationLog');
+                        const messageDiv = document.createElement('div');
+                        messageDiv.style.marginBottom = '0.5rem';
+                        messageDiv.style.fontSize = '0.9rem';
+                        messageDiv.innerHTML = `<span style="color: #6b7280;">${new Date().toLocaleTimeString()}</span> ${logMessages[logIndex]}`;
+                        logDiv.appendChild(messageDiv);
+                        logDiv.scrollTop = logDiv.scrollHeight;
+                        logIndex++;
+                    }
+                }
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        showOffers();
+                    }, 1000);
+                }
+            }, 800);
+        }
+
+        function showOffers() {
+            document.getElementById('offersSection').style.display = 'block';
+            document.getElementById('offersSection').scrollIntoView({ behavior: 'smooth' });
+
+            bestRate = 2.1;
+            const amount = parseInt(document.getElementById('amount').value);
+
+            document.getElementById('bestOffer').innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h5 style="color: #10b981; margin-bottom: 0.5rem;">🏆 Banco A - Oferta Premium</h5>
+                        <p><strong>Taxa:</strong> 2,1% (vs 3,0% inicial)</p>
+                        <p><strong>Valor líquido:</strong> R$ ${(amount * 0.979).toLocaleString()}</p>
+                        <p><strong>Prazo:</strong> Liberação em 4h</p>
+                        <p><strong>Condições especiais:</strong> Taxa fixa por 6 meses</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 2rem; color: #10b981;">💎</div>
+                        <p style="color: #10b981; font-weight: bold;">Economia<br>R$ ${(amount * 0.009).toLocaleString()}</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('offersComparison').innerHTML = `
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f9fafb;">
+                                <th style="padding: 0.5rem; text-align: left;">Instituição</th>
+                                <th style="padding: 0.5rem;">Taxa</th>
+                                <th style="padding: 0.5rem;">Valor Líquido</th>
+                                <th style="padding: 0.5rem;">Prazo</th>
+                                <th style="padding: 0.5rem;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #f0fdf4;">
+                                <td style="padding: 0.5rem;"><strong>🏆 Banco A</strong></td>
+                                <td style="padding: 0.5rem; color: #10b981;"><strong>2,1%</strong></td>
+                                <td style="padding: 0.5rem;">R$ ${(amount * 0.979).toLocaleString()}</td>
+                                <td style="padding: 0.5rem;">4h</td>
+                                <td style="padding: 0.5rem; color: #10b981;">✅ Melhor</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.5rem;">Fintech B</td>
+                                <td style="padding: 0.5rem;">2,2%</td>
+                                <td style="padding: 0.5rem;">R$ ${(amount * 0.978).toLocaleString()}</td>
+                                <td style="padding: 0.5rem;">2h</td>
+                                <td style="padding: 0.5rem; color: #f59e0b;">🥈 2º lugar</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.5rem;">Fintech C</td>
+                                <td style="padding: 0.5rem;">2,3%</td>
+                                <td style="padding: 0.5rem;">R$ ${(amount * 0.977).toLocaleString()}</td>
+                                <td style="padding: 0.5rem;">1h</td>
+                                <td style="padding: 0.5rem; color: #6b7280;">🥉 3º lugar</td>
+                            </tr>
+                            <tr style="background: #fef2f2;">
+                                <td style="padding: 0.5rem;">Taxa Inicial</td>
+                                <td style="padding: 0.5rem; color: #ef4444;">3,0%</td>
+                                <td style="padding: 0.5rem;">R$ ${(amount * 0.970).toLocaleString()}</td>
+                                <td style="padding: 0.5rem;">-</td>
+                                <td style="padding: 0.5rem; color: #ef4444;">❌ Rejeitada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            document.getElementById('aiRecommendation').innerHTML = `
+                A negociação foi <strong>muito bem-sucedida</strong>! Conseguimos reduzir a taxa em 0,9 pontos percentuais (30% de melhoria). 
+                O Banco A oferece as melhores condições gerais, mas se velocidade for prioridade, a Fintech C libera em 1 hora com taxa apenas 0,2% maior.
+            `;
+        }
+
+        function acceptBestOffer() {
+            showFinalOffer();
+        }
+
+        function continueBargaining() {
+            document.getElementById('bargainingSection').style.display = 'block';
+            document.getElementById('bargainingSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function useStrategy(strategy) {
+            const strategies = {
+                'volume': {
+                    name: 'Negociação por Volume',
+                    result: 'Propondo R$ 50.000 em vez de R$ 30.000...',
+                    improvement: 0.15,
+                    description: 'Banco A aceitou reduzir para 1,95% pelo volume maior!'
+                },
+                'timing': {
+                    name: 'Flexibilidade de Prazo',
+                    result: 'Oferecendo prazo de 48h em vez de 4h...',
+                    improvement: 0.10,
+                    description: 'Fintech B reduziu para 2,0% com prazo flexível!'
+                },
+                'loyalty': {
+                    name: 'Histórico de Cliente',
+                    result: 'Destacando 15 operações sem inadimplência...',
+                    improvement: 0.05,
+                    description: 'Banco A reconheceu o histórico e ofereceu 2,05%!'
+                },
+                'competitor': {
+                    name: 'Oferta Concorrente',
+                    result: 'Apresentando oferta de 1,8% de outro banco...',
+                    improvement: 0.20,
+                    description: 'Fintech B bateu a oferta com 1,9%!'
+                }
+            };
+
+            const selectedStrategy = strategies[strategy];
+            bestRate = Math.max(1.5, bestRate - selectedStrategy.improvement);
+
+            document.getElementById('strategyResult').style.display = 'block';
+            document.getElementById('strategyResult').innerHTML = `
+                <h4>🎯 Estratégia: ${selectedStrategy.name}</h4>
+                <p>${selectedStrategy.result}</p>
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <p style="color: #10b981; font-weight: bold;">✅ ${selectedStrategy.description}</p>
+                    <p><strong>Nova melhor taxa:</strong> ${bestRate.toFixed(2)}%</p>
+                    <p><strong>Economia adicional:</strong> R$ ${(parseInt(document.getElementById('amount').value) * selectedStrategy.improvement / 100).toLocaleString()}</p>
+                </div>
+            `;
+
+            setTimeout(() => {
+                showFinalOffer();
+            }, 3000);
+        }
+
+        function showFinalOffer() {
+            document.getElementById('finalOfferSection').style.display = 'block';
+            document.getElementById('finalOfferSection').scrollIntoView({ behavior: 'smooth' });
+
+            const amount = parseInt(document.getElementById('amount').value);
+            const finalAmount = amount * (1 - bestRate / 100);
+            const totalSavings = amount * (originalRate - bestRate) / 100;
+            const improvement = ((originalRate - bestRate) / originalRate * 100).toFixed(1);
+
+            document.getElementById('finalDeal').innerHTML = `
+                <p><strong>Taxa Final Negociada:</strong> ${bestRate.toFixed(2)}%</p>
+                <p><strong>Valor que você recebe:</strong> R$ ${finalAmount.toLocaleString()}</p>
+                <p><strong>Melhoria conquistada:</strong> ${improvement}% vs oferta inicial</p>
+            `;
+
+            document.getElementById('savings').innerText = `R$ ${totalSavings.toLocaleString()}`;
+            document.getElementById('improvement').innerText = `-${(originalRate - bestRate).toFixed(1)}%`;
+            document.getElementById('negotiationTime').innerText = '12min';
+            document.getElementById('offersAnalyzed').innerText = '15';
+        }
+
+        function confirmFinalDeal() {
+            alert(`🎉 Parabéns! Negociação finalizada com sucesso!\n\nR$ ${(parseInt(document.getElementById('amount').value) * (1 - bestRate / 100)).toLocaleString()} serão creditados na sua conta.\n\nVocê economizou R$ ${(parseInt(document.getElementById('amount').value) * (originalRate - bestRate) / 100).toLocaleString()} com esta negociação!`);
+        }
+
+        function customizeOffer() {
+            alert('⚙️ Interface de personalização seria aberta aqui, permitindo ajustar condições específicas como prazo, garantias ou forma de pagamento.');
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clube de Antecipação</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <h2>🏆 Clube de Antecipação Premium</h2>
+        <a href="index.html" class="back-btn">← Voltar</a>
+    </nav>
+
+    <div class="prototype-container">
+        <div class="demo-section fade-in">
+            <h3>🎖️ Seu Status no Clube</h3>
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <div class="value">GOLD</div>
+                    <div class="label">Nível Atual</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">2.350</div>
+                    <div class="label">Pontos Acumulados</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">2,1%</div>
+                    <div class="label">Taxa Especial</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">15</div>
+                    <div class="label">Operações Realizadas</div>
+                </div>
+            </div>
+
+            <div class="info-card success">
+                <h4>🎉 Benefícios Ativos</h4>
+                <div id="activeBenefits">
+                    <p>🔄 Analisando seu histórico...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>⭐ Promoções Exclusivas</h3>
+            <div class="info-card warning">
+                <h4>🚀 Oferta Relâmpago - 2h restantes!</h4>
+                <p><strong>Taxa Zero</strong> para antecipação de até R$ 10.000</p>
+                <p>Válido apenas para membros Gold+ | Limitado às primeiras 50 operações</p>
+                <button class="btn btn-warning pulse">⚡ Aproveitar Oferta</button>
+            </div>
+
+            <div class="info-card">
+                <h4>🎯 Missão da Semana</h4>
+                <p>Realize 2 antecipações até domingo e ganhe <strong>500 pontos extras</strong></p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 50%"></div>
+                </div>
+                <p><small>Progresso: 1 de 2 operações (50%)</small></p>
+            </div>
+
+            <div class="info-card">
+                <h4>👥 Programa Indique e Ganhe</h4>
+                <p>Convide amigos e ganhe <strong>R$ 50</strong> para cada um que fizer a primeira antecipação</p>
+                <button class="btn btn-secondary">📱 Compartilhar Convite</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>💎 Antecipação com Benefícios</h3>
+            <div class="input-group">
+                <label>Valor para Antecipar</label>
+                <input type="number" id="amount" value="15000" placeholder="Digite o valor">
+            </div>
+
+            <div id="calculationResult" class="info-card">
+                <h4>📊 Simulação Personalizada</h4>
+                <div class="flex justify-between">
+                    <div>
+                        <p><strong>Taxa Normal:</strong> 3,2%</p>
+                        <p><strong>Sua Taxa Gold:</strong> 2,1%</p>
+                        <p><strong>Benefício Extra:</strong> -0,3%</p>
+                        <hr style="margin: 0.5rem 0;">
+                        <p><strong>Taxa Final:</strong> 1,8%</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <p style="color: #ef4444;"><s>R$ 14.520</s></p>
+                        <p style="font-size: 1.5rem; color: #10b981;"><strong>R$ 14.730</strong></p>
+                        <p style="color: #10b981;"><small>Economia: R$ 210</small></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card success">
+                <h4>🎁 Benefícios desta Operação</h4>
+                <p>✅ <strong>+120 pontos</strong> adicionados ao seu saldo</p>
+                <p>✅ <strong>Cashback de 0,1%</strong> em vale-compras (R$ 15)</p>
+                <p>✅ <strong>Progressão automática</strong> rumo ao nível Platinum</p>
+            </div>
+
+            <button class="btn btn-primary" onclick="processAdvancement()">🚀 Antecipar e Ganhar Benefícios</button>
+        </div>
+
+        <div class="demo-section fade-in" id="advancementSection" style="display: none;">
+            <h3>🎉 Novo Benefício Desbloqueado!</h3>
+            <div class="info-card success">
+                <h4>🏅 Parabéns! Você desbloqueou:</h4>
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem;">🎯</div>
+                    <h3 style="color: #10b981; margin: 1rem 0;">Taxa Preferencial Permanente</h3>
+                    <p>A partir de agora, sua taxa base é <strong>1,9%</strong> em todas as antecipações!</p>
+                    <p style="margin-top: 1rem;">Benefício válido pelos próximos 90 dias</p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h4>📈 Próximo Nível: Platinum</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%"></div>
+                </div>
+                <p>Faltam apenas 650 pontos para desbloquear benefícios ainda melhores!</p>
+                
+                <h5 style="margin-top: 1rem;">🔮 Preview Platinum:</h5>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Taxa base de 1,5%</li>
+                    <li>Suporte prioritário 24/7</li>
+                    <li>Limites especiais até R$ 500.000</li>
+                    <li>Assessoria financeira exclusiva</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>🏆 Ranking do Clube</h3>
+            <div class="info-card">
+                <h4>🥇 Top Membros este Mês</h4>
+                <div style="border-left: 4px solid #10b981; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>1º</strong> João Silva - Platinum ⭐ (3.250 pts)</p>
+                </div>
+                <div style="border-left: 4px solid #f59e0b; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>2º</strong> Maria Santos - Gold 🏅 (2.890 pts)</p>
+                </div>
+                <div style="border-left: 4px solid #f59e0b; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>3º</strong> <strong>Você</strong> - Gold 🏅 (2.350 pts)</p>
+                </div>
+                <div style="border-left: 4px solid #6b7280; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>4º</strong> Carlos Lima - Silver 🥈 (1.980 pts)</p>
+                </div>
+                
+                <button class="btn btn-secondary mt-2">📊 Ver Ranking Completo</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>📚 Histórico de Conquistas</h3>
+            <div class="info-card">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center; padding: 1rem; background: #f0fdf4; border-radius: 8px;">
+                        <div style="font-size: 2rem;">🎯</div>
+                        <p><strong>Primeira Antecipação</strong></p>
+                        <small>Completado em 15/03/2024</small>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: #f0fdf4; border-radius: 8px;">
+                        <div style="font-size: 2rem;">⚡</div>
+                        <p><strong>5 Antecipações</strong></p>
+                        <small>Completado em 22/03/2024</small>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: #f0fdf4; border-radius: 8px;">
+                        <div style="font-size: 2rem;">🏅</div>
+                        <p><strong>Nível Gold</strong></p>
+                        <small>Completado em 10/04/2024</small>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: #fffbeb; border-radius: 8px; border: 2px dashed #f59e0b;">
+                        <div style="font-size: 2rem;">💎</div>
+                        <p><strong>Nível Platinum</strong></p>
+                        <small>Em progresso...</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function processAdvancement() {
+            document.getElementById('advancementSection').style.display = 'block';
+            document.getElementById('advancementSection').scrollIntoView({ behavior: 'smooth' });
+            
+            // Simular confetti ou animação de conquista
+            setTimeout(() => {
+                alert('🎊 Parabéns! Sua antecipação foi processada e você ganhou novos benefícios!');
+            }, 1000);
+        }
+
+        // Atualizar cálculo quando valor mudar
+        document.getElementById('amount').addEventListener('input', function() {
+            const value = parseFloat(this.value) || 0;
+            const normalRate = 0.032;
+            const goldRate = 0.021;
+            const extraBenefit = 0.003;
+            const finalRate = goldRate - extraBenefit;
+            
+            const normalResult = value * (1 - normalRate);
+            const finalResult = value * (1 - finalRate);
+            const savings = finalResult - normalResult;
+            
+            document.getElementById('calculationResult').innerHTML = `
+                <h4>📊 Simulação Personalizada</h4>
+                <div class="flex justify-between">
+                    <div>
+                        <p><strong>Taxa Normal:</strong> 3,2%</p>
+                        <p><strong>Sua Taxa Gold:</strong> 2,1%</p>
+                        <p><strong>Benefício Extra:</strong> -0,3%</p>
+                        <hr style="margin: 0.5rem 0;">
+                        <p><strong>Taxa Final:</strong> 1,8%</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <p style="color: #ef4444;"><s>R$ ${normalResult.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</s></p>
+                        <p style="font-size: 1.5rem; color: #10b981;"><strong>R$ ${finalResult.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</strong></p>
+                        <p style="color: #10b981;"><small>Economia: R$ ${Math.abs(savings).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</small></p>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Simular carregamento de benefícios
+        setTimeout(() => {
+            document.getElementById('activeBenefits').innerHTML = `
+                <p>⚡ <strong>Taxa Preferencial:</strong> 2,1% (vs 3,2% padrão)</p>
+                <p>🎁 <strong>Cashback Ativo:</strong> 0,1% em todas as operações</p>
+                <p>🚀 <strong>Limite Aumentado:</strong> Até R$ 200.000 por operação</p>
+                <p>📞 <strong>Suporte Premium:</strong> Atendimento prioritário</p>
+                <p>🎯 <strong>Bônus de Fidelidade:</strong> +50% pontos nas próximas 3 operações</p>
+            `;
+        }, 1500);
+    </script>
+</body>
+</html> 

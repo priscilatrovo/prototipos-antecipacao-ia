@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace P2P Antecipação</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <h2>🤝 Marketplace P2P</h2>
+        <a href="index.html" class="back-btn">← Voltar</a>
+    </nav>
+
+    <div class="prototype-container">
+        <div class="demo-section fade-in">
+            <h3>📋 Sua Solicitação</h3>
+            <div class="input-group">
+                <label>Valor desejado</label>
+                <input type="number" id="requestAmount" value="25000" placeholder="Digite o valor">
+            </div>
+            <div class="input-group">
+                <label>Prazo dos recebíveis</label>
+                <select id="receivableTerm">
+                    <option value="30">30 dias</option>
+                    <option value="45">45 dias</option>
+                    <option value="60" selected>60 dias</option>
+                    <option value="90">90 dias</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="searchOffers()">🔍 Buscar Ofertas</button>
+        </div>
+
+        <div class="demo-section fade-in" id="searchingSection" style="display: none;">
+            <h3>🔄 IA Buscando Melhores Ofertas</h3>
+            <div class="info-card">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="searchProgress" style="width: 0%"></div>
+                </div>
+                <p id="searchStatus">Analisando 247 investidores disponíveis...</p>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="offersSection" style="display: none;">
+            <h3>💰 Ofertas Disponíveis</h3>
+            <div class="info-card success">
+                <h4>🎯 IA Recomenda: Melhor Custo-Benefício</h4>
+                <div class="flex justify-between items-center" style="padding: 1rem; background: #f0fdf4; border-radius: 8px; margin: 1rem 0;">
+                    <div>
+                        <p><strong>InvestPro Capital</strong> ⭐⭐⭐⭐⭐</p>
+                        <p style="color: #10b981;"><strong>Taxa: 2,3%</strong> | Você recebe: <strong>R$ 24.425</strong></p>
+                        <p><small>Histórico: 1.250+ operações | Taxa de aprovação: 98%</small></p>
+                    </div>
+                    <button class="btn btn-success" onclick="selectOffer('investpro')">Escolher</button>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h4>📊 Todas as Ofertas (8 encontradas)</h4>
+                
+                <div style="border: 1px solid #e5e7eb; border-radius: 8px; margin: 1rem 0; padding: 1rem;">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p><strong>Banco Digital Futuro</strong> ⭐⭐⭐⭐</p>
+                            <p>Taxa: 2,5% | Você recebe: <strong>R$ 24.375</strong></p>
+                            <p><small>Aprovação instantânea | Sem análise adicional</small></p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="selectOffer('futuro')">Escolher</button>
+                    </div>
+                </div>
+
+                <div style="border: 1px solid #e5e7eb; border-radius: 8px; margin: 1rem 0; padding: 1rem;">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p><strong>Fundo Multi Investimentos</strong> ⭐⭐⭐⭐⭐</p>
+                            <p>Taxa: 2,7% | Você recebe: <strong>R$ 24.325</strong></p>
+                            <p><small>Liberação em 4h | Limite até R$ 500k</small></p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="selectOffer('multi')">Escolher</button>
+                    </div>
+                </div>
+
+                <div style="border: 1px solid #e5e7eb; border-radius: 8px; margin: 1rem 0; padding: 1rem;">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p><strong>Grupo Creditas</strong> ⭐⭐⭐⭐</p>
+                            <p>Taxa: 2,8% | Você recebe: <strong>R$ 24.300</strong></p>
+                            <p><small>Partner verificado | Seguro incluso</small></p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="selectOffer('creditas')">Escolher</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="showAllOffers()">Ver todas as 8 ofertas</button>
+            </div>
+
+            <div class="info-card warning">
+                <h4>⚡ Oferta Relâmpago!</h4>
+                <p><strong>FastCash Investimentos</strong> oferece taxa de <strong>2,1%</strong> por apenas 15 minutos!</p>
+                <p>Você receberia: <strong>R$ 24.475</strong></p>
+                <button class="btn btn-warning pulse" onclick="selectOffer('fastcash')">🚀 Aceitar Oferta Relâmpago</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="matchSection" style="display: none;">
+            <h3>🎉 Match Realizado!</h3>
+            <div class="info-card success">
+                <h4>✅ Conectado com InvestPro Capital</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1rem 0;">
+                    <div>
+                        <h5>👤 Você</h5>
+                        <p><strong>Valor:</strong> R$ 25.000</p>
+                        <p><strong>Prazo:</strong> 60 dias</p>
+                        <p><strong>Setor:</strong> E-commerce</p>
+                        <p><strong>Score:</strong> A+ (Excelente)</p>
+                    </div>
+                    <div>
+                        <h5>💼 InvestPro Capital</h5>
+                        <p><strong>Taxa:</strong> 2,3%</p>
+                        <p><strong>Limite:</strong> R$ 2.5M disponível</p>
+                        <p><strong>Especialidade:</strong> PMEs digitais</p>
+                        <p><strong>Rating:</strong> ⭐⭐⭐⭐⭐ (5.0)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h4>📝 Detalhes da Operação</h4>
+                <div style="background: #f9fafb; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <p><strong>Valor solicitado:</strong> R$ 25.000,00</p>
+                    <p><strong>Taxa acordada:</strong> 2,3%</p>
+                    <p><strong>Valor líquido:</strong> R$ 24.425,00</p>
+                    <p><strong>Prazo de pagamento:</strong> 60 dias</p>
+                    <p><strong>Data de vencimento:</strong> 15/08/2024</p>
+                    <hr style="margin: 0.5rem 0;">
+                    <p><strong>Taxa de serviço da plataforma:</strong> R$ 25,00</p>
+                    <p><strong>Valor final a receber:</strong> R$ 24.400,00</p>
+                </div>
+                
+                <div class="flex gap-2">
+                    <button class="btn btn-primary" onclick="confirmMatch()">✅ Confirmar Operação</button>
+                    <button class="btn btn-secondary" onclick="goBackToOffers()">↩️ Ver Outras Ofertas</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="processingSection" style="display: none;">
+            <h3>⚡ Processando Operação</h3>
+            <div class="info-card">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="processProgress" style="width: 0%"></div>
+                </div>
+                <p id="processStatus">Iniciando verificações de segurança...</p>
+            </div>
+
+            <div id="processSteps">
+                <div class="info-card" id="pstep1">
+                    <p>1️⃣ Verificação de documentos... ⏳</p>
+                </div>
+                <div class="info-card" id="pstep2" style="display: none;">
+                    <p>2️⃣ Validação dos recebíveis... ⏳</p>
+                </div>
+                <div class="info-card" id="pstep3" style="display: none;">
+                    <p>3️⃣ Confirmação do investidor... ⏳</p>
+                </div>
+                <div class="info-card" id="pstep4" style="display: none;">
+                    <p>4️⃣ Transferência do valor... ⏳</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="completedSection" style="display: none;">
+            <h3>🎊 Operação Concluída!</h3>
+            <div class="info-card success">
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem;">✅</div>
+                    <h3 style="color: #10b981; margin: 1rem 0;">R$ 24.400 creditados na sua conta!</h3>
+                    <p>Operação realizada com <strong>InvestPro Capital</strong></p>
+                    <p><small>Comprovante enviado por email e SMS</small></p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h4>📈 Impacto no seu Perfil</h4>
+                <p>✅ <strong>Score aumentado:</strong> A+ → A+ (mantido)</p>
+                <p>✅ <strong>Histórico:</strong> +1 operação bem-sucedida</p>
+                <p>✅ <strong>Rede expandida:</strong> +1 novo investidor parceiro</p>
+                <p>✅ <strong>Limite aumentado:</strong> R$ 150k → R$ 175k disponível</p>
+                
+                <button class="btn btn-secondary mt-2">📊 Ver Perfil Completo</button>
+            </div>
+
+            <div class="info-card">
+                <h4>🤝 Avalie sua Experiência</h4>
+                <p>Como foi trabalhar com <strong>InvestPro Capital</strong>?</p>
+                <div class="flex gap-1 mt-1">
+                    <button class="btn btn-secondary" onclick="rate(5)">⭐⭐⭐⭐⭐</button>
+                    <button class="btn btn-secondary" onclick="rate(4)">⭐⭐⭐⭐</button>
+                    <button class="btn btn-secondary" onclick="rate(3)">⭐⭐⭐</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchOffers() {
+            document.getElementById('searchingSection').style.display = 'block';
+            document.getElementById('searchingSection').scrollIntoView({ behavior: 'smooth' });
+            
+            let progress = 0;
+            const statuses = [
+                'Analisando 247 investidores disponíveis...',
+                'Calculando melhores taxas...',
+                'Verificando disponibilidade de capital...',
+                'Rankeando ofertas por relevância...',
+                'Finalizando busca...'
+            ];
+            
+            const interval = setInterval(() => {
+                progress += 20;
+                document.getElementById('searchProgress').style.width = progress + '%';
+                
+                if (progress <= 100) {
+                    document.getElementById('searchStatus').innerText = statuses[Math.floor(progress/20) - 1] || statuses[4];
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('offersSection').style.display = 'block';
+                        document.getElementById('offersSection').scrollIntoView({ behavior: 'smooth' });
+                    }, 500);
+                }
+            }, 800);
+        }
+
+        function selectOffer(provider) {
+            document.getElementById('matchSection').style.display = 'block';
+            document.getElementById('matchSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function confirmMatch() {
+            document.getElementById('processingSection').style.display = 'block';
+            document.getElementById('processingSection').scrollIntoView({ behavior: 'smooth' });
+            processOperation();
+        }
+
+        function processOperation() {
+            const steps = ['pstep1', 'pstep2', 'pstep3', 'pstep4'];
+            const stepTexts = [
+                'Verificação de documentos... ✅ Aprovado',
+                'Validação dos recebíveis... ✅ Confirmado',
+                'Confirmação do investidor... ✅ Match confirmado',
+                'Transferência do valor... ✅ R$ 24.400 creditados'
+            ];
+            
+            let currentStep = 0;
+            let progress = 0;
+            
+            const interval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    if (currentStep > 0) {
+                        document.getElementById(steps[currentStep - 1]).innerHTML = 
+                            `<p>${currentStep}️⃣ ${stepTexts[currentStep - 1]}</p>`;
+                        document.getElementById(steps[currentStep - 1]).className = 'info-card success';
+                    }
+                    
+                    if (currentStep < steps.length) {
+                        document.getElementById(steps[currentStep]).style.display = 'block';
+                    }
+                    
+                    progress = ((currentStep + 1) / steps.length) * 100;
+                    document.getElementById('processProgress').style.width = progress + '%';
+                    
+                    if (currentStep < steps.length - 1) {
+                        document.getElementById('processStatus').innerText = 
+                            `Processando etapa ${currentStep + 1} de ${steps.length}...`;
+                    } else {
+                        document.getElementById('processStatus').innerText = 
+                            '🎉 Operação processada com sucesso!';
+                    }
+                    
+                    currentStep++;
+                } else {
+                    document.getElementById(steps[steps.length - 1]).innerHTML = 
+                        `<p>4️⃣ ${stepTexts[steps.length - 1]}</p>`;
+                    document.getElementById(steps[steps.length - 1]).className = 'info-card success';
+                    clearInterval(interval);
+                    
+                    setTimeout(() => {
+                        document.getElementById('completedSection').style.display = 'block';
+                        document.getElementById('completedSection').scrollIntoView({ behavior: 'smooth' });
+                    }, 1000);
+                }
+            }, 2000);
+        }
+
+        function goBackToOffers() {
+            document.getElementById('matchSection').style.display = 'none';
+            document.getElementById('offersSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showAllOffers() {
+            alert('💡 Interface expandida mostraria todas as 8 ofertas com filtros e ordenação personalizada.');
+        }
+
+        function rate(stars) {
+            alert(`⭐ Obrigado! Você avaliou com ${stars} estrelas. Feedback enviado para InvestPro Capital.`);
+        }
+    </script>
+</body>
+</html> 

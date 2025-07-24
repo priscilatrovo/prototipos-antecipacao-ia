@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Guardião Ético</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <h2>🛡️ IA Guardião Ético</h2>
+        <a href="index.html" class="back-btn">← Voltar</a>
+    </nav>
+
+    <div class="prototype-container">
+        <div class="demo-section fade-in">
+            <h3>🔍 Análise de Comportamento</h3>
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <div class="value" style="color: #f59e0b;">Alerta</div>
+                    <div class="label">Status Atual</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">7</div>
+                    <div class="label">Antecipações (30 dias)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">68%</div>
+                    <div class="label">Da Receita Antecipada</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">3,2%</div>
+                    <div class="label">Taxa Média Paga</div>
+                </div>
+            </div>
+
+            <div class="info-card warning">
+                <h4>⚠️ Padrão de Uso Suspeito Detectado</h4>
+                <p>Nossa IA identificou que você está usando antecipação com frequência acima do recomendado.</p>
+                <p><strong>Risco detectado:</strong> Dependência financeira de antecipações</p>
+                <p><strong>Impacto projetado:</strong> Possível ciclo de endividamento em 60-90 dias</p>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>🎯 Tentativa de Antecipação</h3>
+            <div class="input-group">
+                <label>Valor desejado</label>
+                <input type="number" id="amount" value="25000" placeholder="Digite o valor">
+            </div>
+            <div class="input-group">
+                <label>Motivo da antecipação</label>
+                <select id="reason">
+                    <option value="">Selecione o motivo</option>
+                    <option value="emergency">Emergência médica</option>
+                    <option value="opportunity">Oportunidade de negócio</option>
+                    <option value="cash_flow">Fluxo de caixa</option>
+                    <option value="debt">Pagamento de dívida</option>
+                    <option value="other">Outro motivo</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="analyzeRequest()">🔍 Analisar Solicitação</button>
+        </div>
+
+        <div class="demo-section fade-in" id="ethicalAnalysis" style="display: none;">
+            <h3>🛡️ Análise Ética da IA</h3>
+            <div id="riskAssessment" class="info-card error">
+                <!-- Análise de risco será inserida aqui -->
+            </div>
+
+            <div id="alternatives" class="info-card">
+                <h4>💡 Alternativas Sugeridas</h4>
+                <div id="alternativesList">
+                    <!-- Alternativas serão inseridas aqui -->
+                </div>
+            </div>
+
+            <div id="ethicalActions" class="flex gap-2">
+                <button class="btn btn-warning" onclick="proceedWithCaution()">⚠️ Prosseguir com Cautela</button>
+                <button class="btn btn-success" onclick="acceptAlternative()">✅ Aceitar Alternativa</button>
+                <button class="btn btn-secondary" onclick="consultSpecialist()">👨‍💼 Consultar Especialista</button>
+                <button class="btn btn-secondary" onclick="postponeDecision()">⏰ Adiar Decisão</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="cautionSection" style="display: none;">
+            <h3>⚠️ Prosseguindo com Proteção</h3>
+            <div class="info-card warning">
+                <h4>🔒 Medidas de Proteção Ativadas</h4>
+                <div id="protectionMeasures">
+                    <p>✅ <strong>Valor limitado:</strong> Máximo R$ 15.000 (60% do solicitado)</p>
+                    <p>✅ <strong>Taxa aumentada:</strong> +0,5% como medida educativa</p>
+                    <p>✅ <strong>Período de reflexão:</strong> 24h antes da próxima antecipação</p>
+                    <p>✅ <strong>Consultoria obrigatória:</strong> Agendada para segunda-feira</p>
+                    <p>✅ <strong>Limite mensal reduzido:</strong> Para 30% da receita</p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h4>📚 Educação Financeira Obrigatória</h4>
+                <p>Para liberar funcionalidades completas, complete os módulos:</p>
+                <div style="margin: 1rem 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: #f9fafb; border-radius: 4px; margin-bottom: 0.5rem;">
+                        <span>1. Planejamento de Fluxo de Caixa</span>
+                        <span style="color: #ef4444;">Obrigatório</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: #f9fafb; border-radius: 4px; margin-bottom: 0.5rem;">
+                        <span>2. Alternativas à Antecipação</span>
+                        <span style="color: #ef4444;">Obrigatório</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: #f9fafb; border-radius: 4px;">
+                        <span>3. Gestão de Riscos Financeiros</span>
+                        <span style="color: #f59e0b;">Recomendado</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary">📖 Iniciar Educação Financeira</button>
+            </div>
+
+            <div class="flex gap-2">
+                <button class="btn btn-warning" onclick="proceedWithLimits()">⚠️ Prosseguir com Limitações</button>
+                <button class="btn btn-secondary" onclick="cancelOperation()">❌ Cancelar Operação</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="specialistSection" style="display: none;">
+            <h3>👨‍💼 Consultoria Especializada</h3>
+            <div class="info-card success">
+                <h4>🤝 Conectando com Especialista</h4>
+                <p>Você foi conectado com <strong>Ana Silva</strong>, consultora financeira especializada em PMEs.</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin: 1rem 0;">
+                    <div style="text-align: center;">
+                        <div style="width: 80px; height: 80px; background: #6366f1; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                            👩‍💼
+                        </div>
+                        <p><strong>Ana Silva</strong></p>
+                        <p><small>CPA-20, 12 anos exp.</small></p>
+                        <p><small>⭐ 4.9 (247 avaliações)</small></p>
+                    </div>
+                    <div>
+                        <h5>💬 Mensagem da Ana:</h5>
+                        <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; border-left: 4px solid #10b981;">
+                            <p>"Olá! Analisei seu histórico e vejo que você está em um padrão arriscado. Vamos trabalhar juntos para encontrar uma solução sustentável?"</p>
+                        </div>
+                        
+                        <div style="margin-top: 1rem;">
+                            <p><strong>Proposta de consultoria:</strong></p>
+                            <ul style="margin-left: 1.5rem;">
+                                <li>Análise completa do fluxo de caixa</li>
+                                <li>Plano de redução de antecipações</li>
+                                <li>Estratégias de capitalização</li>
+                                <li>Acompanhamento por 90 dias</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-2">
+                    <button class="btn btn-success" onclick="acceptConsultation()">✅ Aceitar Consultoria</button>
+                    <button class="btn btn-secondary" onclick="scheduleConsultation()">📅 Agendar para Depois</button>
+                    <button class="btn btn-secondary" onclick="declineConsultation()">❌ Recusar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="monitoringSection" style="display: none;">
+            <h3>📊 Monitoramento Contínuo</h3>
+            <div class="info-card">
+                <h4>🎯 Plano de Recuperação Financeira</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                    <div style="text-align: center; padding: 1rem; background: #f0fdf4; border-radius: 8px;">
+                        <h5>Semana 1-2</h5>
+                        <p><strong>Reduzir 50%</strong></p>
+                        <p>das antecipações</p>
+                        <div style="width: 100%; height: 8px; background: #e5e7eb; border-radius: 4px; margin-top: 0.5rem;">
+                            <div style="width: 25%; height: 100%; background: #10b981; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: #fffbeb; border-radius: 8px;">
+                        <h5>Semana 3-4</h5>
+                        <p><strong>Implementar</strong></p>
+                        <p>reserva de emergência</p>
+                        <div style="width: 100%; height: 8px; background: #e5e7eb; border-radius: 4px; margin-top: 0.5rem;">
+                            <div style="width: 0%; height: 100%; background: #f59e0b; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: #f9fafb; border-radius: 8px;">
+                        <h5>Mês 2-3</h5>
+                        <p><strong>Eliminar</strong></p>
+                        <p>dependência</p>
+                        <div style="width: 100%; height: 8px; background: #e5e7eb; border-radius: 4px; margin-top: 0.5rem;">
+                            <div style="width: 0%; height: 100%; background: #6b7280; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary">📈 Ver Plano Detalhado</button>
+            </div>
+
+            <div class="info-card">
+                <h4>🔔 Alertas Inteligentes Configurados</h4>
+                <p>✅ <strong>Alerta de frequência:</strong> Mais de 3 antecipações/mês</p>
+                <p>✅ <strong>Alerta de valor:</strong> Mais de 50% da receita mensal</p>
+                <p>✅ <strong>Alerta de padrão:</strong> Antecipações consecutivas</p>
+                <p>✅ <strong>Alerta de saúde:</strong> Score de sustentabilidade abaixo de 70%</p>
+                <p>✅ <strong>Check-in semanal:</strong> Revisão automática toda sexta-feira</p>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>📈 Histórico de Proteção</h3>
+            <div class="info-card">
+                <h4>🛡️ Intervenções da IA</h4>
+                
+                <div style="border-left: 4px solid #10b981; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>15/05/2024</strong> - Prevenção de Sobreendividamento</p>
+                    <p>Bloqueou antecipação de R$ 50.000 (85% da receita mensal)</p>
+                    <small>Resultado: Cliente evitou crise de fluxo de caixa</small>
+                </div>
+
+                <div style="border-left: 4px solid #f59e0b; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>28/04/2024</strong> - Alerta de Frequência</p>
+                    <p>Sugeriu pausa de 7 dias após 4ª antecipação do mês</p>
+                    <small>Resultado: Cliente reestruturou planejamento financeiro</small>
+                </div>
+
+                <div style="border-left: 4px solid #6366f1; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>10/04/2024</strong> - Educação Preventiva</p>
+                    <p>Ofereceu curso de gestão financeira após padrão arriscado</p>
+                    <small>Resultado: 23% melhoria no score de sustentabilidade</small>
+                </div>
+
+                <button class="btn btn-secondary mt-2">📊 Ver Relatório Completo</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>⚙️ Configurações de Proteção</h3>
+            <div class="info-card">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    <div>
+                        <h5>🔒 Nível de Proteção</h5>
+                        <select style="width: 100%; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 4px;">
+                            <option>Alto (Recomendado)</option>
+                            <option>Médio</option>
+                            <option>Baixo</option>
+                            <option>Desligado</option>
+                        </select>
+                        <small>Alto: Intervenção proativa em situações de risco</small>
+                    </div>
+                    <div>
+                        <h5>📊 Limite de Risco Aceitável</h5>
+                        <input type="range" min="30" max="80" value="50" style="width: 100%;">
+                        <p>50% da receita mensal</p>
+                        <small>Percentual máximo para antecipações mensais</small>
+                    </div>
+                    <div>
+                        <h5>🔔 Tipos de Alerta</h5>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked> Frequência excessiva
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked> Valores altos
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked> Padrões arriscados
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox"> Sugestões educativas
+                        </label>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary mt-2">💾 Salvar Configurações</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function analyzeRequest() {
+            const amount = document.getElementById('amount').value;
+            const reason = document.getElementById('reason').value;
+
+            document.getElementById('ethicalAnalysis').style.display = 'block';
+            document.getElementById('ethicalAnalysis').scrollIntoView({ behavior: 'smooth' });
+
+            // Simular análise de risco
+            let riskLevel = 'high';
+            let riskAnalysis = `
+                <h4>🚨 Alto Risco Detectado</h4>
+                <p><strong>Valor solicitado:</strong> R$ ${parseInt(amount).toLocaleString()}</p>
+                <p><strong>Representa:</strong> 73% da sua receita mensal média</p>
+                <p><strong>Padrão identificado:</strong> 7ª antecipação em 30 dias</p>
+                <p><strong>Score de sustentabilidade:</strong> 34/100 (Crítico)</p>
+                <hr style="margin: 1rem 0;">
+                <p><strong>⚠️ Riscos identificados:</strong></p>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Dependência crescente de antecipações</li>
+                    <li>Redução progressiva do capital de giro</li>
+                    <li>Ciclo vicioso de endividamento em formação</li>
+                    <li>Impacto negativo na saúde financeira do negócio</li>
+                </ul>
+            `;
+
+            let alternatives = `
+                <p><strong>🎯 A IA recomenda estas alternativas mais seguras:</strong></p>
+                <div style="margin: 1rem 0;">
+                    <div style="padding: 1rem; background: #f0fdf4; border-radius: 8px; margin-bottom: 0.5rem;">
+                        <h6>💰 Renegociação de Prazos</h6>
+                        <p>Negociar com fornecedores para postergar 60% dos pagamentos</p>
+                        <p><strong>Economia:</strong> R$ 800 em taxas vs antecipação</p>
+                    </div>
+                    <div style="padding: 1rem; background: #f0fdf4; border-radius: 8px; margin-bottom: 0.5rem;">
+                        <h6>📈 Aceleração de Vendas</h6>
+                        <p>Promoção relâmpago para acelerar entrada de caixa</p>
+                        <p><strong>Potencial:</strong> +R$ 15.000 em 10 dias</p>
+                    </div>
+                    <div style="padding: 1rem; background: #f0fdf4; border-radius: 8px;">
+                        <h6>🏦 Linha de Crédito Tradicional</h6>
+                        <p>Crédito bancário com taxa 40% menor</p>
+                        <p><strong>Taxa:</strong> 1,8% vs 3,2% da antecipação</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('riskAssessment').innerHTML = riskAnalysis;
+            document.getElementById('alternativesList').innerHTML = alternatives;
+        }
+
+        function proceedWithCaution() {
+            document.getElementById('cautionSection').style.display = 'block';
+            document.getElementById('cautionSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function acceptAlternative() {
+            alert('💡 Excelente escolha! Você será redirecionado para implementar a alternativa selecionada. Isso demonstra maturidade financeira e contribui para a sustentabilidade do seu negócio.');
+        }
+
+        function consultSpecialist() {
+            document.getElementById('specialistSection').style.display = 'block';
+            document.getElementById('specialistSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function postponeDecision() {
+            alert('⏰ Decisão adiada por 24 horas. Durante este período, você receberá material educativo sobre alternativas à antecipação e estratégias de gestão de fluxo de caixa.');
+        }
+
+        function proceedWithLimits() {
+            document.getElementById('monitoringSection').style.display = 'block';
+            document.getElementById('monitoringSection').scrollIntoView({ behavior: 'smooth' });
+            alert('⚠️ Operação processada com limitações protetivas. R$ 15.000 serão creditados com taxa de 3,7% (taxa educativa aplicada).');
+        }
+
+        function cancelOperation() {
+            alert('✅ Operação cancelada. Decisão sábia! Você foi redirecionado para recursos educativos que ajudarão a encontrar soluções mais sustentáveis.');
+        }
+
+        function acceptConsultation() {
+            alert('🤝 Consultoria aceita! Ana Silva entrará em contato em até 2 horas. A primeira sessão é gratuita e focará em criar um plano personalizado para sua situação.');
+        }
+
+        function scheduleConsultation() {
+            alert('📅 Consultoria agendada para próxima semana. Você receberá um link de preparação com questionário sobre sua situação financeira atual.');
+        }
+
+        function declineConsultation() {
+            alert('📚 Sem problemas! Como alternativa, liberamos acesso gratuito aos nossos cursos de educação financeira e ferramentas de autoavaliação.');
+        }
+    </script>
+</body>
+</html> 

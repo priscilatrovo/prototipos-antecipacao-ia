@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Consultor de Capital de Giro</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <h2>🧠 IA Consultor de Capital de Giro</h2>
+        <a href="index.html" class="back-btn">← Voltar</a>
+    </nav>
+
+    <div class="prototype-container">
+        <div class="demo-section fade-in">
+            <h3>Dashboard Inteligente</h3>
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <div class="value">R$ 45.230</div>
+                    <div class="label">Receitas Previstas (30 dias)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">R$ 28.560</div>
+                    <div class="label">Despesas Planejadas</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">R$ 12.800</div>
+                    <div class="label">Estoque Atual</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">78%</div>
+                    <div class="label">Saúde Financeira</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>📊 Análise da IA</h3>
+            <div class="info-card">
+                <h4>🎯 Plano Inteligente Recomendado</h4>
+                <p><strong>Situação detectada:</strong> Você tem um gap de fluxo de caixa nos próximos 15 dias devido ao pagamento de fornecedores.</p>
+                <p><strong>Recomendação:</strong> Antecipe R$ 18.000 dos seus recebíveis para cobrir o período crítico.</p>
+                
+                <div class="mt-2">
+                    <strong>Detalhes da antecipação sugerida:</strong>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li>Valor: R$ 18.000</li>
+                        <li>Taxa: 2,8% (taxa preferencial por bom histórico)</li>
+                        <li>Você receberá: R$ 17.496</li>
+                        <li>Impacto no fluxo: +15 dias de folga</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-card success">
+                <h4>✨ Ações Automáticas Sugeridas</h4>
+                <div id="suggestions">
+                    <p>🔄 Carregando sugestões personalizadas...</p>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button class="btn btn-primary" onclick="acceptPlan()">✅ Aceitar Plano</button>
+                <button class="btn btn-secondary" onclick="showAlternatives()">🔄 Ver Alternativas</button>
+                <button class="btn btn-secondary" onclick="customizePlan()">⚙️ Personalizar</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="alternativesSection" style="display: none;">
+            <h3>🔄 Planos Alternativos</h3>
+            <div class="info-card">
+                <h4>Opção A - Conservadora</h4>
+                <p>Antecipar apenas R$ 12.000 e renegociar prazo com 2 fornecedores</p>
+                <p><strong>Taxa:</strong> 2,5% | <strong>Você recebe:</strong> R$ 11.700</p>
+                <button class="btn btn-secondary">Escolher esta opção</button>
+            </div>
+            
+            <div class="info-card">
+                <h4>Opção B - Agressiva</h4>
+                <p>Antecipar R$ 25.000 para aproveitar oportunidade de compra com desconto</p>
+                <p><strong>Taxa:</strong> 3,2% | <strong>Você recebe:</strong> R$ 24.200</p>
+                <button class="btn btn-secondary">Escolher esta opção</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="executionSection" style="display: none;">
+            <h3>⚡ Execução Automática</h3>
+            <div class="info-card success">
+                <h4>Plano em Execução</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                </div>
+                <p id="progressText">Iniciando execução do plano...</p>
+            </div>
+
+            <div id="executionSteps">
+                <div class="info-card" id="step1">
+                    <p>1️⃣ Análise de recebíveis disponíveis... ⏳</p>
+                </div>
+                <div class="info-card" id="step2" style="display: none;">
+                    <p>2️⃣ Negociação automática de taxa... ⏳</p>
+                </div>
+                <div class="info-card" id="step3" style="display: none;">
+                    <p>3️⃣ Processamento da antecipação... ⏳</p>
+                </div>
+                <div class="info-card" id="step4" style="display: none;">
+                    <p>4️⃣ Liberação do valor... ⏳</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>🔄 Acompanhamento Contínuo</h3>
+            <div class="info-card">
+                <h4>Próximas Ações Sugeridas</h4>
+                <p>📅 <strong>Em 7 dias:</strong> Revisar projeção de vendas do próximo mês</p>
+                <p>💰 <strong>Em 14 dias:</strong> Considerar renegociar limite com banco parceiro</p>
+                <p>📊 <strong>Em 21 dias:</strong> Análise de performance das antecipações</p>
+                
+                <button class="btn btn-secondary mt-2">📱 Configurar Lembretes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        
+        function acceptPlan() {
+            document.getElementById('executionSection').style.display = 'block';
+            document.getElementById('executionSection').scrollIntoView({ behavior: 'smooth' });
+            startExecution();
+        }
+
+        function showAlternatives() {
+            document.getElementById('alternativesSection').style.display = 'block';
+            document.getElementById('alternativesSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function customizePlan() {
+            alert('🛠️ Interface de personalização seria aberta aqui, permitindo ajustar valores, prazos e condições específicas.');
+        }
+
+        function startExecution() {
+            const steps = ['step1', 'step2', 'step3', 'step4'];
+            const stepTexts = [
+                'Análise de recebíveis disponíveis... ✅ Concluído',
+                'Negociação automática de taxa... ✅ Taxa de 2,6% obtida',
+                'Processamento da antecipação... ✅ Aprovado',
+                'Liberação do valor... ✅ R$ 17.532 creditados'
+            ];
+            
+            let progress = 0;
+            
+            const interval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    // Atualizar step atual
+                    if (currentStep > 0) {
+                        document.getElementById(steps[currentStep - 1]).innerHTML = 
+                            `<p>${currentStep}️⃣ ${stepTexts[currentStep - 1]}</p>`;
+                        document.getElementById(steps[currentStep - 1]).className = 'info-card success';
+                    }
+                    
+                    // Mostrar próximo step
+                    if (currentStep < steps.length) {
+                        document.getElementById(steps[currentStep]).style.display = 'block';
+                    }
+                    
+                    // Atualizar progress bar
+                    progress = ((currentStep + 1) / steps.length) * 100;
+                    document.getElementById('progressBar').style.width = progress + '%';
+                    
+                    if (currentStep < steps.length - 1) {
+                        document.getElementById('progressText').innerText = 
+                            `Executando passo ${currentStep + 1} de ${steps.length}...`;
+                    } else {
+                        document.getElementById('progressText').innerText = 
+                            '🎉 Plano executado com sucesso! Valor creditado na sua conta.';
+                    }
+                    
+                    currentStep++;
+                } else {
+                    // Finalizar último step
+                    document.getElementById(steps[steps.length - 1]).innerHTML = 
+                        `<p>4️⃣ ${stepTexts[steps.length - 1]}</p>`;
+                    document.getElementById(steps[steps.length - 1]).className = 'info-card success';
+                    clearInterval(interval);
+                }
+            }, 2000);
+        }
+
+        // Simular carregamento de sugestões
+        setTimeout(() => {
+            document.getElementById('suggestions').innerHTML = `
+                <p>💡 <strong>Renegociar prazo:</strong> Postergar 20% das despesas para próximo mês</p>
+                <p>🎯 <strong>Oportunidade:</strong> Fornecedor oferece 3% desconto para pagamento à vista</p>
+                <p>📈 <strong>Investimento:</strong> Usar 30% do valor para comprar estoque em promoção</p>
+                <p>⚡ <strong>Automação:</strong> Configurar antecipação automática para situações similares</p>
+            `;
+        }, 1500);
+    </script>
+</body>
+</html> 

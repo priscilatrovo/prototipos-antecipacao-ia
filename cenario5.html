@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antecipação por Voz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <h2>🗣️ Antecipação por Voz</h2>
+        <a href="index.html" class="back-btn">← Voltar</a>
+    </nav>
+
+    <div class="prototype-container">
+        <div class="demo-section fade-in">
+            <h3>🎙️ Comando de Voz</h3>
+            <div class="info-card">
+                <h4>Fale Naturalmente com a IA</h4>
+                <p>Diga algo como: "Quero antecipar vinte mil reais" ou "Preciso de dinheiro para amanhã"</p>
+                
+                <div style="text-align: center; margin: 2rem 0;">
+                    <button class="btn btn-primary" id="voiceBtn" onclick="startListening()">
+                        🎤 Clique e Fale
+                    </button>
+                    <p id="voiceStatus" style="margin-top: 1rem; color: #6b7280;">Clique no microfone para começar</p>
+                </div>
+
+                <div id="transcription" style="display: none;">
+                    <div class="info-card success">
+                        <h5>🎯 Entendi:</h5>
+                        <p id="transcribedText"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>💬 Simulador WhatsApp</h3>
+            <div class="chat-container" style="max-height: 500px;">
+                <div class="chat-message ai">
+                    <p>👋 Olá! Sou a assistente de antecipação. Como posso ajudá-lo hoje?</p>
+                    <small>09:15</small>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                <input type="text" id="chatInput" placeholder="Digite sua mensagem..." 
+                       style="flex: 1; padding: 0.8rem; border: 1px solid #e5e7eb; border-radius: 8px;">
+                <button class="btn btn-primary" onclick="sendMessage()">Enviar</button>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <p><strong>💡 Exemplos de mensagens:</strong></p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                    <button class="btn btn-secondary" onclick="sendPredefined('Preciso de 15 mil reais urgente')">
+                        "Preciso de 15 mil urgente"
+                    </button>
+                    <button class="btn btn-secondary" onclick="sendPredefined('Qual a melhor taxa hoje?')">
+                        "Qual a melhor taxa?"
+                    </button>
+                    <button class="btn btn-secondary" onclick="sendPredefined('Quero antecipar tudo que posso')">
+                        "Antecipar tudo que posso"
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="aiResponseSection" style="display: none;">
+            <h3>🤖 Resposta da IA</h3>
+            <div id="aiAnalysis" class="info-card">
+                <!-- Análise será inserida aqui -->
+            </div>
+
+            <div id="aiSuggestion" class="info-card success">
+                <!-- Sugestão será inserida aqui -->
+            </div>
+
+            <div class="flex gap-2">
+                <button class="btn btn-primary" id="confirmBtn" onclick="confirmOperation()">✅ Confirmar</button>
+                <button class="btn btn-secondary" onclick="adjustRequest()">⚙️ Ajustar</button>
+                <button class="btn btn-secondary" onclick="askQuestion()">❓ Fazer Pergunta</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="processingSection" style="display: none;">
+            <h3>⚡ Processando via IA</h3>
+            <div class="info-card">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="processProgress" style="width: 0%"></div>
+                </div>
+                <p id="processStatus">Analisando sua solicitação...</p>
+            </div>
+
+            <div id="processSteps">
+                <div class="info-card" id="step1">
+                    <p>1️⃣ Entendendo sua solicitação... ⏳</p>
+                </div>
+                <div class="info-card" id="step2" style="display: none;">
+                    <p>2️⃣ Analisando recebíveis disponíveis... ⏳</p>
+                </div>
+                <div class="info-card" id="step3" style="display: none;">
+                    <p>3️⃣ Calculando melhor oferta... ⏳</p>
+                </div>
+                <div class="info-card" id="step4" style="display: none;">
+                    <p>4️⃣ Executando operação... ⏳</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="completedSection" style="display: none;">
+            <h3>🎉 Pronto!</h3>
+            <div class="info-card success">
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem;">✅</div>
+                    <h3 style="color: #10b981; margin: 1rem 0;">Operação Concluída!</h3>
+                    <p id="operationResult"></p>
+                    <p><small>Comprovante enviado via WhatsApp e SMS</small></p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h4>🗣️ Resposta por Voz</h4>
+                <p>A IA pode responder falando:</p>
+                <button class="btn btn-secondary" onclick="playVoiceResponse()">
+                    🔊 Ouvir Resposta da IA
+                </button>
+                <p><small>Simularia: "Pronto! Transferi R$ 14.700 para sua conta. O valor estará disponível em alguns minutos."</small></p>
+            </div>
+
+            <div class="info-card">
+                <h4>📱 Continue por WhatsApp</h4>
+                <p>Receba atualizações e gerencie suas antecipações direto pelo WhatsApp</p>
+                <button class="btn btn-success">📲 Ativar Notificações</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>🔄 Histórico de Conversas</h3>
+            <div class="info-card">
+                <h4>📱 Últimas Interações</h4>
+                
+                <div style="border-left: 4px solid #10b981; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>Hoje, 14:30</strong> - WhatsApp</p>
+                    <p>"Preciso de 15 mil urgente" → Antecipação de R$ 15.000 processada</p>
+                    <small>Taxa: 2,3% | Recebido: R$ 14.655</small>
+                </div>
+
+                <div style="border-left: 4px solid #6366f1; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>Ontem, 09:15</strong> - Comando de Voz</p>
+                    <p>"Qual a melhor taxa hoje?" → Consulta de taxas</p>
+                    <small>Informações enviadas via áudio</small>
+                </div>
+
+                <div style="border-left: 4px solid #f59e0b; padding-left: 1rem; margin: 1rem 0;">
+                    <p><strong>Segunda, 16:45</strong> - WhatsApp</p>
+                    <p>"Cancelar antecipação de R$ 10.000" → Operação cancelada</p>
+                    <small>Cancelamento realizado com sucesso</small>
+                </div>
+
+                <button class="btn btn-secondary mt-2">📊 Ver Histórico Completo</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>⚙️ Configurações de Voz</h3>
+            <div class="info-card">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div>
+                        <h5>🎤 Idioma de Reconhecimento</h5>
+                        <select style="width: 100%; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 4px;">
+                            <option>Português (Brasil)</option>
+                            <option>Inglês (EUA)</option>
+                            <option>Espanhol</option>
+                        </select>
+                    </div>
+                    <div>
+                        <h5>🔊 Voz da Assistente</h5>
+                        <select style="width: 100%; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 4px;">
+                            <option>Ana (Feminina)</option>
+                            <option>Carlos (Masculina)</option>
+                            <option>Marina (Jovem)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <h5>⚡ Modo de Resposta</h5>
+                        <select style="width: 100%; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 4px;">
+                            <option>Voz + Texto</option>
+                            <option>Apenas Voz</option>
+                            <option>Apenas Texto</option>
+                        </select>
+                    </div>
+                    <div>
+                        <h5>🔐 Confirmação de Segurança</h5>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked> Sempre confirmar valores acima de R$ 10.000
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked> Usar biometria de voz
+                        </label>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary mt-2">💾 Salvar Configurações</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let isListening = false;
+
+        function startListening() {
+            if (isListening) return;
+            
+            isListening = true;
+            document.getElementById('voiceBtn').innerHTML = '🔴 Gravando...';
+            document.getElementById('voiceBtn').disabled = true;
+            document.getElementById('voiceStatus').innerText = 'Fale agora... (simulando gravação)';
+
+            // Simular reconhecimento de voz
+            setTimeout(() => {
+                const examples = [
+                    'Quero antecipar quinze mil reais para hoje',
+                    'Preciso de dinheiro urgente, uns vinte mil',
+                    'Qual a melhor taxa para antecipação hoje?',
+                    'Quero antecipar tudo que eu posso'
+                ];
+                const randomExample = examples[Math.floor(Math.random() * examples.length)];
+                
+                document.getElementById('transcribedText').innerText = randomExample;
+                document.getElementById('transcription').style.display = 'block';
+                document.getElementById('voiceBtn').innerHTML = '🎤 Clique e Fale';
+                document.getElementById('voiceBtn').disabled = false;
+                document.getElementById('voiceStatus').innerText = 'Análise concluída! Role para baixo para ver a resposta.';
+                
+                // Processar a solicitação
+                processVoiceRequest(randomExample);
+                isListening = false;
+            }, 3000);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addChatMessage(message, 'user');
+            input.value = '';
+
+            // Simular resposta da IA
+            setTimeout(() => {
+                processTextRequest(message);
+            }, 1000);
+        }
+
+        function sendPredefined(message) {
+            document.getElementById('chatInput').value = message;
+            sendMessage();
+        }
+
+        function addChatMessage(message, sender) {
+            const chatContainer = document.querySelector('.chat-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}`;
+            
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ':' + 
+                        now.getMinutes().toString().padStart(2, '0');
+            
+            messageDiv.innerHTML = `
+                <p>${message}</p>
+                <small>${time}</small>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function processVoiceRequest(text) {
+            processTextRequest(text);
+        }
+
+        function processTextRequest(text) {
+            document.getElementById('aiResponseSection').style.display = 'block';
+            document.getElementById('aiResponseSection').scrollIntoView({ behavior: 'smooth' });
+
+            // Simular análise da IA
+            let analysis, suggestion, amount;
+
+            if (text.toLowerCase().includes('quinze mil') || text.toLowerCase().includes('15') || text.toLowerCase().includes('15.000')) {
+                amount = 15000;
+                analysis = `
+                    <h4>🔍 Análise da Solicitação</h4>
+                    <p><strong>Valor identificado:</strong> R$ 15.000</p>
+                    <p><strong>Recebíveis disponíveis:</strong> R$ 28.400 (suficiente)</p>
+                    <p><strong>Seu limite atual:</strong> R$ 150.000</p>
+                    <p><strong>Status:</strong> ✅ Aprovado automaticamente</p>
+                `;
+                suggestion = `
+                    <h4>💡 Melhor Oferta Encontrada</h4>
+                    <p><strong>Taxa aplicada:</strong> 2,3% (sua taxa preferencial)</p>
+                    <p><strong>Valor líquido:</strong> R$ 14.655</p>
+                    <p><strong>Disponível em:</strong> 2-3 minutos após confirmação</p>
+                    <p><strong>Taxa concorrente média:</strong> 3,1% (você economiza R$ 120)</p>
+                `;
+            } else if (text.toLowerCase().includes('vinte mil') || text.toLowerCase().includes('20') || text.toLowerCase().includes('20.000')) {
+                amount = 20000;
+                analysis = `
+                    <h4>🔍 Análise da Solicitação</h4>
+                    <p><strong>Valor identificado:</strong> R$ 20.000</p>
+                    <p><strong>Recebíveis disponíveis:</strong> R$ 28.400 (suficiente)</p>
+                    <p><strong>Seu limite atual:</strong> R$ 150.000</p>
+                    <p><strong>Status:</strong> ✅ Aprovado automaticamente</p>
+                `;
+                suggestion = `
+                    <h4>💡 Melhor Oferta Encontrada</h4>
+                    <p><strong>Taxa aplicada:</strong> 2,4% (valor mais alto)</p>
+                    <p><strong>Valor líquido:</strong> R$ 19.520</p>
+                    <p><strong>Disponível em:</strong> 2-3 minutos após confirmação</p>
+                    <p><strong>Taxa concorrente média:</strong> 3,2% (você economiza R$ 160)</p>
+                `;
+            } else if (text.toLowerCase().includes('taxa') || text.toLowerCase().includes('melhor')) {
+                analysis = `
+                    <h4>📊 Taxas Atuais</h4>
+                    <p><strong>Sua taxa preferencial:</strong> 2,3% - 2,5%</p>
+                    <p><strong>Taxa padrão do mercado:</strong> 3,1% - 3,8%</p>
+                    <p><strong>Menor taxa hoje:</strong> 2,1% (para valores até R$ 10k)</p>
+                    <p><strong>Status:</strong> 🟢 Condições favoráveis para antecipação</p>
+                `;
+                suggestion = `
+                    <h4>💰 Oportunidade Detectada</h4>
+                    <p>É um bom momento para antecipar! Suas taxas estão 25% abaixo da média.</p>
+                    <p><strong>Recomendação:</strong> Considere antecipar até R$ 25.000 hoje</p>
+                    <p><strong>Economia potencial:</strong> R$ 200-300 vs outras instituições</p>
+                `;
+            } else {
+                amount = 10000;
+                analysis = `
+                    <h4>🔍 Análise da Solicitação</h4>
+                    <p><strong>Interpretação:</strong> Solicitação de antecipação geral</p>
+                    <p><strong>Valor sugerido:</strong> R$ 10.000 (baseado no histórico)</p>
+                    <p><strong>Recebíveis disponíveis:</strong> R$ 28.400</p>
+                    <p><strong>Status:</strong> ✅ Disponível para antecipação</p>
+                `;
+                suggestion = `
+                    <h4>💡 Sugestão Personalizada</h4>
+                    <p><strong>Valor recomendado:</strong> R$ 10.000</p>
+                    <p><strong>Taxa aplicada:</strong> 2,2%</p>
+                    <p><strong>Valor líquido:</strong> R$ 9.780</p>
+                    <p><strong>Alternativa:</strong> Até R$ 28.400 disponível para antecipação</p>
+                `;
+            }
+
+            document.getElementById('aiAnalysis').innerHTML = analysis;
+            document.getElementById('aiSuggestion').innerHTML = suggestion;
+
+            // Responder no chat se veio do WhatsApp
+            if (text && document.getElementById('chatInput').value === '') {
+                setTimeout(() => {
+                    addChatMessage('Analisei sua solicitação! Encontrei uma ótima condição para você. Confira os detalhes acima. 👆', 'ai');
+                }, 2000);
+            }
+        }
+
+        function confirmOperation() {
+            document.getElementById('processingSection').style.display = 'block';
+            document.getElementById('processingSection').scrollIntoView({ behavior: 'smooth' });
+            startProcessing();
+        }
+
+        function startProcessing() {
+            const steps = ['step1', 'step2', 'step3', 'step4'];
+            const stepTexts = [
+                'Entendendo sua solicitação... ✅ Interpretado',
+                'Analisando recebíveis disponíveis... ✅ Confirmado',
+                'Calculando melhor oferta... ✅ Aprovado',
+                'Executando operação... ✅ Concluído'
+            ];
+            
+            let progress = 0;
+            
+            const interval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    if (currentStep > 0) {
+                        document.getElementById(steps[currentStep - 1]).innerHTML = 
+                            `<p>${currentStep}️⃣ ${stepTexts[currentStep - 1]}</p>`;
+                        document.getElementById(steps[currentStep - 1]).className = 'info-card success';
+                    }
+                    
+                    if (currentStep < steps.length) {
+                        document.getElementById(steps[currentStep]).style.display = 'block';
+                    }
+                    
+                    progress = ((currentStep + 1) / steps.length) * 100;
+                    document.getElementById('processProgress').style.width = progress + '%';
+                    
+                    if (currentStep < steps.length - 1) {
+                        document.getElementById('processStatus').innerText = 
+                            `Processando etapa ${currentStep + 1} de ${steps.length}...`;
+                    } else {
+                        document.getElementById('processStatus').innerText = 
+                            '🎉 Operação processada com sucesso!';
+                    }
+                    
+                    currentStep++;
+                } else {
+                    document.getElementById(steps[steps.length - 1]).innerHTML = 
+                        `<p>4️⃣ ${stepTexts[steps.length - 1]}</p>`;
+                    document.getElementById(steps[steps.length - 1]).className = 'info-card success';
+                    clearInterval(interval);
+                    
+                    setTimeout(() => {
+                        document.getElementById('completedSection').style.display = 'block';
+                        document.getElementById('operationResult').innerText = 
+                            'R$ 14.655 creditados na sua conta corrente';
+                        document.getElementById('completedSection').scrollIntoView({ behavior: 'smooth' });
+                        
+                        // Adicionar mensagem no chat
+                        addChatMessage('✅ Pronto! R$ 14.655 transferidos para sua conta. Comprovante enviado por SMS.', 'ai');
+                    }, 1000);
+                }
+            }, 1500);
+        }
+
+        function adjustRequest() {
+            alert('🛠️ Interface de ajuste seria aberta aqui, permitindo modificar valor, prazo ou outras condições via voz ou texto.');
+        }
+
+        function askQuestion() {
+            const questions = [
+                'Como funciona a antecipação?',
+                'Posso cancelar se mudar de ideia?',
+                'Quanto tempo leva para o dinheiro cair?',
+                'Qual é o limite máximo?'
+            ];
+            const question = prompt('💬 Que pergunta você gostaria de fazer?\n\nExemplos:\n' + questions.join('\n'));
+            if (question) {
+                addChatMessage(question, 'user');
+                setTimeout(() => {
+                    addChatMessage('Ótima pergunta! Deixe-me explicar isso para você... (resposta automática da IA seria gerada aqui)', 'ai');
+                }, 1000);
+            }
+        }
+
+        function playVoiceResponse() {
+            alert('🔊 Simulando resposta de voz da IA:\n\n"Pronto! Transferi quatorze mil seiscentos e cinquenta e cinco reais para sua conta. O valor estará disponível em alguns minutos. Precisa de mais alguma coisa?"');
+        }
+
+        // Permitir envio com Enter
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html> 

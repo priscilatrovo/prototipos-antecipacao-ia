@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prevenção de Riscos</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .mobile-container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .mobile-header {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+        }
+        .risk-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .risk-alert {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .warning-alert {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .safe-alert {
+            background: #dcfce7;
+            border-left: 4px solid #16a34a;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .risk-meter {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .risk-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+        .risk-low { background: linear-gradient(90deg, #10b981, #16a34a); }
+        .risk-medium { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .risk-high { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .alternative-option {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .alternative-option:hover {
+            background: #f1f5f9;
+            border-color: #3b82f6;
+        }
+        .alternative-option.selected {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+        .behavior-pattern {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .pattern-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+        .pattern-risk { background: #fee2e2; color: #dc2626; }
+        .pattern-warning { background: #fef3c7; color: #f59e0b; }
+        .pattern-good { background: #dcfce7; color: #16a34a; }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="mobile-header">
+            <a href="index.html" style="position: absolute; top: 1rem; left: 1rem; color: white; text-decoration: none;">← Voltar</a>
+            <h2>⚠️ Prevenção de Riscos</h2>
+            <p>IA protege sua saúde financeira</p>
+        </div>
+
+        <div class="risk-card">
+            <div class="risk-alert">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">🚨</span>
+                    <div>
+                        <strong>Comportamento de Risco Detectado</strong>
+                        <p style="font-size: 0.9rem; color: #6b7280; margin: 0;">Padrão identificado pela análise de IA</p>
+                    </div>
+                </div>
+                
+                <div style="background: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <p><strong>Você antecipou em 5 dos últimos 6 meses</strong></p>
+                    <p style="font-size: 0.9rem; color: #6b7280;">Isso pode indicar dependência financeira e criar um ciclo prejudicial</p>
+                </div>
+
+                <button style="background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500;" onclick="showRiskAnalysis()">
+                    📊 Ver Análise Completa
+                </button>
+            </div>
+        </div>
+
+        <div class="risk-card">
+            <h3>📈 Medidor de Risco Financeiro</h3>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="font-size: 0.9rem; color: #64748b;">Nível de Risco Atual</span>
+                    <span style="font-weight: bold; color: #ef4444;">Alto (78%)</span>
+                </div>
+                <div class="risk-meter">
+                    <div class="risk-fill risk-high" style="width: 78%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem; color: #64748b;">
+                    <span>Baixo</span>
+                    <span>Médio</span>
+                    <span>Alto</span>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                <div style="text-align: center; background: #fee2e2; padding: 1rem; border-radius: 8px;">
+                    <div style="font-size: 1.5rem; color: #ef4444;">⚠️</div>
+                    <div style="font-size: 0.8rem; color: #64748b;">Frequência</div>
+                    <div style="font-weight: bold; color: #ef4444;">83%</div>
+                </div>
+                <div style="text-align: center; background: #fef3c7; padding: 1rem; border-radius: 8px;">
+                    <div style="font-size: 1.5rem; color: #f59e0b;">💸</div>
+                    <div style="font-size: 0.8rem; color: #64748b;">Valor Médio</div>
+                    <div style="font-weight: bold; color: #f59e0b;">R$ 18k</div>
+                </div>
+                <div style="text-align: center; background: #eff6ff; padding: 1rem; border-radius: 8px;">
+                    <div style="font-size: 1.5rem; color: #3b82f6;">📊</div>
+                    <div style="font-size: 0.8rem; color: #64748b;">Taxa Média</div>
+                    <div style="font-weight: bold; color: #3b82f6;">2,8%</div>
+                </div>
+                <div style="text-align: center; background: #fef2f2; padding: 1rem; border-radius: 8px;">
+                    <div style="font-size: 1.5rem; color: #ef4444;">💰</div>
+                    <div style="font-size: 0.8rem; color: #64748b;">Custo Anual</div>
+                    <div style="font-weight: bold; color: #ef4444;">R$ 4.2k</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="riskAnalysisSection" style="display: none;" class="risk-card">
+            <h3>🔍 Análise Detalhada</h3>
+            
+            <div style="margin: 1rem 0;">
+                <h4>📋 Padrões Comportamentais</h4>
+                
+                <div class="behavior-pattern">
+                    <div class="pattern-icon pattern-risk">📈</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500;">Dependência Crescente</div>
+                        <div style="font-size: 0.8rem; color: #64748b;">Aumento de 40% no uso nos últimos 3 meses</div>
+                    </div>
+                    <div style="color: #ef4444; font-weight: bold;">Crítico</div>
+                </div>
+
+                <div class="behavior-pattern">
+                    <div class="pattern-icon pattern-risk">🔄</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500;">Ciclo Vicioso</div>
+                        <div style="font-size: 0.8rem; color: #64748b;">Antecipa para pagar custos de antecipações anteriores</div>
+                    </div>
+                    <div style="color: #ef4444; font-weight: bold;">Crítico</div>
+                </div>
+
+                <div class="behavior-pattern">
+                    <div class="pattern-icon pattern-warning">⏰</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500;">Urgência Recorrente</div>
+                        <div style="font-size: 0.8rem; color: #64748b;">Sempre solicita em momentos de emergência</div>
+                    </div>
+                    <div style="color: #f59e0b; font-weight: bold;">Atenção</div>
+                </div>
+
+                <div class="behavior-pattern">
+                    <div class="pattern-icon pattern-good">📚</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500;">Busca por Educação</div>
+                        <div style="font-size: 0.8rem; color: #64748b;">Completou 3 cursos sobre gestão financeira</div>
+                    </div>
+                    <div style="color: #16a34a; font-weight: bold;">Positivo</div>
+                </div>
+            </div>
+
+            <div class="warning-alert">
+                <h4 style="color: #f59e0b; margin-bottom: 0.5rem;">⚠️ Alerta da IA</h4>
+                <p>Com base no seu padrão atual, há 85% de chance de você enfrentar dificuldades financeiras sérias nos próximos 6 meses se não mudar sua estratégia.</p>
+            </div>
+        </div>
+
+        <div class="risk-card">
+            <h3>💡 Solicitação de Antecipação</h3>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <div style="font-size: 0.8rem; color: #64748b;">Valor solicitado</div>
+                        <div style="font-weight: bold; font-size: 1.2rem;">R$ 12.000</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8rem; color: #64748b;">Taxa oferecida</div>
+                        <div style="font-weight: bold; font-size: 1.2rem;">2,5%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-alert">
+                <h4 style="color: #ef4444; margin-bottom: 0.5rem;">🛡️ Proteção Ativada</h4>
+                <p><strong>A IA bloqueou temporariamente esta operação</strong></p>
+                <ul style="margin: 0.5rem 0 0 1.5rem; font-size: 0.9rem;">
+                    <li>Alto risco de dependência</li>
+                    <li>Valor acima do recomendado para seu perfil</li>
+                    <li>Quinta antecipação em 6 meses</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <button style="background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500;" onclick="showAlternatives()">
+                    🔍 Ver Alternativas Seguras
+                </button>
+            </div>
+        </div>
+
+        <div id="alternativesSection" style="display: none;" class="risk-card">
+            <h3>🛡️ Alternativas Recomendadas</h3>
+            <p style="color: #64748b; margin-bottom: 1rem;">A IA encontrou opções mais seguras para sua situação:</p>
+
+            <div class="alternative-option" onclick="selectAlternative(this, 'negotiate')">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <strong>💬 Renegociar Prazos</strong>
+                        <p style="font-size: 0.9rem; color: #64748b; margin: 0.5rem 0 0 0;">
+                            Conversar com fornecedores para estender prazos
+                        </p>
+                        <div style="color: #16a34a; font-size: 0.8rem; margin-top: 0.25rem;">
+                            ✅ Sem custos | ✅ Sem juros | ✅ Preserva relacionamento
+                        </div>
+                    </div>
+                    <div style="color: #16a34a; font-weight: bold;">Ideal</div>
+                </div>
+            </div>
+
+            <div class="alternative-option" onclick="selectAlternative(this, 'partial')">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <strong>⚡ Antecipação Parcial</strong>
+                        <p style="font-size: 0.9rem; color: #64748b; margin: 0.5rem 0 0 0;">
+                            Antecipar apenas R$ 5.000 (valor seguro)
+                        </p>
+                        <div style="color: #f59e0b; font-size: 0.8rem; margin-top: 0.25rem;">
+                            ⚠️ R$ 125 de custo | ⚠️ 58% menos risco
+                        </div>
+                    </div>
+                    <div style="color: #f59e0b; font-weight: bold;">Cauteloso</div>
+                </div>
+            </div>
+
+            <div class="alternative-option" onclick="selectAlternative(this, 'microcredit')">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <strong>🏦 Microcrédito Emergencial</strong>
+                        <p style="font-size: 0.9rem; color: #64748b; margin: 0.5rem 0 0 0;">
+                            Linha especial para pequenos negócios
+                        </p>
+                        <div style="color: #3b82f6; font-size: 0.8rem; margin-top: 0.25rem;">
+                            ℹ️ Taxa 1,8% | ℹ️ Prazo 90 dias | ℹ️ Sem comprometer recebíveis
+                        </div>
+                    </div>
+                    <div style="color: #3b82f6; font-weight: bold;">Alternativo</div>
+                </div>
+            </div>
+
+            <div class="alternative-option" onclick="selectAlternative(this, 'consulting')">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <strong>👨‍💼 Consultoria Financeira</strong>
+                        <p style="font-size: 0.9rem; color: #64748b; margin: 0.5rem 0 0 0;">
+                            Sessão gratuita com especialista humano
+                        </p>
+                        <div style="color: #8b5cf6; font-size: 0.8rem; margin-top: 0.25rem;">
+                            🆓 Gratuito | 🎯 Plano personalizado | 📞 Em 30 minutos
+                        </div>
+                    </div>
+                    <div style="color: #8b5cf6; font-weight: bold;">Recomendado</div>
+                </div>
+            </div>
+
+            <div id="selectedAlternative" style="display: none; margin-top: 1rem;">
+                <button style="background: #16a34a; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500;" onclick="proceedWithAlternative()">
+                    ✅ Prosseguir com Alternativa
+                </button>
+            </div>
+        </div>
+
+        <div class="risk-card">
+            <h3>📚 Programa de Recuperação</h3>
+            <div class="safe-alert">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">🎯</span>
+                    <strong>Plano de 90 Dias</strong>
+                </div>
+                <p>A IA criou um programa personalizado para reduzir sua dependência de antecipações</p>
+            </div>
+
+            <div style="margin: 1rem 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: #f0fdf4; border-radius: 8px; margin: 0.5rem 0;">
+                    <div>
+                        <strong>Semana 1-2: Mapeamento</strong>
+                        <div style="font-size: 0.8rem; color: #64748b;">Identificar todos os gastos e receitas</div>
+                    </div>
+                    <div style="background: #16a34a; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem;">
+                        PRONTO
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: #fffbeb; border-radius: 8px; margin: 0.5rem 0;">
+                    <div>
+                        <strong>Semana 3-4: Reserva</strong>
+                        <div style="font-size: 0.8rem; color: #64748b;">Construir reserva de emergência mínima</div>
+                    </div>
+                    <div style="background: #f59e0b; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem;">
+                        ANDAMENTO
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: #f8fafc; border-radius: 8px; margin: 0.5rem 0;">
+                    <div>
+                        <strong>Semana 5-8: Otimização</strong>
+                        <div style="font-size: 0.8rem; color: #64748b;">Melhorar fluxo de caixa e reduzir custos</div>
+                    </div>
+                    <div style="background: #e5e7eb; color: #6b7280; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem;">
+                        AGUARDANDO
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: #f8fafc; border-radius: 8px; margin: 0.5rem 0;">
+                    <div>
+                        <strong>Semana 9-12: Autonomia</strong>
+                        <div style="font-size: 0.8rem; color: #64748b;">Eliminar dependência de antecipações</div>
+                    </div>
+                    <div style="background: #e5e7eb; color: #6b7280; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem;">
+                        AGUARDANDO
+                    </div>
+                </div>
+            </div>
+
+            <button style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500;" onclick="joinProgram()">
+                🚀 Aderir ao Programa
+            </button>
+        </div>
+
+        <div id="processingSection" style="display: none;" class="risk-card">
+            <div style="text-align: center; padding: 2rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🛡️</div>
+                <h3>Proteção Ativada</h3>
+                <p style="color: #64748b;" id="processingDetails">Implementando medidas de proteção...</p>
+                <div style="width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin: 1rem 0;">
+                    <div id="protectionProgressBar" style="width: 0%; height: 100%; background: #16a34a; border-radius: 4px; transition: width 0.5s ease;"></div>
+                </div>
+                <p id="protectionStatusText">Configurando alternativas...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedAlternativeType = null;
+
+        function showRiskAnalysis() {
+            document.getElementById('riskAnalysisSection').style.display = 'block';
+            document.getElementById('riskAnalysisSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showAlternatives() {
+            document.getElementById('alternativesSection').style.display = 'block';
+            document.getElementById('alternativesSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectAlternative(element, type) {
+            // Remove previous selections
+            document.querySelectorAll('.alternative-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+
+            // Select current option
+            element.classList.add('selected');
+            selectedAlternativeType = type;
+            document.getElementById('selectedAlternative').style.display = 'block';
+        }
+
+        function proceedWithAlternative() {
+            if (!selectedAlternativeType) return;
+
+            document.getElementById('processingSection').style.display = 'block';
+            document.getElementById('processingSection').scrollIntoView({ behavior: 'smooth' });
+
+            const alternatives = {
+                negotiate: 'Conectando com fornecedores via WhatsApp...',
+                partial: 'Processando antecipação segura de R$ 5.000...',
+                microcredit: 'Direcionando para parceiro de microcrédito...',
+                consulting: 'Agendando consulta com especialista...'
+            };
+
+            document.getElementById('processingDetails').innerText = alternatives[selectedAlternativeType];
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 25;
+                document.getElementById('protectionProgressBar').style.width = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    document.getElementById('protectionStatusText').innerHTML = '✅ <strong>Proteção aplicada!</strong><br><small>Alternativa segura configurada</small>';
+                }
+            }, 1000);
+        }
+
+        function joinProgram() {
+            alert('🎉 Bem-vindo ao Programa de Recuperação!\n\n📧 Você receberá um e-mail com o plano detalhado\n📱 Notificações diárias de progresso\n👨‍💼 Acesso a consultores especializados\n\n🎯 Meta: Independência financeira em 90 dias');
+        }
+    </script>
+</body>
+</html> 

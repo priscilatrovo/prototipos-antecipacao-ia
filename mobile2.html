@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulações Inteligentes</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .mobile-container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .mobile-header {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+        }
+        .simulation-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .impact-chart {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+        .chart-label {
+            width: 80px;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        .chart-value {
+            flex: 1;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            position: relative;
+            margin: 0 0.5rem;
+        }
+        .chart-fill {
+            height: 100%;
+            border-radius: 10px;
+            position: relative;
+        }
+        .warning-alert {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .success-alert {
+            background: #dcfce7;
+            border-left: 4px solid #16a34a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .slider-container {
+            margin: 1rem 0;
+        }
+        .slider {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #06b6d4;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .scenario-tab {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin-right: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .scenario-tab.active {
+            background: #06b6d4;
+            color: white;
+        }
+        .scenario-tab:not(.active) {
+            background: #e2e8f0;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="mobile-header">
+            <a href="index.html" style="position: absolute; top: 1rem; left: 1rem; color: white; text-decoration: none;">← Voltar</a>
+            <h2>📈 Simulações Inteligentes</h2>
+            <p>Veja o impacto antes de decidir</p>
+        </div>
+
+        <div class="simulation-card">
+            <h3>💰 Valor para Antecipar</h3>
+            <div class="slider-container">
+                <input type="range" id="amountSlider" class="slider" min="1000" max="50000" value="15000" step="500">
+                <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                    <span style="font-size: 0.8rem; color: #64748b;">R$ 1.000</span>
+                    <span id="currentAmount" style="font-weight: bold; color: #06b6d4;">R$ 15.000</span>
+                    <span style="font-size: 0.8rem; color: #64748b;">R$ 50.000</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                <div class="scenario-tab active" onclick="selectScenario('conservative')">Conservador</div>
+                <div class="scenario-tab" onclick="selectScenario('moderate')">Moderado</div>
+                <div class="scenario-tab" onclick="selectScenario('aggressive')">Agressivo</div>
+            </div>
+        </div>
+
+        <div class="simulation-card">
+            <h3>📊 Impacto no Fluxo de Caixa</h3>
+            <div id="impactWarning" class="warning-alert">
+                <div style="display: flex; align-items: center;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">⚠️</span>
+                    <div>
+                        <strong>Cuidado!</strong> Antecipar tudo agora reduzirá seus recebimentos do próximo mês pela metade.
+                    </div>
+                </div>
+            </div>
+
+            <div class="impact-chart">
+                <h4 style="margin-bottom: 1rem;">Receitas Projetadas</h4>
+                
+                <div class="chart-bar">
+                    <div class="chart-label">Este mês</div>
+                    <div class="chart-value">
+                        <div class="chart-fill" style="width: 100%; background: #10b981;"></div>
+                    </div>
+                    <span style="font-size: 0.9rem; font-weight: bold;">R$ 35.000</span>
+                </div>
+
+                <div class="chart-bar">
+                    <div class="chart-label">Próx mês</div>
+                    <div class="chart-value">
+                        <div id="nextMonthBar" class="chart-fill" style="width: 57%; background: #f59e0b;"></div>
+                    </div>
+                    <span id="nextMonthValue" style="font-size: 0.9rem; font-weight: bold; color: #f59e0b;">R$ 20.000</span>
+                </div>
+
+                <div class="chart-bar">
+                    <div class="chart-label">Mês +2</div>
+                    <div class="chart-value">
+                        <div class="chart-fill" style="width: 80%; background: #06b6d4;"></div>
+                    </div>
+                    <span style="font-size: 0.9rem; font-weight: bold;">R$ 28.000</span>
+                </div>
+            </div>
+
+            <div id="sazonalityAlert" class="warning-alert">
+                <h4 style="margin-bottom: 0.5rem;">📅 Alerta Sazonal</h4>
+                <p>Novembro é tradicionalmente seu melhor mês. Considere aguardar para maximizar receitas.</p>
+            </div>
+        </div>
+
+        <div class="simulation-card">
+            <h3>🎯 Cenários Comparativos</h3>
+            
+            <div id="scenario1" class="scenario-content">
+                <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4 style="color: #0369a1;">Cenário: Antecipar R$ 15.000 Hoje</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                        <div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Você recebe</div>
+                            <div style="font-size: 1.2rem; font-weight: bold; color: #0369a1;">R$ 14.685</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Taxa aplicada</div>
+                            <div style="font-size: 1.2rem; font-weight: bold;">2,1%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #fef7ff; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4 style="color: #7c3aed;">Cenário: Aguardar 7 Dias</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                        <div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Você receberia</div>
+                            <div style="font-size: 1.2rem; font-weight: bold; color: #7c3aed;">R$ 14.775</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Taxa projetada</div>
+                            <div style="font-size: 1.2rem; font-weight: bold;">1,5%</div>
+                        </div>
+                    </div>
+                    <div style="color: #16a34a; font-size: 0.9rem; margin-top: 0.5rem;">
+                        💰 Economia potencial: R$ 90
+                    </div>
+                </div>
+
+                <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4 style="color: #16a34a;">Cenário: Antecipar Parcial (R$ 8.000)</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                        <div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Você recebe</div>
+                            <div style="font-size: 1.2rem; font-weight: bold; color: #16a34a;">R$ 7.832</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.8rem; color: #64748b;">Preserva fluxo</div>
+                            <div style="font-size: 1.2rem; font-weight: bold;">75%</div>
+                        </div>
+                    </div>
+                    <div style="color: #16a34a; font-size: 0.9rem; margin-top: 0.5rem;">
+                        ✅ Recomendado pela IA
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="simulation-card">
+            <h3>📈 Análise Preditiva</h3>
+            <div id="predictiveAnalysis">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div style="font-size: 2rem; margin-right: 1rem;">🔮</div>
+                    <div>
+                        <h4 style="margin-bottom: 0.25rem;">IA Prevê</h4>
+                        <p style="font-size: 0.9rem; color: #64748b;">Baseado no seu histórico e sazonalidade</p>
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border-radius: 8px; padding: 1rem;">
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-weight: 500;">Próxima semana:</div>
+                        <div style="font-size: 0.9rem; color: #16a34a;">📈 Vendas 15% acima da média</div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-weight: 500;">Black Friday (15 dias):</div>
+                        <div style="font-size: 0.9rem; color: #0369a1;">🛍️ Pico de vendas esperado (+40%)</div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-weight: 500;">Dezembro:</div>
+                        <div style="font-size: 0.9rem; color: #f59e0b;">⚠️ Queda típica pós-Black Friday (-20%)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="simulation-card">
+            <h3>🚀 Recomendação Final</h3>
+            <div id="finalRecommendation" class="success-alert">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">🎯</span>
+                    <strong>Estratégia Recomendada</strong>
+                </div>
+                <p>Antecipe apenas R$ 8.000 agora e reserve o restante para depois da Black Friday.</p>
+                <div style="margin-top: 1rem;">
+                    <button style="background: #16a34a; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500;" onclick="acceptRecommendation()">
+                        ✅ Aceitar Recomendação
+                    </button>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                <button style="background: #f1f5f9; color: #475569; border: none; padding: 0.75rem; border-radius: 8px; flex: 1;" onclick="showAlternatives()">
+                    Ver Alternativas
+                </button>
+                <button style="background: #06b6d4; color: white; border: none; padding: 0.75rem; border-radius: 8px; flex: 1;" onclick="customSimulation()">
+                    Simular Customizado
+                </button>
+            </div>
+        </div>
+
+        <div id="executionSection" style="display: none;" class="simulation-card">
+            <div style="text-align: center; padding: 2rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                <h3>Executando Estratégia</h3>
+                <p style="color: #64748b;">Antecipando R$ 8.000 conforme recomendação</p>
+                <div style="width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin: 1rem 0;">
+                    <div id="execProgressBar" style="width: 0%; height: 100%; background: #16a34a; border-radius: 4px; transition: width 0.5s ease;"></div>
+                </div>
+                <p id="execStatusText">Processando...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAmount = 15000;
+        let currentScenario = 'conservative';
+
+        document.getElementById('amountSlider').addEventListener('input', function() {
+            currentAmount = parseInt(this.value);
+            document.getElementById('currentAmount').innerText = 'R$ ' + currentAmount.toLocaleString();
+            updateSimulation();
+        });
+
+        function selectScenario(scenario) {
+            currentScenario = scenario;
+            document.querySelectorAll('.scenario-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            updateSimulation();
+        }
+
+        function updateSimulation() {
+            const impactPercentage = Math.min((currentAmount / 35000) * 100, 100);
+            const nextMonthPercentage = Math.max(20, 100 - impactPercentage);
+            const nextMonthValue = Math.round(35000 * (nextMonthPercentage / 100));
+
+            document.getElementById('nextMonthBar').style.width = nextMonthPercentage + '%';
+            document.getElementById('nextMonthValue').innerText = 'R$ ' + nextMonthValue.toLocaleString();
+
+            // Atualizar alertas baseado no valor
+            const warningElement = document.getElementById('impactWarning');
+            if (impactPercentage > 60) {
+                warningElement.style.display = 'block';
+                warningElement.innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <span style="font-size: 1.5rem; margin-right: 0.5rem;">⚠️</span>
+                        <div>
+                            <strong>Alto Impacto!</strong> Antecipar R$ ${currentAmount.toLocaleString()} reduzirá significativamente suas receitas futuras.
+                        </div>
+                    </div>
+                `;
+            } else if (impactPercentage > 30) {
+                warningElement.style.display = 'block';
+                warningElement.className = 'warning-alert';
+                warningElement.innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <span style="font-size: 1.5rem; margin-right: 0.5rem;">💭</span>
+                        <div>
+                            <strong>Impacto Moderado.</strong> Considere antecipar parcialmente para preservar fluxo futuro.
+                        </div>
+                    </div>
+                `;
+            } else {
+                warningElement.style.display = 'block';
+                warningElement.className = 'success-alert';
+                warningElement.innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <span style="font-size: 1.5rem; margin-right: 0.5rem;">✅</span>
+                        <div>
+                            <strong>Impacto Controlado.</strong> Valor adequado que preserva seu fluxo futuro.
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Atualizar recomendação final
+            const recommendationElement = document.getElementById('finalRecommendation');
+            if (impactPercentage > 60) {
+                const partialAmount = Math.round(currentAmount * 0.4);
+                recommendationElement.innerHTML = `
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <span style="font-size: 1.5rem; margin-right: 0.5rem;">🎯</span>
+                        <strong>Estratégia Recomendada</strong>
+                    </div>
+                    <p>Antecipe apenas R$ ${partialAmount.toLocaleString()} agora e preserve o restante para momentos de maior necessidade.</p>
+                    <div style="margin-top: 1rem;">
+                        <button style="background: #16a34a; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500;" onclick="acceptRecommendation()">
+                            ✅ Antecipar R$ ${partialAmount.toLocaleString()}
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function acceptRecommendation() {
+            document.getElementById('executionSection').style.display = 'block';
+            document.getElementById('executionSection').scrollIntoView({ behavior: 'smooth' });
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 20;
+                document.getElementById('execProgressBar').style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    document.getElementById('execStatusText').innerHTML = '✅ <strong>Operação concluída!</strong><br><small>Estratégia executada com sucesso</small>';
+                }
+            }, 800);
+        }
+
+        function showAlternatives() {
+            alert('📊 Abrindo simulador avançado com todas as alternativas disponíveis...');
+        }
+
+        function customSimulation() {
+            alert('⚙️ Abrindo ferramenta de simulação personalizada com parâmetros ajustáveis...');
+        }
+
+        // Inicializar simulação
+        updateSimulation();
+    </script>
+</body>
+</html> 

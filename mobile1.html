@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antecipação Proativa</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .mobile-container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .mobile-header {
+            background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .notification-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #ec4899;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+        .status-green { background: #dcfce7; color: #16a34a; }
+        .status-yellow { background: #fef3c7; color: #d97706; }
+        .status-red { background: #fee2e2; color: #dc2626; }
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .btn-mobile {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-primary { background: #ec4899; color: white; }
+        .btn-secondary { background: #f1f5f9; color: #475569; }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="mobile-header">
+            <h2>🔔 Antecipação Proativa</h2>
+            <p>Sua IA financeira pessoal</p>
+            <a href="index.html" style="position: absolute; top: 1rem; left: 1rem; color: white; text-decoration: none;">← Voltar</a>
+        </div>
+
+        <div class="notification-card">
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <div style="font-size: 2rem; margin-right: 1rem;">⚠️</div>
+                <div>
+                    <h3 style="color: #dc2626; margin-bottom: 0.25rem;">Alerta de Fluxo de Caixa</h3>
+                    <p style="color: #6b7280; font-size: 0.9rem;">Previsão para próximos 7 dias</p>
+                </div>
+            </div>
+            
+            <div style="background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <p><strong>Seu saldo ficará negativo em 5 dias</strong></p>
+                <p style="font-size: 0.9rem; color: #6b7280;">Com base no seu histórico de vendas e contas agendadas</p>
+            </div>
+
+            <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <h4 style="color: #16a34a; margin-bottom: 0.5rem;">💡 Solução Recomendada</h4>
+                <p><strong>Antecipar apenas R$ 600</strong> já cobre esse período e evita taxas desnecessárias.</p>
+                <p style="font-size: 0.9rem; color: #16a34a;">Economia vs overdraft: R$ 45</p>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-mobile btn-primary" onclick="acceptRecommendation()">Antecipar R$ 600</button>
+                <button class="btn-mobile btn-secondary" onclick="showAlternatives()">Ver opções</button>
+            </div>
+        </div>
+
+        <div style="background: white; margin: 1rem; border-radius: 12px; overflow: hidden;">
+            <div style="padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                <h3>📅 Próximos 7 Dias</h3>
+                <p style="font-size: 0.9rem; color: #6b7280;">Previsão do seu fluxo de caixa</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon status-green">📈</div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 500;">Hoje</div>
+                    <div style="font-size: 0.9rem; color: #6b7280;">Saldo: R$ 2.340 ✅</div>
+                </div>
+                <div style="color: #16a34a; font-weight: 500;">+R$ 890</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon status-green">💰</div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 500;">Amanhã</div>
+                    <div style="font-size: 0.9rem; color: #6b7280;">Recebimento PIX</div>
+                </div>
+                <div style="color: #16a34a; font-weight: 500;">+R$ 1.200</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon status-yellow">📋</div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 500;">Quinta (3 dias)</div>
+                    <div style="font-size: 0.9rem; color: #6b7280;">Fornecedor - Pagto</div>
+                </div>
+                <div style="color: #d97706; font-weight: 500;">-R$ 2.800</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon status-yellow">🏪</div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 500;">Sexta (4 dias)</div>
+                    <div style="font-size: 0.9rem; color: #6b7280;">Aluguel + Energia</div>
+                </div>
+                <div style="color: #d97706; font-weight: 500;">-R$ 1.650</div>
+            </div>
+
+            <div class="timeline-item" style="background: #fef2f2;">
+                <div class="timeline-icon status-red">⚠️</div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 500;">Segunda (5 dias)</div>
+                    <div style="font-size: 0.9rem; color: #6b7280;">Saldo projetado</div>
+                </div>
+                <div style="color: #dc2626; font-weight: 500;">-R$ 520</div>
+            </div>
+        </div>
+
+        <div style="background: white; margin: 1rem; border-radius: 12px; padding: 1rem;" id="alternativesSection" style="display: none;">
+            <h3>🎯 Outras Opções</h3>
+            
+            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                <h4>💳 Usar Limite do Cartão</h4>
+                <p style="font-size: 0.9rem; color: #6b7280;">Taxa: 8,5% a.m. | Custo: R$ 45</p>
+                <p style="color: #dc2626; font-size: 0.9rem;">❌ Mais caro que antecipação</p>
+            </div>
+
+            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                <h4>⏰ Renegociar Prazos</h4>
+                <p style="font-size: 0.9rem; color: #6b7280;">Postergar 50% do pagamento para próxima semana</p>
+                <p style="color: #16a34a; font-size: 0.9rem;">✅ Sem custos adicionais</p>
+                <button class="btn-mobile btn-secondary" onclick="contactSupplier()">Falar com fornecedor</button>
+            </div>
+
+            <div style="border: 1px solid #ec4899; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #fdf2f8;">
+                <h4>⚡ Antecipação Inteligente</h4>
+                <p style="font-size: 0.9rem; color: #6b7280;">R$ 600 com taxa de 2,1% | Custo: R$ 12,60</p>
+                <p style="color: #16a34a; font-size: 0.9rem;">✅ Recomendado pela IA</p>
+            </div>
+        </div>
+
+        <div style="background: white; margin: 1rem; border-radius: 12px; padding: 1rem;">
+            <h3>🤖 Configurações da IA</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+                <div>
+                    <div style="font-weight: 500;">Alertas Proativos</div>
+                    <div style="font-size: 0.8rem; color: #6b7280;">Avisar quando saldo ficar baixo</div>
+                </div>
+                <label style="position: relative; display: inline-block; width: 60px; height: 34px;">
+                    <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ec4899; transition: .4s; border-radius: 34px;"></span>
+                    <span style="position: absolute; content: ''; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                </label>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+                <div>
+                    <div style="font-weight: 500;">Antecipação Automática</div>
+                    <div style="font-size: 0.8rem; color: #6b7280;">Para emergências apenas</div>
+                </div>
+                <label style="position: relative; display: inline-block; width: 60px; height: 34px;">
+                    <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
+                    <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;"></span>
+                    <span style="position: absolute; content: ''; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                </label>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <div style="font-weight: 500; margin-bottom: 0.5rem;">Antecedência do Alerta</div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn-mobile btn-secondary">3 dias</button>
+                    <button class="btn-mobile btn-primary">5 dias</button>
+                    <button class="btn-mobile btn-secondary">7 dias</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="processingSection" style="display: none; background: white; margin: 1rem; border-radius: 12px; padding: 1rem;">
+            <div style="text-align: center; padding: 2rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                <h3>Processando Antecipação</h3>
+                <p style="color: #6b7280;">R$ 600 serão creditados em sua conta</p>
+                <div style="width: 100%; height: 8px; background: #e5e7eb; border-radius: 4px; margin: 1rem 0;">
+                    <div id="progressBar" style="width: 0%; height: 100%; background: #ec4899; border-radius: 4px; transition: width 0.5s ease;"></div>
+                </div>
+                <p id="statusText">Iniciando operação...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function acceptRecommendation() {
+            document.getElementById('processingSection').style.display = 'block';
+            document.getElementById('processingSection').scrollIntoView({ behavior: 'smooth' });
+            
+            const progressBar = document.getElementById('progressBar');
+            const statusText = document.getElementById('statusText');
+            
+            let progress = 0;
+            const statuses = [
+                'Analisando recebíveis...',
+                'Calculando taxa otimizada...',
+                'Processando operação...',
+                'Enviando para sua conta...'
+            ];
+            
+            const interval = setInterval(() => {
+                progress += 25;
+                progressBar.style.width = progress + '%';
+                
+                if (progress <= 100) {
+                    statusText.innerText = statuses[Math.floor(progress/25) - 1] || statuses[3];
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        statusText.innerHTML = '✅ <strong>R$ 600 creditados!</strong><br><small>Seu problema de fluxo foi resolvido</small>';
+                        
+                        // Atualizar timeline
+                        setTimeout(() => {
+                            const timelineItems = document.querySelectorAll('.timeline-item');
+                            const lastItem = timelineItems[timelineItems.length - 1];
+                            lastItem.style.background = '#f0fdf4';
+                            lastItem.querySelector('.timeline-icon').className = 'timeline-icon status-green';
+                            lastItem.querySelector('.timeline-icon').innerText = '✅';
+                            lastItem.querySelector('div:last-child').style.color = '#16a34a';
+                            lastItem.querySelector('div:last-child').innerText = '+R$ 80';
+                        }, 2000);
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        function showAlternatives() {
+            document.getElementById('alternativesSection').style.display = 'block';
+            document.getElementById('alternativesSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function contactSupplier() {
+            alert('📞 Abrindo WhatsApp do fornecedor...\n\nMensagem sugerida:\n"Olá! Preciso renegociar o prazo do pagamento de R$ 1.400 de quinta para próxima semana. Pode ser?"');
+        }
+
+        // Simular notificações push
+        setTimeout(() => {
+            if (Notification.permission === 'granted') {
+                new Notification('💰 Antecipação Proativa', {
+                    body: 'Nova oportunidade detectada! Você pode economizar R$ 23 antecipando hoje.',
+                    icon: '/favicon.ico'
+                });
+            }
+        }, 10000);
+
+        // Solicitar permissão para notificações
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+    </script>
+</body>
+</html> 

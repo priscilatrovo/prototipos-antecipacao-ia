@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educação Personalizada</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .mobile-container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .mobile-header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+        }
+        .edu-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .alert-card {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .insight-card {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #f59e0b;
+            transition: width 0.3s ease;
+        }
+        .tip-card {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+        .quiz-option {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .quiz-option:hover {
+            background: #f1f5f9;
+        }
+        .quiz-option.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+        }
+        .quiz-option.incorrect {
+            background: #fee2e2;
+            border-color: #dc2626;
+        }
+        .badge-earned {
+            display: inline-block;
+            background: #fbbf24;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="mobile-header">
+            <a href="index.html" style="position: absolute; top: 1rem; left: 1rem; color: white; text-decoration: none;">← Voltar</a>
+            <h2>🎓 Educação Personalizada</h2>
+            <p>Aprenda enquanto cresce financeiramente</p>
+        </div>
+
+        <div class="edu-card">
+            <div class="alert-card">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">⚠️</span>
+                    <div>
+                        <strong>Padrão Detectado</strong>
+                        <p style="font-size: 0.9rem; color: #6b7280; margin: 0;">Você antecipou recebíveis em 4 dos últimos 5 meses</p>
+                    </div>
+                </div>
+                <p style="margin-bottom: 1rem;">Isso pode indicar dependência excessiva. A IA preparou conteúdos para fortalecer seu fluxo de caixa.</p>
+                <button style="background: #f59e0b; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500;" onclick="showLearningPath()">
+                    📚 Ver Plano de Aprendizado
+                </button>
+            </div>
+        </div>
+
+        <div class="edu-card">
+            <h3>📊 Sua Jornada Financeira</h3>
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="font-size: 0.9rem; color: #64748b;">Nível de Conhecimento</span>
+                    <span style="font-weight: bold; color: #f59e0b;">Intermediário (65%)</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%;"></div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: #f59e0b;">🏆</div>
+                    <div style="font-size: 0.8rem; color: #64748b;">Badges</div>
+                    <div style="font-weight: bold;">12</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: #3b82f6;">📖</div>
+                    <div style="font-size: 0.8rem; color: #64748b;">Lições</div>
+                    <div style="font-weight: bold;">23</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: #16a34a;">💰</div>
+                    <div style="font-size: 0.8rem; color: #64748b;">Economia</div>
+                    <div style="font-weight: bold;">R$ 890</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; color: #8b5cf6;">🎯</div>
+                    <div style="font-size: 0.8rem; color: #64748b;">Metas</div>
+                    <div style="font-weight: bold;">8/10</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="learningPathSection" style="display: none;" class="edu-card">
+            <h3>🎯 Plano Personalizado</h3>
+            <p style="color: #64748b; margin-bottom: 1rem;">Baseado no seu padrão de uso, criamos um plano focado em reduzir dependência de antecipação.</p>
+
+            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <div style="width: 30px; height: 30px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem;">
+                        <span style="color: #16a34a;">1</span>
+                    </div>
+                    <div style="flex: 1;">
+                        <strong>Reserva de Emergência</strong>
+                        <div style="font-size: 0.8rem; color: #64748b;">Construa uma reserva para evitar antecipações</div>
+                    </div>
+                    <button style="background: #16a34a; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem;" onclick="startLesson(1)">Iniciar</button>
+                </div>
+            </div>
+
+            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <div style="width: 30px; height: 30px; background: #fef3c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem;">
+                        <span style="color: #f59e0b;">2</span>
+                    </div>
+                    <div style="flex: 1;">
+                        <strong>Fluxo de Caixa Previsível</strong>
+                        <div style="font-size: 0.8rem; color: #64748b;">Técnicas para suavizar variações</div>
+                    </div>
+                    <button style="background: #e5e7eb; color: #6b7280; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem;" disabled>Bloqueado</button>
+                </div>
+            </div>
+
+            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <div style="width: 30px; height: 30px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem;">
+                        <span style="color: #6b7280;">3</span>
+                    </div>
+                    <div style="flex: 1;">
+                        <strong>Negociação com Fornecedores</strong>
+                        <div style="font-size: 0.8rem; color: #64748b;">Melhore prazos de pagamento</div>
+                    </div>
+                    <button style="background: #e5e7eb; color: #6b7280; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem;" disabled>Bloqueado</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="lessonSection" style="display: none;" class="edu-card">
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <button onclick="closeLessonAndShowPath()" style="background: none; border: none; font-size: 1.2rem; margin-right: 0.5rem; cursor: pointer;">←</button>
+                <h3 style="margin: 0;">💰 Reserva de Emergência</h3>
+            </div>
+
+            <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <h4 style="color: #16a34a; margin-bottom: 0.5rem;">🎯 Meta desta lição</h4>
+                <p>Criar uma reserva equivalente a 3 meses de gastos básicos para reduzir dependência de antecipação.</p>
+            </div>
+
+            <div style="margin: 1.5rem 0;">
+                <h4>📊 Seu Caso Atual</h4>
+                <div class="insight-card">
+                    <p><strong>Gasto mensal médio:</strong> R$ 8.500</p>
+                    <p><strong>Reserva atual:</strong> R$ 2.400 (0,3 meses)</p>
+                    <p><strong>Meta recomendada:</strong> R$ 25.500 (3 meses)</p>
+                </div>
+            </div>
+
+            <div style="margin: 1.5rem 0;">
+                <h4>💡 Dicas Personalizadas</h4>
+                
+                <div class="tip-card">
+                    <div style="display: flex; align-items: center;">
+                        <span style="font-size: 1.2rem; margin-right: 0.5rem;">🔄</span>
+                        <div>
+                            <strong>Automatize sua reserva</strong>
+                            <p style="font-size: 0.9rem; margin: 0.25rem 0 0 0;">Separe 10% de cada recebimento antes de qualquer gasto.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-card">
+                    <div style="display: flex; align-items: center;">
+                        <span style="font-size: 1.2rem; margin-right: 0.5rem;">📈</span>
+                        <div>
+                            <strong>Reduza antecipações gradualmente</strong>
+                            <p style="font-size: 0.9rem; margin: 0.25rem 0 0 0;">A cada mês, antecipe 20% menos até eliminar a dependência.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-card">
+                    <div style="display: flex; align-items: center;">
+                        <span style="font-size: 1.2rem; margin-right: 0.5rem;">🎯</span>
+                        <div>
+                            <strong>Use a "Regra dos 30 dias"</strong>
+                            <p style="font-size: 0.9rem; margin: 0.25rem 0 0 0;">Antes de antecipar, pergunte: "Posso esperar 30 dias?"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin: 1.5rem 0;">
+                <h4>🧠 Quiz de Fixação</h4>
+                <p style="color: #64748b; margin-bottom: 1rem;">Teste seu conhecimento sobre reserva de emergência:</p>
+                
+                <div id="quizQuestion">
+                    <p><strong>Qual o valor ideal para uma reserva de emergência?</strong></p>
+                    <div class="quiz-option" onclick="selectQuizOption(this, false)">
+                        A) 1 mês de gastos
+                    </div>
+                    <div class="quiz-option" onclick="selectQuizOption(this, true)">
+                        B) 3-6 meses de gastos
+                    </div>
+                    <div class="quiz-option" onclick="selectQuizOption(this, false)">
+                        C) 1 ano de gastos
+                    </div>
+                    <div class="quiz-option" onclick="selectQuizOption(this, false)">
+                        D) 10% da renda mensal
+                    </div>
+                </div>
+
+                <div id="quizFeedback" style="display: none; margin-top: 1rem;">
+                    <div style="background: #dcfce7; padding: 1rem; border-radius: 8px;">
+                        <p style="color: #16a34a; font-weight: bold;">✅ Correto!</p>
+                        <p style="font-size: 0.9rem;">3-6 meses é o ideal para cobrir emergências sem precisar de antecipações.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button id="completeButton" style="display: none; background: #16a34a; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500; margin-top: 1rem;" onclick="completeLesson()">
+                ✅ Concluir Lição
+            </button>
+        </div>
+
+        <div class="edu-card">
+            <h3>🏆 Conquistas Recentes</h3>
+            
+            <div style="background: #fef7ff; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">🎯</span>
+                    <strong>Meta Alcançada!</strong>
+                </div>
+                <p style="font-size: 0.9rem; color: #6b7280;">Você reduziu suas antecipações em 30% no último mês</p>
+                <div class="badge-earned">Economista Consciente</div>
+            </div>
+
+            <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">📚</span>
+                    <strong>Conhecimento Adquirido</strong>
+                </div>
+                <p style="font-size: 0.9rem; color: #6b7280;">Completou 5 lições sobre planejamento financeiro</p>
+                <div class="badge-earned">Estudante Dedicado</div>
+            </div>
+        </div>
+
+        <div class="edu-card">
+            <h3>📈 Impacto do Aprendizado</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="text-align: center; background: #f0fdf4; padding: 1rem; border-radius: 8px;">
+                    <div style="font-size: 2rem; color: #16a34a;">📉</div>
+                    <div style="font-size: 0.8rem; color: #64748b;">Antecipações</div>
+                    <div style="font-weight: bold; color: #16a34a;">-30%</div>
+                </div>
+                <div style="text-align: center; background: #eff6ff; padding: 1rem; border-radius: 8px;">
+                    <div style="font-size: 2rem; color: #3b82f6;">💰</div>
+                    <div style="font-size: 0.8rem; color: #64748b;">Economia</div>
+                    <div style="font-weight: bold; color: #3b82f6;">R$ 890</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 1rem;">
+                <p style="font-size: 0.9rem; color: #64748b; text-align: center;">
+                    Continue assim! Sua saúde financeira está melhorando.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLearningPath() {
+            document.getElementById('learningPathSection').style.display = 'block';
+            document.getElementById('learningPathSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function startLesson(lessonNumber) {
+            document.getElementById('lessonSection').style.display = 'block';
+            document.getElementById('lessonSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeLessonAndShowPath() {
+            document.getElementById('lessonSection').style.display = 'none';
+            document.getElementById('learningPathSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectQuizOption(element, isCorrect) {
+            // Remove previous selections
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+
+            // Mark selection
+            if (isCorrect) {
+                element.classList.add('correct');
+                document.getElementById('quizFeedback').style.display = 'block';
+                document.getElementById('completeButton').style.display = 'block';
+            } else {
+                element.classList.add('incorrect');
+                setTimeout(() => {
+                    element.classList.remove('incorrect');
+                }, 1000);
+            }
+        }
+
+        function completeLesson() {
+            alert('🎉 Parabéns! Você completou a lição sobre Reserva de Emergência.\n\n✅ Próxima lição desbloqueada: Fluxo de Caixa Previsível\n🏆 Badge conquistado: Planejador Inteligente');
+            
+            // Simulate progress update
+            setTimeout(() => {
+                document.querySelector('.progress-fill').style.width = '70%';
+                document.querySelector('.progress-fill').parentElement.previousElementSibling.children[1].innerText = 'Intermediário (70%)';
+            }, 1000);
+        }
+    </script>
+</body>
+</html> 

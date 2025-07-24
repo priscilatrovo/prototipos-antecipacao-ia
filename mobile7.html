@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte Inteligente</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .mobile-container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .mobile-header {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+        }
+        .support-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .chat-message {
+            margin: 1rem 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            margin: 0 0.5rem;
+        }
+        .ai-avatar {
+            background: #6366f1;
+            color: white;
+        }
+        .user-avatar {
+            background: #10b981;
+            color: white;
+        }
+        .message-bubble {
+            max-width: 80%;
+            padding: 0.75rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .ai-message {
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+        .user-message {
+            background: #6366f1;
+            color: white;
+        }
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 12px;
+            margin: 1rem 0;
+            max-width: 80%;
+        }
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #6b7280;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        .typing-dot:nth-child(3) { animation-delay: 0s; }
+        @keyframes typing {
+            0%, 80%, 100% { opacity: 0.3; }
+            40% { opacity: 1; }
+        }
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .quick-action {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .quick-action:hover {
+            background: #e2e8f0;
+        }
+        .input-container {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            outline: none;
+            font-size: 0.9rem;
+        }
+        .send-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #6366f1;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .help-topic {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .help-topic:hover {
+            background: #f1f5f9;
+            border-color: #6366f1;
+        }
+        .escalation-card {
+            background: #fef7ff;
+            border: 1px solid #e879f9;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .satisfaction-rating {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .rating-star {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #d1d5db;
+            transition: color 0.3s ease;
+        }
+        .rating-star.filled {
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="mobile-header">
+            <a href="index.html" style="position: absolute; top: 1rem; left: 1rem; color: white; text-decoration: none;">← Voltar</a>
+            <h2>💬 Suporte Inteligente</h2>
+            <p>Assistente IA para todas suas dúvidas</p>
+        </div>
+
+        <div class="support-card">
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <div class="message-avatar ai-avatar">🤖</div>
+                <div style="flex: 1;">
+                    <strong>Ana - Assistente IA</strong>
+                    <div style="font-size: 0.8rem; color: #16a34a;">🟢 Online</div>
+                </div>
+                <button style="background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.5rem; cursor: pointer;" onclick="escalateToHuman()">
+                    👨‍💼 Falar com humano
+                </button>
+            </div>
+
+            <div class="chat-container" id="chatContainer">
+                <div class="chat-message">
+                    <div class="message-avatar ai-avatar">🤖</div>
+                    <div class="message-bubble ai-message">
+                        Olá! Sou a Ana, sua assistente financeira. Estou aqui para esclarecer suas dúvidas sobre antecipação de recebíveis. Como posso ajudar hoje?
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <div class="quick-action" onclick="askQuestion('Como funciona a antecipação?')">
+                    ❓ Como funciona
+                </div>
+                <div class="quick-action" onclick="askQuestion('Por que minha taxa mudou?')">
+                    📊 Taxa mudou
+                </div>
+                <div class="quick-action" onclick="askQuestion('Quanto posso antecipar?')">
+                    💰 Quanto antecipar
+                </div>
+                <div class="quick-action" onclick="askQuestion('Como melhorar meu score?')">
+                    📈 Melhorar score
+                </div>
+            </div>
+        </div>
+
+        <div class="support-card">
+            <h3>💡 Tópicos Populares</h3>
+            
+            <div class="help-topic" onclick="explainTopic('rates')">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <strong>📊 Entenda as Taxas</strong>
+                        <p style="font-size: 0.9rem; color: #64748b; margin: 0.25rem 0 0 0;">
+                            Como são calculadas e o que influencia
+                        </p>
+                    </div>
+                    <span style="color: #6b7280;">→</span>
+                </div>
+            </div>
+
+            <div class="help-topic" onclick="explainTopic('limits')">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <strong>💳 Limites e Aprovação</strong>
+                        <p style="font-size: 0.9rem; color: #64748b; margin: 0.25rem 0 0 0;">
+                            Fatores que determinam seu limite
+                        </p>
+                    </div>
+                    <span style="color: #6b7280;">→</span>
+                </div>
+            </div>
+
+            <div class="help-topic" onclick="explainTopic('timing')">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <strong>⏰ Quando Antecipar</strong>
+                        <p style="font-size: 0.9rem; color: #64748b; margin: 0.25rem 0 0 0;">
+                            Melhores momentos para fazer antecipação
+                        </p>
+                    </div>
+                    <span style="color: #6b7280;">→</span>
+                </div>
+            </div>
+
+            <div class="help-topic" onclick="explainTopic('risks')">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <strong>⚠️ Cuidados e Riscos</strong>
+                        <p style="font-size: 0.9rem; color: #64748b; margin: 0.25rem 0 0 0;">
+                            Como usar com responsabilidade
+                        </p>
+                    </div>
+                    <span style="color: #6b7280;">→</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="escalationSection" style="display: none;" class="support-card">
+            <div class="escalation-card">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">👨‍💼</span>
+                    <div>
+                        <strong>Transferindo para Especialista</strong>
+                        <p style="font-size: 0.9rem; color: #6b7280; margin: 0;">Para casos mais complexos</p>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4>Escolha o tipo de atendimento:</h4>
+                    
+                    <div style="margin: 0.5rem 0;">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="radio" name="supportType" value="financial" style="margin-right: 0.5rem;">
+                            <div>
+                                <strong>💰 Consultoria Financeira</strong>
+                                <div style="font-size: 0.8rem; color: #64748b;">Planejamento e estratégias</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div style="margin: 0.5rem 0;">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="radio" name="supportType" value="technical" style="margin-right: 0.5rem;">
+                            <div>
+                                <strong>🔧 Suporte Técnico</strong>
+                                <div style="font-size: 0.8rem; color: #64748b;">Problemas com a plataforma</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div style="margin: 0.5rem 0;">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="radio" name="supportType" value="commercial" style="margin-right: 0.5rem;">
+                            <div>
+                                <strong>🤝 Comercial</strong>
+                                <div style="font-size: 0.8rem; color: #64748b;">Negociação e parcerias</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500;" onclick="requestHuman()">
+                    📞 Solicitar Atendimento
+                </button>
+            </div>
+        </div>
+
+        <div id="satisfactionSection" style="display: none;" class="support-card">
+            <h3>⭐ Avalie nosso atendimento</h3>
+            <p style="color: #64748b; text-align: center;">Como foi sua experiência com a Ana?</p>
+            
+            <div class="satisfaction-rating">
+                <span class="rating-star" onclick="rate(1)">⭐</span>
+                <span class="rating-star" onclick="rate(2)">⭐</span>
+                <span class="rating-star" onclick="rate(3)">⭐</span>
+                <span class="rating-star" onclick="rate(4)">⭐</span>
+                <span class="rating-star" onclick="rate(5)">⭐</span>
+            </div>
+
+            <div id="feedbackSection" style="display: none; margin-top: 1rem;">
+                <textarea placeholder="Conte-nos mais sobre sua experiência (opcional)" style="width: 100%; height: 80px; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 8px; resize: none; font-family: inherit;"></textarea>
+                <button style="background: #6366f1; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; width: 100%; font-weight: 500; margin-top: 0.5rem;" onclick="submitFeedback()">
+                    Enviar Feedback
+                </button>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <input type="text" class="chat-input" placeholder="Digite sua pergunta..." id="chatInput" onkeypress="handleKeyPress(event)">
+            <button class="send-button" onclick="sendMessage()">
+                ➤
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let conversationHistory = [];
+        let currentRating = 0;
+
+        function askQuestion(question) {
+            addUserMessage(question);
+            processAIResponse(question);
+        }
+
+        function addUserMessage(message) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'chat-message user';
+            messageElement.innerHTML = `
+                <div class="message-avatar user-avatar">👤</div>
+                <div class="message-bubble user-message">${message}</div>
+            `;
+            chatContainer.appendChild(messageElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            conversationHistory.push({ type: 'user', message: message });
+        }
+
+        function addAIMessage(message) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'chat-message';
+            messageElement.innerHTML = `
+                <div class="message-avatar ai-avatar">🤖</div>
+                <div class="message-bubble ai-message">${message}</div>
+            `;
+            chatContainer.appendChild(messageElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            conversationHistory.push({ type: 'ai', message: message });
+        }
+
+        function showTyping() {
+            const chatContainer = document.getElementById('chatContainer');
+            const typingElement = document.createElement('div');
+            typingElement.className = 'chat-message';
+            typingElement.id = 'typingIndicator';
+            typingElement.innerHTML = `
+                <div class="message-avatar ai-avatar">🤖</div>
+                <div class="typing-indicator">
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    <span style="margin-left: 0.5rem; color: #6b7280; font-size: 0.8rem;">Ana está digitando...</span>
+                </div>
+            `;
+            chatContainer.appendChild(typingElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function hideTyping() {
+            const typingElement = document.getElementById('typingIndicator');
+            if (typingElement) {
+                typingElement.remove();
+            }
+        }
+
+        function processAIResponse(question) {
+            showTyping();
+            
+            setTimeout(() => {
+                hideTyping();
+                
+                const responses = {
+                    'Como funciona a antecipação?': 'A antecipação permite que você receba hoje o dinheiro das suas vendas futuras. Funciona assim: você vende R$ 1.000 hoje, mas só receberia em 30 dias. Com a antecipação, você pode receber R$ 970 hoje (descontando nossa taxa). É como um adiantamento dos seus próprios recebíveis! 💰',
+                    
+                    'Por que minha taxa mudou?': 'Sua taxa pode variar por alguns fatores: 📊 Histórico de vendas (vendas mais altas = taxa menor), 🎯 Frequência de uso, 📈 Score de crédito, ⏰ Prazo da antecipação, e 📉 Condições do mercado. Quer que eu analise seu caso específico para explicar melhor?',
+                    
+                    'Quanto posso antecipar?': 'Seu limite atual é de R$ 25.000 por operação. Esse valor é baseado no seu histórico de vendas dos últimos 6 meses. Para aumentar: 📈 Mantenha vendas consistentes, ⏰ Use regularmente sem atrasos, 💯 Complete seu perfil 100%. Quer dicas específicas para seu caso?',
+                    
+                    'Como melhorar meu score?': 'Ótima pergunta! Para melhorar seu score: ✅ Mantenha dados atualizados, 📊 Use antecipação regularmente (mas com moderação), ⏰ Sempre honre compromissos, 📈 Aumente volume de vendas gradualmente, 🎯 Complete desafios educacionais. Quer um plano personalizado?'
+                };
+                
+                const defaultResponse = 'Entendi sua pergunta! Deixe-me ajudar com isso. Com base no que você perguntou, posso explicar melhor ou conectar você com um especialista se preferir. O que seria mais útil para você? 🤔';
+                
+                const response = responses[question] || defaultResponse;
+                addAIMessage(response);
+                
+                // Mostrar satisfação após algumas interações
+                if (conversationHistory.length >= 4) {
+                    setTimeout(() => {
+                        document.getElementById('satisfactionSection').style.display = 'block';
+                        document.getElementById('satisfactionSection').scrollIntoView({ behavior: 'smooth' });
+                    }, 2000);
+                }
+                
+            }, 1500);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addUserMessage(message);
+                input.value = '';
+                processAIResponse(message);
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function explainTopic(topic) {
+            const topics = {
+                'rates': 'Nossas taxas são calculadas com base no risco e prazo. Quanto menor o prazo e melhor seu histórico, menor a taxa. Quer que eu calcule uma simulação para você?',
+                'limits': 'Seu limite é definido pelo histórico de vendas, tempo de relacionamento e comportamento de pagamento. Analisamos os últimos 6 meses para definir um valor seguro.',
+                'timing': 'O melhor momento para antecipar é quando você realmente precisa do dinheiro para investir ou cobrir emergências. Evite usar para gastos desnecessários!',
+                'risks': 'Use com moderação! Antecipar frequentemente pode criar dependência e reduzir seu fluxo de caixa futuro. Sempre avalie se é realmente necessário.'
+            };
+            
+            askQuestion(topics[topic]);
+        }
+
+        function escalateToHuman() {
+            document.getElementById('escalationSection').style.display = 'block';
+            document.getElementById('escalationSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function requestHuman() {
+            const selectedType = document.querySelector('input[name="supportType"]:checked');
+            if (!selectedType) {
+                alert('Por favor, selecione o tipo de atendimento desejado.');
+                return;
+            }
+            
+            const types = {
+                'financial': 'Consultoria Financeira',
+                'technical': 'Suporte Técnico', 
+                'commercial': 'Comercial'
+            };
+            
+            alert(`✅ Solicitação enviada!\n\nTipo: ${types[selectedType.value]}\n⏰ Tempo estimado: 5-10 minutos\n📱 Você receberá uma notificação quando o especialista estiver disponível.\n\n💬 Enquanto isso, posso continuar ajudando com outras dúvidas!`);
+        }
+
+        function rate(stars) {
+            currentRating = stars;
+            const starElements = document.querySelectorAll('.rating-star');
+            
+            starElements.forEach((star, index) => {
+                if (index < stars) {
+                    star.classList.add('filled');
+                } else {
+                    star.classList.remove('filled');
+                }
+            });
+            
+            setTimeout(() => {
+                document.getElementById('feedbackSection').style.display = 'block';
+            }, 500);
+        }
+
+        function submitFeedback() {
+            const feedback = document.querySelector('#feedbackSection textarea').value;
+            alert(`🎉 Obrigado pela avaliação de ${currentRating} estrelas!\n\nSeu feedback é muito importante para melhorarmos nosso atendimento.${feedback ? '\n\nSeu comentário foi registrado e será analisado pela nossa equipe.' : ''}`);
+            
+            // Reset
+            document.getElementById('satisfactionSection').style.display = 'none';
+            currentRating = 0;
+        }
+
+        // Mensagem inicial após carregamento
+        setTimeout(() => {
+            addAIMessage('Vejo que você tem algumas antecipações recentes. Tem alguma dúvida sobre como otimizar seu uso ou melhorar suas condições? 📊✨');
+        }, 1000);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antecipação Gamer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <h2>🎮 Antecipação Gamer</h2>
+        <a href="index.html" class="back-btn">← Voltar</a>
+    </nav>
+
+    <div class="prototype-container">
+        <div class="demo-section fade-in">
+            <h3>🏆 Seu Perfil Gamer</h3>
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <div class="value">Lvl 7</div>
+                    <div class="label">Nível Financeiro</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">2.850</div>
+                    <div class="label">XP Total</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">12</div>
+                    <div class="label">Missões Completas</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">3</div>
+                    <div class="label">Conquistas</div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h4>⚡ Progressão para Próximo Nível</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%"></div>
+                </div>
+                <p>1.950 / 3.000 XP (Faltam 1.050 XP para Level 8)</p>
+                <p><small>🎁 Próximo nível: Taxa especial 1,8% + Badge "Mestre das Finanças"</small></p>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>🎯 Missão Ativa</h3>
+            <div class="info-card warning">
+                <h4>📈 Missão: "Diversificador Inteligente"</h4>
+                <p><strong>Objetivo:</strong> Antecipe R$ 20.000 e invista 30% em diferentes oportunidades</p>
+                
+                <div style="background: #fffbeb; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h5>🎁 Recompensas:</h5>
+                    <p>✨ <strong>+500 XP</strong> ao completar</p>
+                    <p>💰 <strong>Taxa reduzida:</strong> 2,1% → 1,9%</p>
+                    <p>🏅 <strong>Badge:</strong> "Estrategista Financeiro"</p>
+                    <p>📚 <strong>Conteúdo desbloqueado:</strong> Curso "Gestão de Fluxo de Caixa"</p>
+                </div>
+
+                <div style="border: 2px dashed #f59e0b; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h5>🎲 Desafio Especial Ativo:</h5>
+                    <p><strong>Modo Hardcore:</strong> Complete em 24h e ganhe <strong>+200 XP bônus</strong></p>
+                    <p>⏰ Tempo restante: 18h 42min</p>
+                </div>
+
+                <button class="btn btn-warning" onclick="acceptMission()">🚀 Aceitar Missão</button>
+                <button class="btn btn-secondary" onclick="showOtherMissions()">🔄 Ver Outras Missões</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="missionSection" style="display: none;">
+            <h3>⚡ Executando Missão</h3>
+            
+            <div class="info-card">
+                <h4>💰 Antecipação Inteligente</h4>
+                <div class="input-group">
+                    <label>Valor para Antecipar</label>
+                    <input type="number" id="amount" value="20000" placeholder="Valor da missão">
+                </div>
+                
+                <div id="simulationResult" class="info-card success">
+                    <h5>📊 Simulação com Bônus da Missão</h5>
+                    <p><strong>Taxa normal:</strong> 2,1%</p>
+                    <p><strong>Desconto da missão:</strong> -0,2%</p>
+                    <p><strong>Taxa final:</strong> 1,9%</p>
+                    <hr>
+                    <p><strong>Você receberá:</strong> R$ 19.620</p>
+                    <p style="color: #10b981;"><strong>Economia vs taxa normal:</strong> R$ 40</p>
+                </div>
+
+                <button class="btn btn-primary" onclick="startMissionFlow()">🎯 Iniciar Antecipação da Missão</button>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="investmentSection" style="display: none;">
+            <h3>💡 Estratégia de Investimento</h3>
+            <div class="info-card">
+                <h4>🧠 IA Recomenda: Diversificação Inteligente</h4>
+                <p>Para completar a missão, invista 30% (R$ 5.886) em diferentes oportunidades:</p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                    <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem;">
+                        <h5>📦 Estoque Estratégico</h5>
+                        <p><strong>R$ 2.000</strong> (10%)</p>
+                        <p><small>Comprar produtos em promoção para Black Friday</small></p>
+                        <p style="color: #10b981;"><small>ROI esperado: +15%</small></p>
+                        <button class="btn btn-secondary btn-sm" onclick="selectInvestment('estoque')">Selecionar</button>
+                    </div>
+                    
+                    <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem;">
+                        <h5>🔧 Melhoria Operacional</h5>
+                        <p><strong>R$ 2.886</strong> (14,7%)</p>
+                        <p><small>Software de automação que reduz custos</small></p>
+                        <p style="color: #10b981;"><small>Economia: R$ 800/mês</small></p>
+                        <button class="btn btn-secondary btn-sm" onclick="selectInvestment('operacional')">Selecionar</button>
+                    </div>
+                    
+                    <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem;">
+                        <h5>📈 Marketing Digital</h5>
+                        <p><strong>R$ 1.000</strong> (5,1%)</p>
+                        <p><small>Campanha para atrair novos clientes</small></p>
+                        <p style="color: #10b981;"><small>ROI esperado: +200%</small></p>
+                        <button class="btn btn-secondary btn-sm" onclick="selectInvestment('marketing')">Selecionar</button>
+                    </div>
+                </div>
+
+                <div id="investmentProgress" style="display: none;">
+                    <div class="info-card success">
+                        <h4>✅ Seleções Feitas</h4>
+                        <div id="selectedInvestments"></div>
+                        <p><strong>Total investido:</strong> <span id="totalInvested">R$ 0</span> de R$ 5.886 necessários</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="investmentProgressBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in" id="completionSection" style="display: none;">
+            <h3>🎉 Missão Completada!</h3>
+            
+            <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; color: white; margin-bottom: 2rem;">
+                <div style="font-size: 4rem;">🏆</div>
+                <h3>Parabéns, Estrategista!</h3>
+                <p>Você completou a missão "Diversificador Inteligente"</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <div class="value" style="color: #10b981;">+500 XP</div>
+                    <div class="label">XP Ganho</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value" style="color: #10b981;">+200 XP</div>
+                    <div class="label">Bônus Hardcore</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">🏅</div>
+                    <div class="label">Nova Badge</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">📚</div>
+                    <div class="label">Curso Desbloqueado</div>
+                </div>
+            </div>
+
+            <div class="info-card success">
+                <h4>🎁 Recompensas Recebidas</h4>
+                <p>✅ <strong>700 XP total</strong> (2.650 → 3.350 XP)</p>
+                <p>✅ <strong>Level Up!</strong> Agora você é Level 8</p>
+                <p>✅ <strong>Badge "Estrategista Financeiro"</strong> adicionada ao perfil</p>
+                <p>✅ <strong>Curso desbloqueado:</strong> "Gestão de Fluxo de Caixa Avançada"</p>
+                <p>✅ <strong>Taxa permanente:</strong> 1,8% pelos próximos 30 dias</p>
+            </div>
+
+            <div class="info-card">
+                <h4>📊 Análise do Desempenho</h4>
+                <p><strong>Tempo de conclusão:</strong> 5h 18min (Muito rápido!)</p>
+                <p><strong>Eficiência financeira:</strong> 94% (Excelente)</p>
+                <p><strong>Diversificação:</strong> 3 categorias (Perfeito)</p>
+                <p><strong>ROI projetado:</strong> +18% nos próximos 6 meses</p>
+            </div>
+
+            <button class="btn btn-primary" onclick="viewNextMissions()">🎯 Ver Próximas Missões</button>
+            <button class="btn btn-secondary" onclick="accessCourse()">📚 Acessar Curso Desbloqueado</button>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>🏅 Coleção de Conquistas</h3>
+            <div class="info-card">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center; padding: 1rem; background: #f0fdf4; border-radius: 8px;">
+                        <div style="font-size: 2rem;">🎯</div>
+                        <p><strong>Primeira Antecipação</strong></p>
+                        <small>Desbloqueado em 15/03/2024</small>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: #f0fdf4; border-radius: 8px;">
+                        <div style="font-size: 2rem;">⚡</div>
+                        <p><strong>Velocista</strong></p>
+                        <small>5 antecipações em 1 semana</small>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: #f0fdf4; border-radius: 8px;">
+                        <div style="font-size: 2rem;">🏅</div>
+                        <p><strong>Estrategista Financeiro</strong></p>
+                        <small>Recém desbloqueado!</small>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: #f9fafb; border: 2px dashed #6b7280; border-radius: 8px;">
+                        <div style="font-size: 2rem;">👑</div>
+                        <p><strong>Mestre das Finanças</strong></p>
+                        <small>Chegue ao Level 10</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section fade-in">
+            <h3>📚 Centro de Aprendizado</h3>
+            <div class="info-card">
+                <h4>🎓 Cursos Disponíveis</h4>
+                
+                <div style="border: 1px solid #10b981; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #f0fdf4;">
+                    <h5>✅ Gestão de Fluxo de Caixa Avançada</h5>
+                    <p>Recém desbloqueado! Aprenda estratégias avançadas de gestão financeira.</p>
+                    <p><strong>Duração:</strong> 2h | <strong>XP ao completar:</strong> +300</p>
+                    <button class="btn btn-success">🚀 Começar Curso</button>
+                </div>
+
+                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                    <h5>🔒 Investimentos para PMEs</h5>
+                    <p>Desbloqueie chegando ao Level 9</p>
+                    <p><small>Faltam 650 XP</small></p>
+                </div>
+
+                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                    <h5>🔒 Planejamento Tributário</h5>
+                    <p>Desbloqueie completando 20 missões</p>
+                    <p><small>Progresso: 12/20 missões</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedInvestments = [];
+        let totalInvestmentValue = 0;
+        const targetInvestment = 5886;
+
+        function acceptMission() {
+            document.getElementById('missionSection').style.display = 'block';
+            document.getElementById('missionSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function startMissionFlow() {
+            document.getElementById('investmentSection').style.display = 'block';
+            document.getElementById('investmentSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectInvestment(type) {
+            const investments = {
+                'estoque': { name: 'Estoque Estratégico', value: 2000 },
+                'operacional': { name: 'Melhoria Operacional', value: 2886 },
+                'marketing': { name: 'Marketing Digital', value: 1000 }
+            };
+
+            if (!selectedInvestments.find(inv => inv.type === type)) {
+                selectedInvestments.push({ type, ...investments[type] });
+                totalInvestmentValue += investments[type].value;
+                updateInvestmentProgress();
+            }
+        }
+
+        function updateInvestmentProgress() {
+            document.getElementById('investmentProgress').style.display = 'block';
+            
+            const progressPercent = (totalInvestmentValue / targetInvestment) * 100;
+            document.getElementById('investmentProgressBar').style.width = Math.min(progressPercent, 100) + '%';
+            document.getElementById('totalInvested').innerText = `R$ ${totalInvestmentValue.toLocaleString()}`;
+            
+            const listHtml = selectedInvestments.map(inv => 
+                `<p>✅ ${inv.name}: R$ ${inv.value.toLocaleString()}</p>`
+            ).join('');
+            document.getElementById('selectedInvestments').innerHTML = listHtml;
+
+            if (totalInvestmentValue >= targetInvestment) {
+                setTimeout(() => {
+                    document.getElementById('completionSection').style.display = 'block';
+                    document.getElementById('completionSection').scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Simular efeito de confetti
+                    setTimeout(() => {
+                        alert('🎊 Level Up! Você agora é Level 8 e desbloqueou novos benefícios!');
+                    }, 1000);
+                }, 1500);
+            }
+        }
+
+        function showOtherMissions() {
+            alert(`🎲 Outras missões disponíveis:
+
+🔥 "Otimizador de Custos" - Reduza 15% dos gastos mensais
+💰 "Capitalista Rápido" - Faça 3 antecipações em 48h
+🎯 "Precision Trader" - Antecipe exatamente R$ 50.000
+📈 "Growth Hacker" - Aumente receita em 20% com antecipação
+
+Escolha sua próxima aventura financeira!`);
+        }
+
+        function viewNextMissions() {
+            alert(`🚀 Próximas missões desbloqueadas:
+
+🏆 "Mestre do ROI" - Alcance 25% ROI em investimentos (700 XP)
+💎 "Diversificador Supremo" - Invista em 5 categorias diferentes (900 XP)
+⚡ "Speed Runner" - Complete 3 missões em 1 dia (1000 XP)
+
+Qual você quer tentar primeiro?`);
+        }
+
+        function accessCourse() {
+            alert(`📚 Acessando "Gestão de Fluxo de Caixa Avançada"
+
+Módulos disponíveis:
+1. Previsão de Receitas com IA
+2. Otimização de Capital de Giro
+3. Estratégias de Antecipação
+4. Análise de Cenários
+5. Dashboard Financeiro
+
+Completar todo o curso garante +300 XP e certificado digital!`);
+        }
+    </script>
+</body>
+</html> 
