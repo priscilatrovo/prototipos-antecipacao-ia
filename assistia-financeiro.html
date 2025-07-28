@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AssistIA Financeiro - Mobile</title>
+    <link rel="stylesheet" href="./styles.css">
+    <style>
+        /* Mobile-First Design para AssistIA */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+        
+        .mobile-app {
+            max-width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Header Mobile */
+        .mobile-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .back-btn-mobile {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .back-btn-mobile:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .header-title {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Área do Assistente */
+        .assistant-area {
+            padding: 1.5rem 1rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .assistant-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #10b981, #059669);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .assistant-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .assistant-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Área de Conteúdo Scrollável */
+        .content-area {
+            flex: 1;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            margin-top: 1rem;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .content-scroll {
+            padding: 1.5rem 1rem 2rem;
+            padding-bottom: 120px;
+        }
+        
+        /* Cards Mobile */
+        .mobile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f1f5f9;
+        }
+        
+        .card-header-mobile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-icon-mobile {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            color: white;
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+        
+        /* Feature 1: Recomendação */
+        .recommendation-mobile {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .recommendation-mobile::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+        
+        .rec-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .rec-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+        
+        .rec-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .rec-main {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+        
+        .rec-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+        
+        /* Botões Mobile */
+        .button-group-mobile {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .btn-mobile {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary-mobile {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+        
+        .btn-secondary-mobile {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-mobile:active {
+            transform: scale(0.98);
+        }
+        
+        /* Feature 2: Timeline de Previsão */
+        .timeline-mobile {
+            margin: 1rem 0;
+        }
+        
+        .timeline-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-items {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .timeline-item-mobile {
+            min-width: 80px;
+            text-align: center;
+            padding: 1rem 0.75rem;
+            border-radius: 12px;
+            position: relative;
+            font-size: 0.8rem;
+        }
+        
+        .timeline-safe {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+        }
+        
+        .timeline-warning {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+        }
+        
+        .timeline-critical {
+            background: linear-gradient(135deg, #fecaca, #fca5a5);
+            color: #991b1b;
+        }
+        
+        .timeline-date {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .timeline-value {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .timeline-status {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+        
+        /* Feature 3: Comparação */
+        .comparison-mobile {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .comparison-cards {
+            display: flex;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            min-width: max-content;
+        }
+        
+        .option-card-mobile {
+            min-width: 280px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem;
+            position: relative;
+        }
+        
+        .option-recommended {
+            background: #f0fdf4;
+            border-color: #10b981;
+        }
+        
+        .option-header-mobile {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .option-title-mobile {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1f2937;
+        }
+        
+        .option-badge {
+            background: #10b981;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .option-details-mobile {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin: 0.75rem 0;
+        }
+        
+        .detail-mobile {
+            text-align: center;
+        }
+        
+        .detail-value-mobile {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 0.9rem;
+        }
+        
+        .detail-label-mobile {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+        
+        /* Feature 4: Alerta de Risco */
+        .alert-mobile {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .alert-icon {
+            font-size: 1.5rem;
+            margin-top: 0.25rem;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .alert-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        /* Feature 5: Simulador */
+        .simulator-mobile {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .slider-mobile {
+            margin: 1rem 0;
+        }
+        
+        .slider-header-mobile {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .slider-title {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .slider-value {
+            font-weight: 700;
+            color: #6366f1;
+        }
+        
+        .range-slider-mobile {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+            appearance: none;
+            margin: 1rem 0;
+        }
+        
+        .range-slider-mobile::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #6366f1;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+        }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+        
+        .scenario-result-mobile {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .result-grid-mobile {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            text-align: center;
+        }
+        
+        .result-item-mobile {
+            padding: 0.5rem;
+        }
+        
+        .result-value-mobile {
+            font-weight: 700;
+            color: #10b981;
+            font-size: 1rem;
+        }
+        
+        .result-label-mobile {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+        
+        /* Feature 6: Análise Preditiva */
+        .predictive-mobile {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .patterns-list {
+            margin: 1rem 0;
+        }
+        
+        .pattern-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .pattern-item:last-child {
+            border-bottom: none;
+        }
+        
+        .pattern-icon {
+            margin-right: 0.75rem;
+            font-size: 1rem;
+        }
+        
+        .pattern-text {
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+        
+        .score-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem auto;
+        }
+        
+        .score-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        .score-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+        
+        /* Feature 7: Explicação */
+        .explanation-mobile {
+            margin: 1rem 0;
+        }
+        
+        .reasoning-list {
+            margin: 1rem 0;
+        }
+        
+        .reasoning-item {
+            background: #f8fafc;
+            border-left: 4px solid #6366f1;
+            border-radius: 0 8px 8px 0;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .reasoning-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .reasoning-description {
+            font-size: 0.8rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+        
+        /* Chat Flutuante */
+        .floating-chat {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1rem;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            border-top: 1px solid #f1f5f9;
+            z-index: 200;
+        }
+        
+        .chat-input-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .chat-input {
+            flex: 1;
+            border: none;
+            background: none;
+            outline: none;
+            padding: 0.75rem 0;
+            font-size: 1rem;
+            color: #1f2937;
+        }
+        
+        .chat-input::placeholder {
+            color: #9ca3af;
+        }
+        
+        .chat-send-btn {
+            background: #6366f1;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .chat-send-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Animações */
+        .fade-in-mobile {
+            animation: fadeInMobile 0.6s ease-out;
+        }
+        
+        @keyframes fadeInMobile {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+        
+        /* Estados de Loading */
+        .loading-dots {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #6366f1;
+            animation: loadingDot 1.4s infinite both;
+        }
+        
+        .loading-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .loading-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes loadingDot {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+        
+        /* Notifications */
+        .notification-mobile {
+            position: fixed;
+            top: 80px;
+            left: 1rem;
+            right: 1rem;
+            background: #10b981;
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+            z-index: 1000;
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .notification-mobile.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* Responsividade para tablets */
+        @media (min-width: 768px) {
+            .mobile-app {
+                max-width: 414px;
+                margin: 0 auto;
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-app">
+        <!-- Header Mobile -->
+        <header class="mobile-header">
+            <button class="back-btn-mobile" onclick="window.history.back()">
+                ←
+            </button>
+            <div class="header-title">
+                🤖 AssistIA Financeiro
+            </div>
+            <button class="menu-btn">
+                ⋮
+            </button>
+        </header>
+
+        <!-- Área do Assistente -->
+        <div class="assistant-area">
+            <div class="assistant-avatar">🤖</div>
+            <div class="assistant-name">AssistIA</div>
+            <div class="assistant-subtitle">Seu consultor financeiro pessoal</div>
+        </div>
+
+        <!-- Área de Conteúdo -->
+        <div class="content-area slide-up">
+            <div class="content-scroll">
+                
+                <!-- Feature 1: Recomendação Inteligente -->
+                <div class="recommendation-mobile fade-in-mobile">
+                    <div class="rec-header">
+                        <span class="rec-icon">💡</span>
+                        <span class="rec-title">Recomendação de Hoje</span>
+                    </div>
+                    <div class="rec-main">Antecipar R$ 1.200 nas próximas 6 horas</div>
+                    <div class="rec-description">
+                        Baseado nos últimos 3 meses, você sempre precisa de dinheiro nas sextas. 
+                        Antecipando hoje você ganha 48h de folga e uma taxa 0,3% menor!
+                    </div>
+                    <div class="button-group-mobile">
+                        <button class="btn-mobile btn-primary-mobile" onclick="acceptRecommendation()">
+                            ✅ Aceitar
+                        </button>
+                        <button class="btn-mobile btn-secondary-mobile" onclick="showAlternatives()">
+                            🔄 Alternativas
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Feature 2: Resumo e Previsão Futura -->
+                <div class="mobile-card fade-in-mobile">
+                    <div class="card-header-mobile">
+                        <div class="card-icon-mobile" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">📊</div>
+                        <div>
+                            <div class="card-title">Previsão dos Próximos 30 Dias</div>
+                            <div class="card-subtitle">Sua linha do tempo financeira</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-mobile">
+                        <div class="timeline-items">
+                            <div class="timeline-item-mobile timeline-safe">
+                                <div class="timeline-date">Hoje</div>
+                                <div class="timeline-value">R$ 450</div>
+                                <div class="timeline-status">Seguro</div>
+                            </div>
+                            <div class="timeline-item-mobile timeline-critical">
+                                <div class="timeline-date">4 dias</div>
+                                <div class="timeline-value">R$ 150</div>
+                                <div class="timeline-status">Crítico</div>
+                            </div>
+                            <div class="timeline-item-mobile timeline-safe">
+                                <div class="timeline-date">C/ Ant.</div>
+                                <div class="timeline-value">R$ 1.650</div>
+                                <div class="timeline-status">Seguro</div>
+                            </div>
+                        </div>
+                        <div style="background: #e0f2fe; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <div style="font-size: 0.9rem; color: #0369a1;">
+                                💬 <strong>Resumo:</strong> Antecipando R$ 1.200 hoje, você mantém saldo positivo por 2 semanas completas!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Comparação de Opções -->
+                <div class="mobile-card fade-in-mobile">
+                    <div class="card-header-mobile">
+                        <div class="card-icon-mobile" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">⚖️</div>
+                        <div>
+                            <div class="card-title">Suas Opções</div>
+                            <div class="card-subtitle">Deslize para ver todas</div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-mobile">
+                        <div class="comparison-cards">
+                            <div class="option-card-mobile option-recommended">
+                                <div class="option-header-mobile">
+                                    <div class="option-title-mobile">🎯 Antecipação</div>
+                                    <div class="option-badge">Melhor</div>
+                                </div>
+                                <div class="option-details-mobile">
+                                    <div class="detail-mobile">
+                                        <div class="detail-value-mobile">R$ 1.200</div>
+                                        <div class="detail-label-mobile">Valor</div>
+                                    </div>
+                                    <div class="detail-mobile">
+                                        <div class="detail-value-mobile">2,1%</div>
+                                        <div class="detail-label-mobile">Taxa</div>
+                                    </div>
+                                    <div class="detail-mobile">
+                                        <div class="detail-value-mobile">Agora</div>
+                                        <div class="detail-label-mobile">Disponível</div>
+                                    </div>
+                                    <div class="detail-mobile">
+                                        <div class="detail-value-mobile">R$ 25</div>
+                                        <div class="detail-label-mobile">Custo</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="option-card-mobile">
+                                <div class="option-header-mobile">
+                                    <div class="option-title-mobile">💳 Crédito</div>
+                                    <div class="option-badge" style="background: #3b82f6;">2ª Opção</div>
+                                </div>
+                                <div class="option-details-mobile">
+                                    <div class="detail-mobile">
+                                        <div class="detail-value-mobile">R$ 1.500</div>
+                                        <div class="detail-label-mobile">Valor</div>
+                                    </div>
+                                    <div class="detail-mobile">
+                                        <div class="detail-value-mobile">3,8%</div>
+                                        <div class="detail-label-mobile">Taxa</div>
+                                    </div>
+                                    <div class="detail-mobile">
+                                        <div class="detail-value-mobile">24h</div>
+                                        <div class="detail-label-mobile">Disponível</div>
+                                    </div>
+                                    <div class="detail-mobile">
+                                        <div class="detail-value-mobile">R$ 57</div>
+                                        <div class="detail-label-mobile">Custo</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 4: Alerta de Impacto -->
+                <div class="alert-mobile fade-in-mobile">
+                    <div class="alert-icon">⚠️</div>
+                    <div class="alert-content">
+                        <div class="alert-title">Alerta de Fluxo de Caixa</div>
+                        <div class="alert-description">
+                            Se não antecipar hoje, sua conta ficará negativa por 6 dias. 
+                            Risco alto de problemas com fornecedores!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 5: Simulador de Cenários -->
+                <div class="mobile-card fade-in-mobile">
+                    <div class="card-header-mobile">
+                        <div class="card-icon-mobile" style="background: linear-gradient(135deg, #f59e0b, #d97706);">🎮</div>
+                        <div>
+                            <div class="card-title">Simulador de Cenários</div>
+                            <div class="card-subtitle">Teste diferentes valores</div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulator-mobile">
+                        <div class="slider-mobile">
+                            <div class="slider-header-mobile">
+                                <span class="slider-title">Valor para Antecipar</span>
+                                <span class="slider-value">R$ <span id="sliderValueMobile">1200</span></span>
+                            </div>
+                            <input type="range" min="500" max="2000" value="1200" class="range-slider-mobile" 
+                                   id="anticipationSliderMobile" oninput="updateScenarioMobile(this.value)">
+                            <div class="slider-labels">
+                                <span>R$ 500</span>
+                                <span>R$ 2.000</span>
+                            </div>
+                        </div>
+                        
+                        <div class="scenario-result-mobile" id="scenarioResultMobile">
+                            <div class="result-grid-mobile">
+                                <div class="result-item-mobile">
+                                    <div class="result-value-mobile">15 dias</div>
+                                    <div class="result-label-mobile">Folga</div>
+                                </div>
+                                <div class="result-item-mobile">
+                                    <div class="result-value-mobile">R$ 39</div>
+                                    <div class="result-label-mobile">Taxa</div>
+                                </div>
+                                <div class="result-item-mobile">
+                                    <div class="result-value-mobile">Baixo</div>
+                                    <div class="result-label-mobile">Impacto</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 6: Análise Preditiva -->
+                <div class="predictive-mobile fade-in-mobile">
+                    <div class="card-header-mobile">
+                        <div class="card-icon-mobile" style="background: rgba(255,255,255,0.2);">🔮</div>
+                        <div>
+                            <div class="card-title" style="color: white;">Padrões Identificados</div>
+                            <div class="card-subtitle" style="color: rgba(255,255,255,0.8);">IA que aprende com você</div>
+                        </div>
+                    </div>
+                    
+                    <div class="patterns-list">
+                        <div class="pattern-item">
+                            <span class="pattern-icon">📅</span>
+                            <span class="pattern-text">Você antecipa após reuniões com clientes</span>
+                        </div>
+                        <div class="pattern-item">
+                            <span class="pattern-icon">💰</span>
+                            <span class="pattern-text">Valor médio: R$ 1.150 (±15%)</span>
+                        </div>
+                        <div class="pattern-item">
+                            <span class="pattern-icon">🗓️</span>
+                            <span class="pattern-text">Frequência: Sextas-feiras (87%)</span>
+                        </div>
+                        <div class="pattern-item">
+                            <span class="pattern-icon">🔮</span>
+                            <span class="pattern-text">Próxima necessidade: 23/12 (R$ 1.300)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="score-circle">
+                        <div class="score-number">87</div>
+                        <div class="score-label">SCORE IA</div>
+                    </div>
+                    
+                    <button class="btn-mobile btn-secondary-mobile" onclick="showAutomationMobile()" 
+                            style="width: 100%; margin-top: 1rem;">
+                        ⚙️ Configurar Automação
+                    </button>
+                </div>
+
+                <!-- Feature 7: Explicação Fundamentada -->
+                <div class="mobile-card fade-in-mobile">
+                    <div class="card-header-mobile">
+                        <div class="card-icon-mobile" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">✅</div>
+                        <div>
+                            <div class="card-title">Por Que Esta Recomendação?</div>
+                            <div class="card-subtitle">Transparência total da IA</div>
+                        </div>
+                    </div>
+                    
+                    <div class="explanation-mobile">
+                        <div class="reasoning-list">
+                            <div class="reasoning-item">
+                                <div class="reasoning-title">📊 Análise Histórica (6 meses)</div>
+                                <div class="reasoning-description">
+                                    Você antecipa R$ 800-1.500 toda sexta há 18 semanas consecutivas
+                                </div>
+                            </div>
+                            
+                            <div class="reasoning-item">
+                                <div class="reasoning-title">🔍 Previsão de Demanda</div>
+                                <div class="reasoning-description">
+                                    Reunião agendada amanhã + padrão histórico = 94% de chance de precisar
+                                </div>
+                            </div>
+                            
+                            <div class="reasoning-item">
+                                <div class="reasoning-title">💰 Otimização de Custo</div>
+                                <div class="reasoning-description">
+                                    Taxa hoje (2,1%) é 0,4% menor que a média dos últimos 30 dias
+                                </div>
+                            </div>
+                            
+                            <div class="reasoning-item">
+                                <div class="reasoning-title">🛡️ Gestão de Risco</div>
+                                <div class="reasoning-description">
+                                    Evita 6 dias de saldo negativo e possível inadimplência
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="button-group-mobile">
+                            <button class="btn-mobile btn-primary-mobile" onclick="finalizeRecommendationMobile()">
+                                🚀 Executar Antecipação
+                            </button>
+                            <button class="btn-mobile btn-secondary-mobile" onclick="scheduleReminderMobile()">
+                                ⏰ Lembrar em 2h
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Chat Flutuante -->
+        <div class="floating-chat">
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" placeholder="Pergunte algo ao AssistIA..." 
+                       id="chatInputMobile" onkeypress="handleChatEnter(event)">
+                <button class="chat-send-btn" onclick="sendChatMessage()">
+                    ➤
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notificationMobile" class="notification-mobile">
+        <span id="notificationText"></span>
+    </div>
+
+    <script>
+        // Funções Mobile Otimizadas
+        function updateScenarioMobile(value) {
+            document.getElementById('sliderValueMobile').textContent = new Intl.NumberFormat('pt-BR').format(value);
+            
+            const scenarios = {
+                500: { days: 7, fee: 18, impact: 'Muito Baixo' },
+                800: { days: 10, fee: 29, impact: 'Baixo' },
+                1200: { days: 15, fee: 39, impact: 'Baixo' },
+                1600: { days: 20, fee: 52, impact: 'Médio' },
+                2000: { days: 25, fee: 67, impact: 'Médio' }
+            };
+            
+            const closest = Object.keys(scenarios).reduce((prev, curr) => 
+                Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
+            );
+            
+            const scenario = scenarios[closest];
+            
+            document.getElementById('scenarioResultMobile').innerHTML = `
+                <div class="result-grid-mobile">
+                    <div class="result-item-mobile">
+                        <div class="result-value-mobile">${scenario.days} dias</div>
+                        <div class="result-label-mobile">Folga</div>
+                    </div>
+                    <div class="result-item-mobile">
+                        <div class="result-value-mobile">R$ ${scenario.fee}</div>
+                        <div class="result-label-mobile">Taxa</div>
+                    </div>
+                    <div class="result-item-mobile">
+                        <div class="result-value-mobile">${scenario.impact}</div>
+                        <div class="result-label-mobile">Impacto</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function acceptRecommendation() {
+            showNotificationMobile('🚀 Processando antecipação de R$ 1.200...', 'info');
+            setTimeout(() => {
+                showNotificationMobile('✅ Antecipação realizada! R$ 1.175 creditados.', 'success');
+            }, 2500);
+        }
+
+        function showAlternatives() {
+            showNotificationMobile('🔍 Buscando alternativas personalizadas...', 'info');
+        }
+
+        function showAutomationMobile() {
+            showNotificationMobile('⚙️ Abrindo configurações de automação...', 'info');
+        }
+
+        function finalizeRecommendationMobile() {
+            showNotificationMobile('🚀 Executando recomendação da IA...', 'info');
+            setTimeout(() => {
+                showNotificationMobile('✅ Sucesso! Operação #AI2024-1215 finalizada.', 'success');
+            }, 3000);
+        }
+
+        function scheduleReminderMobile() {
+            showNotificationMobile('⏰ Lembrete agendado para 16:30!', 'success');
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInputMobile');
+            const message = input.value.trim();
+            if (message) {
+                showNotificationMobile(`💬 Processando: "${message}"`, 'info');
+                input.value = '';
+            }
+        }
+
+        function handleChatEnter(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function showNotificationMobile(message, type) {
+            const notification = document.getElementById('notificationMobile');
+            const text = document.getElementById('notificationText');
+            
+            text.textContent = message;
+            
+            if (type === 'success') {
+                notification.style.background = '#10b981';
+            } else if (type === 'info') {
+                notification.style.background = '#3b82f6';
+            } else {
+                notification.style.background = '#f59e0b';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Inicialização Mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animações escalonadas
+            const cards = document.querySelectorAll('.fade-in-mobile');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.animationDelay = `${index * 0.1}s`;
+                }, 100);
+            });
+            
+            // Boas-vindas
+            setTimeout(() => {
+                showNotificationMobile('👋 Oi! Analisei seus dados e tenho recomendações.', 'info');
+            }, 1000);
+        });
+
+        // Prevenir zoom no input (iOS)
+        document.addEventListener('touchstart', function() {}, true);
+        
+        // Scroll suave para elementos
+        function smoothScrollTo(element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html> 
