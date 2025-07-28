@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CreditCompare AI - Mobile</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; color: #333; line-height: 1.4;
+        }
+        .mobile-app { max-width: 100vw; min-height: 100vh; display: flex; flex-direction: column; }
+        .header { background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); padding: 1rem; 
+                 display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        .back-btn { background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 40px; height: 40px;
+                   display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; }
+        .title { color: white; font-size: 1.1rem; font-weight: 600; flex: 1; text-align: center; }
+        .menu-btn { background: none; border: none; color: white; font-size: 1.2rem; }
+        .search-area { padding: 1.5rem 1rem; color: white; }
+        .search-box { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; 
+                     padding: 1rem; border: 1px solid rgba(255,255,255,0.2); }
+        .search-input { width: 100%; background: white; border: none; border-radius: 12px; padding: 1rem; 
+                       font-size: 1rem; outline: none; }
+        .search-btn { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; 
+                     border-radius: 12px; padding: 1rem; margin-top: 0.75rem; width: 100%; font-weight: 600; }
+        .content { flex: 1; background: white; border-radius: 20px 20px 0 0; margin-top: 1rem; padding: 1.5rem 1rem 6rem; }
+        .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; 
+               box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid #f1f5f9; }
+        .result-card { background: white; border-radius: 16px; padding: 1rem; margin-bottom: 1rem; 
+                      box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 2px solid #e5e7eb; }
+        .result-recommended { border-color: #10b981; background: #f0fdf4; }
+        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .provider-name { font-weight: 700; font-size: 1.1rem; }
+        .badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: white; }
+        .badge-best { background: #10b981; }
+        .badge-good { background: #3b82f6; }
+        .badge-ok { background: #f59e0b; }
+        .rate-display { text-align: center; margin: 1rem 0; }
+        .rate-value { font-size: 2rem; font-weight: 900; color: #10b981; }
+        .rate-label { font-size: 0.8rem; color: #6b7280; }
+        .details-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1rem 0; }
+        .detail-item { text-align: center; padding: 0.75rem; background: #f8fafc; border-radius: 8px; }
+        .detail-value { font-weight: 700; color: #1f2937; }
+        .detail-label { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; }
+        .buttons { display: flex; gap: 0.75rem; margin-top: 1rem; }
+        .btn { flex: 1; padding: 1rem; border: none; border-radius: 12px; font-weight: 600; 
+              cursor: pointer; min-height: 48px; }
+        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; }
+        .btn-secondary { background: #f3f4f6; color: #6b7280; }
+        .filters { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0.5rem 0; }
+        .filter-chip { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 20px; padding: 0.5rem 1rem; 
+                      font-size: 0.85rem; white-space: nowrap; cursor: pointer; }
+        .filter-chip.active { background: #6366f1; color: white; border-color: #6366f1; }
+        .recommendation { background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 16px; 
+                         padding: 1.5rem; margin-bottom: 1rem; }
+        .comparison { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; border-radius: 12px; 
+                     padding: 1rem; margin: 1rem 0; }
+        .alert { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; border-radius: 12px; 
+                padding: 1rem; margin: 1rem 0; display: flex; gap: 0.75rem; }
+        .insights { background: #f8fafc; border-radius: 12px; padding: 1rem; margin: 1rem 0; }
+        .notification { position: fixed; top: 80px; left: 1rem; right: 1rem; background: #10b981; color: white;
+                       padding: 1rem; border-radius: 12px; z-index: 1000; transform: translateY(-100px); 
+                       opacity: 0; transition: all 0.3s ease; }
+        .notification.show { transform: translateY(0); opacity: 1; }
+        @media (min-width: 768px) { .mobile-app { max-width: 414px; margin: 0 auto; } }
+    </style>
+</head>
+<body>
+    <div class="mobile-app">
+        <header class="header">
+            <button class="back-btn" onclick="window.history.back()">←</button>
+            <div class="title">🔄 CreditCompare AI</div>
+            <button class="menu-btn">⋮</button>
+        </header>
+
+        <div class="search-area">
+            <div class="search-box">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">🤖</span>
+                    <span style="font-weight: 600;">Busca Inteligente em 15+ Instituições</span>
+                </div>
+                <input type="text" class="search-input" placeholder="Ex: Preciso de R$ 5.000 para pagamento" id="searchInput" value="Preciso de R$ 2.500 para fornecedores">
+                <button class="search-btn" onclick="performSearch()">🚀 Buscar Melhores Ofertas</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Feature 1: Recomendação Inteligente -->
+            <div class="recommendation">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">🎯</span>
+                    <span style="font-weight: 600;">IA Recomenda para Você</span>
+                </div>
+                <div style="font-size: 1.2rem; font-weight: 700; margin: 1rem 0;">
+                    Antecipação no Banco Digital (R$ 2.500)
+                </div>
+                <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 1.5rem;">
+                    Com base em seu perfil e histórico, esta é a opção mais vantajosa: 
+                    menor taxa, aprovação rápida e você já é cliente.
+                </p>
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="showNotification('✅ Redirecionando para aprovação instantânea...', 'success')">✅ Aceitar</button>
+                    <button class="btn btn-secondary" style="background: rgba(255,255,255,0.2); color: white;" onclick="showNotification('📊 Carregando todas as opções...', 'info')">📊 Ver Todas</button>
+                </div>
+            </div>
+
+            <!-- Feature 2: Resumo e Previsão -->
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">📊 Resumo da Análise</h3>
+                <div style="background: #e0f2fe; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <div style="font-size: 0.9rem; color: #0369a1;">
+                        🔍 <strong>Analisadas:</strong> 47 ofertas em 15 instituições em 2.3 segundos
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                    <div style="text-align: center; padding: 1rem; background: #f0fdf4; border-radius: 8px;">
+                        <div style="font-size: 1.2rem; font-weight: 700; color: #10b981;">2,1%</div>
+                        <div style="font-size: 0.8rem; color: #166534;">Melhor Taxa</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: #fef3c7; border-radius: 8px;">
+                        <div style="font-size: 1.2rem; font-weight: 700; color: #92400e;">4,8%</div>
+                        <div style="font-size: 0.8rem; color: #92400e;">Pior Taxa</div>
+                    </div>
+                </div>
+                <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <div style="font-size: 0.9rem; color: #6366f1;">
+                        💰 <strong>Economia potencial:</strong> Até R$ 67 escolhendo a melhor opção
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 3: Filtros e Comparação -->
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">🔧 Filtrar por:</h3>
+                <div class="filters">
+                    <div class="filter-chip active" onclick="applyFilter(this, 'taxa')">💰 Menor Taxa</div>
+                    <div class="filter-chip" onclick="applyFilter(this, 'velocidade')">⚡ Mais Rápido</div>
+                    <div class="filter-chip" onclick="applyFilter(this, 'valor')">📈 Maior Valor</div>
+                    <div class="filter-chip" onclick="applyFilter(this, 'flexivel')">🔄 Mais Flexível</div>
+                </div>
+            </div>
+
+            <!-- Resultados Ranqueados -->
+            <div id="results">
+                <!-- Resultado 1 - Melhor -->
+                <div class="result-card result-recommended">
+                    <div class="result-header">
+                        <div class="provider-name">🏦 Banco Digital</div>
+                        <div class="badge badge-best">MELHOR</div>
+                    </div>
+                    <div class="rate-display">
+                        <div class="rate-value">2,1%</div>
+                        <div class="rate-label">ao mês</div>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <div class="detail-value">R$ 2.500</div>
+                            <div class="detail-label">Valor</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-value">2 horas</div>
+                            <div class="detail-label">Aprovação</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-value">R$ 52</div>
+                            <div class="detail-label">Custo Total</div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button class="btn btn-primary" onclick="showNotification('🚀 Iniciando processo de contratação...', 'success')">Contratar</button>
+                        <button class="btn btn-secondary" onclick="showNotification('📋 Simulando proposta detalhada...', 'info')">Simular</button>
+                    </div>
+                </div>
+
+                <!-- Resultado 2 -->
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="provider-name">💳 Fintech Plus</div>
+                        <div class="badge badge-good">BOA</div>
+                    </div>
+                    <div class="rate-display">
+                        <div class="rate-value" style="color: #3b82f6;">2,6%</div>
+                        <div class="rate-label">ao mês</div>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <div class="detail-value">R$ 3.000</div>
+                            <div class="detail-label">Valor</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-value">1 dia</div>
+                            <div class="detail-label">Aprovação</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-value">R$ 78</div>
+                            <div class="detail-label">Custo Total</div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button class="btn btn-primary" onclick="showNotification('🔗 Redirecionando para Fintech Plus...', 'info')">Contratar</button>
+                        <button class="btn btn-secondary" onclick="showNotification('📊 Comparando com outras opções...', 'info')">Comparar</button>
+                    </div>
+                </div>
+
+                <!-- Resultado 3 -->
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="provider-name">🏢 Banco Tradicional</div>
+                        <div class="badge badge-ok">OK</div>
+                    </div>
+                    <div class="rate-display">
+                        <div class="rate-value" style="color: #f59e0b;">3,2%</div>
+                        <div class="rate-label">ao mês</div>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <div class="detail-value">R$ 5.000</div>
+                            <div class="detail-label">Valor</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-value">3 dias</div>
+                            <div class="detail-label">Aprovação</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-value">R$ 160</div>
+                            <div class="detail-label">Custo Total</div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button class="btn btn-primary" onclick="showNotification('🏦 Abrindo simulador do banco...', 'info')">Contratar</button>
+                        <button class="btn btn-secondary" onclick="showNotification('❓ Consultando disponibilidade...', 'info')">Consultar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 4: Alerta de Impacto -->
+            <div class="alert">
+                <div style="font-size: 1.5rem;">💡</div>
+                <div>
+                    <h4 style="font-weight: 600; margin-bottom: 0.5rem;">Dica Inteligente</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.9;">
+                        Aguardar 2 dias pode reduzir sua taxa em 0,3%. Vale a pena?
+                    </p>
+                </div>
+            </div>
+
+            <!-- Feature 5: Simulador Comparativo -->
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">🎮 Simular Cenários</h3>
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <p style="font-weight: 600;">Valor Desejado</p>
+                    <p style="font-size: 1.5rem; font-weight: 700; color: #6366f1;">R$ <span id="compareValue">2500</span></p>
+                </div>
+                <input type="range" min="1000" max="10000" value="2500" step="500" style="width: 100%; height: 8px; margin: 1rem 0;" oninput="updateComparison(this.value)">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #6b7280; margin-bottom: 1rem;">
+                    <span>R$ 1.000</span><span>R$ 10.000</span>
+                </div>
+                
+                <div id="comparisonResult" class="insights">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center;">
+                        <div>
+                            <div style="font-weight: 700; color: #10b981; font-size: 1.1rem;">3 ofertas</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">Disponíveis</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 700; color: #10b981; font-size: 1.1rem;">R$ 45</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">Economia</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 6: Análise Preditiva -->
+            <div class="comparison">
+                <h3 style="margin-bottom: 1rem;">🔮 Análise Inteligente</h3>
+                <div style="margin: 1rem 0;">
+                    <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="margin-right: 0.75rem;">📈</span>
+                        <span style="font-size: 0.9rem;">Seu perfil de crédito melhorou 15% nos últimos 6 meses</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="margin-right: 0.75rem;">🎯</span>
+                        <span style="font-size: 0.9rem;">Taxa média do seu segmento: 2,8% (você está 0,7% abaixo!)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="margin-right: 0.75rem;">⏰</span>
+                        <span style="font-size: 0.9rem;">Melhor horário para contratar: manhã (taxas 0,2% menores)</span>
+                    </div>
+                </div>
+                <div style="text-align: center; margin: 1rem 0;">
+                    <div style="display: inline-flex; align-items: center; background: rgba(255,255,255,0.2); padding: 0.75rem 1.5rem; border-radius: 20px;">
+                        <span style="margin-right: 0.5rem;">🏆</span>
+                        <span style="font-weight: 600;">Score Inteligente: A+</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 7: Explicação Fundamentada -->
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">✅ Por Que o Banco Digital?</h3>
+                <div style="background: #f8fafc; border-left: 4px solid #6366f1; border-radius: 0 8px 8px 0; padding: 1rem; margin-bottom: 0.75rem;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">🤖 Algoritmo de Matching</div>
+                    <div style="font-size: 0.8rem; color: #6b7280;">IA identificou 97% de compatibilidade com seu perfil</div>
+                </div>
+                <div style="background: #f8fafc; border-left: 4px solid #6366f1; border-radius: 0 8px 8px 0; padding: 1rem; margin-bottom: 0.75rem;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">📊 Histórico Positivo</div>
+                    <div style="font-size: 0.8rem; color: #6b7280;">Você já é cliente há 2 anos com score AAA</div>
+                </div>
+                <div style="background: #f8fafc; border-left: 4px solid #6366f1; border-radius: 0 8px 8px 0; padding: 1rem; margin-bottom: 0.75rem;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">💰 Melhor Custo-Benefício</div>
+                    <div style="font-size: 0.8rem; color: #6b7280;">Menor taxa + aprovação rápida + sem burocracias extras</div>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="showNotification('🎯 Contratação otimizada iniciada!', 'success')">Contratar Agora</button>
+                    <button class="btn btn-secondary" onclick="showNotification('📤 Enviando relatório completo...', 'info')">Relatório Completo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        function updateComparison(value) {
+            document.getElementById('compareValue').textContent = new Intl.NumberFormat('pt-BR').format(value);
+            const scenarios = {
+                1000: { offers: 2, savings: 25 },
+                2500: { offers: 3, savings: 45 },
+                5000: { offers: 5, savings: 120 },
+                7500: { offers: 4, savings: 180 },
+                10000: { offers: 6, savings: 240 }
+            };
+            const closest = Object.keys(scenarios).reduce((prev, curr) => 
+                Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
+            );
+            const scenario = scenarios[closest];
+            document.getElementById('comparisonResult').innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center;">
+                    <div>
+                        <div style="font-weight: 700; color: #10b981; font-size: 1.1rem;">${scenario.offers} ofertas</div>
+                        <div style="font-size: 0.8rem; color: #6b7280;">Disponíveis</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; color: #10b981; font-size: 1.1rem;">R$ ${scenario.savings}</div>
+                        <div style="font-size: 0.8rem; color: #6b7280;">Economia</div>
+                    </div>
+                </div>`;
+        }
+        
+        function applyFilter(element, filterType) {
+            document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
+            element.classList.add('active');
+            const filterNames = {
+                'taxa': 'Menor Taxa',
+                'velocidade': 'Mais Rápido', 
+                'valor': 'Maior Valor',
+                'flexivel': 'Mais Flexível'
+            };
+            showNotification(`🔧 Filtro "${filterNames[filterType]}" aplicado!`, 'info');
+        }
+        
+        function performSearch() {
+            const searchValue = document.getElementById('searchInput').value;
+            showNotification('🤖 Analisando 47 ofertas em 15 instituições...', 'info');
+            setTimeout(() => {
+                showNotification('✅ Busca concluída! 3 ofertas encontradas para seu perfil.', 'success');
+            }, 2500);
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.background = type === 'success' ? '#10b981' : type === 'info' ? '#3b82f6' : '#f59e0b';
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 4000);
+        }
+        
+        setTimeout(() => showNotification('🔍 IA encontrou 3 ofertas ideais para você!', 'info'), 1000);
+    </script>
+</body>
+</html> 
