@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FinanceVision Pro - Mobile</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; color: #333; line-height: 1.4;
+        }
+        .mobile-app { max-width: 100vw; min-height: 100vh; display: flex; flex-direction: column; }
+        .header { background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); padding: 1rem; 
+                 display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        .back-btn { background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 40px; height: 40px;
+                   display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; }
+        .title { color: white; font-size: 1.1rem; font-weight: 600; flex: 1; text-align: center; }
+        .menu-btn { background: none; border: none; color: white; font-size: 1.2rem; }
+        .dashboard-area { padding: 1.5rem 1rem; text-align: center; color: white; }
+        .score-circle { width: 120px; height: 120px; background: linear-gradient(45deg, #10b981, #059669); 
+                       border-radius: 50%; margin: 0 auto 1rem; display: flex; flex-direction: column; 
+                       align-items: center; justify-content: center; box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+        .score-number { font-size: 2.5rem; font-weight: 900; }
+        .score-label { font-size: 0.9rem; opacity: 0.9; }
+        .content { flex: 1; background: white; border-radius: 20px 20px 0 0; margin-top: 1rem; padding: 1.5rem 1rem 6rem; }
+        .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; 
+               box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid #f1f5f9; }
+        .summary-card { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border-radius: 16px; 
+                       padding: 1.5rem; margin-bottom: 1rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .metric { text-align: center; padding: 1rem; background: #f8fafc; border-radius: 12px; }
+        .metric-value { font-size: 1.5rem; font-weight: 700; color: #10b981; }
+        .metric-label { font-size: 0.8rem; color: #6b7280; margin-top: 0.25rem; }
+        .buttons { display: flex; gap: 0.75rem; margin-top: 1rem; }
+        .btn { flex: 1; padding: 1rem; border: none; border-radius: 12px; font-weight: 600; 
+              cursor: pointer; min-height: 48px; }
+        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; }
+        .btn-secondary { background: #f3f4f6; color: #6b7280; }
+        .timeline { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0.5rem 0; }
+        .timeline-item { min-width: 100px; text-align: center; padding: 1rem; border-radius: 12px; font-size: 0.8rem; }
+        .safe { background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: #166534; }
+        .warning { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; }
+        .critical { background: linear-gradient(135deg, #fecaca, #fca5a5); color: #991b1b; }
+        .insight { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; border-radius: 12px; 
+                  padding: 1rem; margin: 1rem 0; }
+        .tabs { display: flex; background: #f1f5f9; border-radius: 12px; padding: 0.25rem; margin-bottom: 1rem; }
+        .tab { flex: 1; padding: 0.75rem; text-align: center; border-radius: 8px; cursor: pointer; 
+              font-weight: 600; font-size: 0.9rem; }
+        .tab.active { background: white; color: #6366f1; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .tab.inactive { color: #6b7280; }
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+        .option-card { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 1rem; text-align: center; }
+        .option-recommended { background: #f0fdf4; border-color: #10b981; }
+        .recommendation { background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 16px; 
+                         padding: 1.5rem; margin-bottom: 1rem; position: relative; overflow: hidden; }
+        .alert { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; border-radius: 12px; 
+                padding: 1rem; margin: 1rem 0; display: flex; gap: 0.75rem; }
+        .notification { position: fixed; top: 80px; left: 1rem; right: 1rem; background: #10b981; color: white;
+                       padding: 1rem; border-radius: 12px; z-index: 1000; transform: translateY(-100px); 
+                       opacity: 0; transition: all 0.3s ease; }
+        .notification.show { transform: translateY(0); opacity: 1; }
+        @media (min-width: 768px) { .mobile-app { max-width: 414px; margin: 0 auto; } }
+    </style>
+</head>
+<body>
+    <div class="mobile-app">
+        <header class="header">
+            <button class="back-btn" onclick="window.history.back()">←</button>
+            <div class="title">📈 FinanceVision Pro</div>
+            <button class="menu-btn">⋮</button>
+        </header>
+
+        <div class="dashboard-area">
+            <div class="score-circle">
+                <div class="score-number">85</div>
+                <div class="score-label">Saúde Financeira</div>
+            </div>
+            <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Muito Bom!</h1>
+            <p style="font-size: 0.9rem; opacity: 0.8;">Sua situação está estável</p>
+        </div>
+
+        <div class="content">
+            <!-- Feature 1: Recomendação Inteligente -->
+            <div class="recommendation">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <span style="font-size: 1.5rem; margin-right: 0.5rem;">🎯</span>
+                    <span style="font-weight: 600;">Recomendação Personalizada</span>
+                </div>
+                <div style="font-size: 1.2rem; font-weight: 700; margin: 1rem 0;">
+                    Aguarde 3 dias para antecipar R$ 1.500
+                </div>
+                <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 1.5rem;">
+                    Com base em seu padrão, aguardar 3 dias economiza R$ 45 em taxas. 
+                    Sua conta permanecerá segura até lá.
+                </p>
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="showNotification('✅ Lembrete agendado para 3 dias!', 'success')">⏰ Agendar</button>
+                    <button class="btn btn-secondary" style="background: rgba(255,255,255,0.2); color: white;" onclick="showNotification('🔍 Mostrando opções...', 'info')">Ver Opções</button>
+                </div>
+            </div>
+
+            <!-- Feature 2: Resumo e Previsão -->
+            <div class="summary-card">
+                <h3 style="margin-bottom: 1rem;">📊 Visão Geral - Próximos 30 Dias</h3>
+                <div class="grid-2" style="margin-bottom: 1rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700;">R$ 3.240</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Total a Receber</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700;">R$ 2.180</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Despesas Previstas</div>
+                    </div>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                    <div style="font-size: 0.9rem;">
+                        💡 <strong>Insight:</strong> Você terá sobra de R$ 1.060 no final do mês!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 3: Comparação de Opções -->
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">⚖️ Comparar Produtos</h3>
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab(this, 'anticipation')">Antecipação</div>
+                    <div class="tab inactive" onclick="switchTab(this, 'credit')">Crédito</div>
+                    <div class="tab inactive" onclick="switchTab(this, 'investment')">Investir</div>
+                </div>
+                
+                <div id="anticipation" class="tab-content">
+                    <div class="comparison-grid">
+                        <div class="option-card option-recommended">
+                            <div style="font-weight: 600; margin-bottom: 0.5rem;">🏦 Banco Digital</div>
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #10b981; margin-bottom: 0.25rem;">2,1%</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">Taxa / mês</div>
+                            <div style="background: #10b981; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.7rem; margin-top: 0.5rem;">MELHOR</div>
+                        </div>
+                        <div class="option-card">
+                            <div style="font-weight: 600; margin-bottom: 0.5rem;">🏢 Banco Tradicional</div>
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #3b82f6; margin-bottom: 0.25rem;">2,8%</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">Taxa / mês</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="showNotification('📋 Simulando proposta personalizada...', 'info')" style="width: 100%;">
+                        Simular Proposta
+                    </button>
+                </div>
+            </div>
+
+            <!-- Feature 4: Alerta de Impacto -->
+            <div class="alert">
+                <div style="font-size: 1.5rem;">📈</div>
+                <div>
+                    <h4 style="font-weight: 600; margin-bottom: 0.5rem;">Projeção Positiva</h4>
+                    <p style="font-size: 0.9rem; opacity: 0.9;">
+                        Seu saldo permanecerá acima de R$ 500 pelos próximos 15 dias. Situação controlada!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Feature 5: Simulador de Cenários -->
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">🎮 Simulador de Cenários</h3>
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <p style="font-weight: 600;">Se eu antecipar</p>
+                    <p style="font-size: 1.5rem; font-weight: 700; color: #6366f1;">R$ <span id="simValue">1000</span></p>
+                </div>
+                <input type="range" min="500" max="3000" value="1000" style="width: 100%; height: 8px; margin: 1rem 0;" oninput="updateSimulation(this.value)">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #6b7280; margin-bottom: 1rem;">
+                    <span>R$ 500</span><span>R$ 3.000</span>
+                </div>
+                
+                <div id="simResult" style="background: #f1f5f9; border-radius: 12px; padding: 1rem;">
+                    <div class="grid-2" style="gap: 0.75rem; text-align: center;">
+                        <div class="metric">
+                            <div class="metric-value">12 dias</div>
+                            <div class="metric-label">Sobrevivência</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">R$ 32</div>
+                            <div class="metric-label">Taxa Total</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; text-align: center;">
+                        <div style="font-size: 0.9rem; color: #059669; font-weight: 600;">✅ Cenário Seguro</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 6: Análise Preditiva -->
+            <div class="insight">
+                <h3 style="margin-bottom: 1rem;">🔮 Padrões e Previsões</h3>
+                <div style="margin: 1rem 0;">
+                    <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="margin-right: 0.75rem;">📅</span>
+                        <span style="font-size: 0.9rem;">Você antecipa 2x por mês, sempre acima de R$ 800</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="margin-right: 0.75rem;">💰</span>
+                        <span style="font-size: 0.9rem;">Economia média: R$ 67 quando aguarda 3+ dias</span>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="margin-right: 0.75rem;">🎯</span>
+                        <span style="font-size: 0.9rem;">Próxima necessidade prevista: 18/12 (R$ 1.300)</span>
+                    </div>
+                </div>
+                <div style="text-align: center; margin: 1rem 0;">
+                    <div style="display: inline-flex; align-items: center; background: rgba(255,255,255,0.2); padding: 0.75rem 1.5rem; border-radius: 20px;">
+                        <span style="margin-right: 0.5rem;">🤖</span>
+                        <span style="font-weight: 600;">Acurácia IA: 92%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 7: Explicação Fundamentada -->
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">✅ Por Que Aguardar 3 Dias?</h3>
+                <div style="background: #f8fafc; border-left: 4px solid #6366f1; border-radius: 0 8px 8px 0; padding: 1rem; margin-bottom: 0.75rem;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">📊 Análise de Fluxo</div>
+                    <div style="font-size: 0.8rem; color: #6b7280;">Recebimento de R$ 2.100 confirmado para terça-feira</div>
+                </div>
+                <div style="background: #f8fafc; border-left: 4px solid #6366f1; border-radius: 0 8px 8px 0; padding: 1rem; margin-bottom: 0.75rem;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">💰 Economia Calculada</div>
+                    <div style="font-size: 0.8rem; color: #6b7280;">Taxa hoje: 2,8% vs. terça: 2,1% = R$ 45 de economia</div>
+                </div>
+                <div style="background: #f8fafc; border-left: 4px solid #6366f1; border-radius: 0 8px 8px 0; padding: 1rem; margin-bottom: 1rem;">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">🛡️ Risco Controlado</div>
+                    <div style="font-size: 0.8rem; color: #6b7280;">Saldo mínimo previsto: R$ 540 (dentro da zona segura)</div>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="showNotification('🚀 Estratégia aplicada com sucesso!', 'success')">Aplicar Estratégia</button>
+                    <button class="btn btn-secondary" onclick="showNotification('📄 Relatório sendo gerado...', 'info')">Ver Relatório</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        function updateSimulation(value) {
+            document.getElementById('simValue').textContent = new Intl.NumberFormat('pt-BR').format(value);
+            const scenarios = {
+                500: { days: 8, fee: 18, status: 'Seguro' },
+                1000: { days: 12, fee: 32, status: 'Seguro' },
+                1500: { days: 18, fee: 48, status: 'Ótimo' },
+                2000: { days: 24, fee: 64, status: 'Excelente' },
+                3000: { days: 35, fee: 96, status: 'Premium' }
+            };
+            const closest = Object.keys(scenarios).reduce((prev, curr) => 
+                Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
+            );
+            const scenario = scenarios[closest];
+            document.getElementById('simResult').innerHTML = `
+                <div class="grid-2" style="gap: 0.75rem; text-align: center;">
+                    <div class="metric">
+                        <div class="metric-value">${scenario.days} dias</div>
+                        <div class="metric-label">Sobrevivência</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">R$ ${scenario.fee}</div>
+                        <div class="metric-label">Taxa Total</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; text-align: center;">
+                    <div style="font-size: 0.9rem; color: #059669; font-weight: 600;">✅ Cenário ${scenario.status}</div>
+                </div>`;
+        }
+        
+        function switchTab(element, tabName) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+                tab.classList.add('inactive');
+            });
+            element.classList.remove('inactive');
+            element.classList.add('active');
+            showNotification(`📑 Aba ${tabName === 'anticipation' ? 'Antecipação' : tabName === 'credit' ? 'Crédito' : 'Investimento'} selecionada`, 'info');
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.background = type === 'success' ? '#10b981' : type === 'info' ? '#3b82f6' : '#f59e0b';
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 4000);
+        }
+        
+        setTimeout(() => showNotification('📈 Dashboard atualizado com dados mais recentes!', 'info'), 1000);
+    </script>
+</body>
+</html> 
