@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tus adelantos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: white;
+            position: relative;
+        }
+
+        .header {
+            padding: 32px 24px 24px;
+            text-align: center;
+            background: white;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 0 24px 120px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+        }
+
+        .input-types {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .input-type {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f1f3f4;
+            border-radius: 20px;
+            border: none;
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .input-type.active {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .input-type:hover {
+            background: #e8f0fe;
+        }
+
+        .amount-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .amount-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .amount-input-container {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .amount-input {
+            width: 100%;
+            padding: 16px;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            border: 2px solid #5f6fff;
+            border-radius: 12px;
+            background: #f8f9ff;
+            color: #5f6fff;
+        }
+
+        .amount-input:focus {
+            outline: none;
+            border-color: #4c5bff;
+        }
+
+        .slider-container {
+            margin-bottom: 24px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e0e0e0;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #5f6fff;
+            cursor: pointer;
+            border: 4px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .select-container {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .select-dropdown {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            margin-top: 4px;
+            z-index: 10;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .select-option {
+            padding: 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .select-option:last-child {
+            border-bottom: none;
+        }
+
+        .select-option:hover {
+            background: #f8f9fa;
+        }
+
+        .select-option.selected {
+            background: #5f6fff;
+            color: white;
+        }
+
+        .radio-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-option:hover {
+            border-color: #5f6fff;
+        }
+
+        .radio-option.selected {
+            border-color: #5f6fff;
+            background: #f8f9ff;
+        }
+
+        .radio-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .radio-amount {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .radio-tag {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+            align-self: flex-end;
+        }
+
+        .tag-rapido {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        .tag-popular {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .tag-recomendado {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .tag-maximo {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .primary-button {
+            width: 100%;
+            padding: 16px;
+            background: #5f6fff;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .primary-button:hover {
+            background: #4c5bff;
+        }
+
+        .primary-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .card {
+            background: white;
+            border: 3px solid transparent;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .card.highlight {
+            border-color: #00c853;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            color: #5f6fff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .card-subtitle {
+            color: #1a1a1a;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .card-label {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .card-value {
+            color: #1a1a1a;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .auto-section {
+            margin-top: 32px;
+        }
+
+        .auto-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .auto-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .status-tag {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .toggle {
+            width: 44px;
+            height: 24px;
+            background: #5f6fff;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toggle.off {
+            background: #ccc;
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
+        }
+
+        .toggle.on::after {
+            transform: translateX(20px);
+        }
+
+        .config-header {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            background: #f5f5f5;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 16px;
+        }
+
+        .config-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .config-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 24px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .config-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .config-item-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .config-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .recommendation-section {
+            margin: 24px 0;
+            padding: 16px;
+            background: #f8f9ff;
+            border-radius: 12px;
+            border-left: 4px solid #5f6fff;
+        }
+
+        .recommendation-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #5f6fff;
+            margin-bottom: 12px;
+        }
+
+        .recommendation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .recommendation-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .recommendation-value {
+            color: #1a1a1a;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Bottom Sheet */
+        .bottom-sheet-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .bottom-sheet-overlay.show {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .bottom-sheet {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px 20px 0 0;
+            padding: 24px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+        }
+
+        .bottom-sheet-overlay.show .bottom-sheet {
+            transform: translateY(0);
+        }
+
+        .bottom-sheet-handle {
+            width: 40px;
+            height: 4px;
+            background: #ccc;
+            border-radius: 2px;
+            margin: 0 auto 24px;
+        }
+
+        .bottom-sheet-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .bottom-sheet-subtitle {
+            font-size: 16px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .confirmation-details {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+            padding-top: 12px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .detail-label {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .detail-value {
+            color: #1a1a1a;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .bottom-sheet-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .secondary-button {
+            flex: 1;
+            padding: 16px;
+            background: #f1f3f4;
+            color: #5f6368;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .custom-rule-section {
+            margin-top: 32px;
+        }
+
+        .custom-rule-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .custom-rule-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .custom-rule-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .rule-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .rule-input {
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .add-rule-button {
+            width: 100%;
+            padding: 16px;
+            background: white;
+            color: #5f6fff;
+            border: 2px dashed #5f6fff;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+
+        /* Auto Config Bottom Sheet */
+        .auto-config-sheet {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px 20px 0 0;
+            padding: 0;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .bottom-sheet-overlay.show .auto-config-sheet {
+            transform: translateY(0);
+        }
+
+        .auto-config-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+        }
+
+        .auto-config-content {
+            padding: 24px;
+        }
+
+        .config-option {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .config-option:hover {
+            border-color: #5f6fff;
+            background: #f8f9ff;
+        }
+
+        .config-option.selected {
+            border-color: #5f6fff;
+            background: #f8f9ff;
+        }
+
+        .config-option-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .config-option-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .config-option-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .config-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .config-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .config-input-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .config-input {
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .config-input:focus {
+            outline: none;
+            border-color: #5f6fff;
+        }
+
+        .recommendation-chip {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        .recommendation-chip:hover {
+            background: #c8e6c9;
+        }
+
+        .quick-suggestions {
+            margin-top: 16px;
+        }
+
+        .quick-suggestions-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .suggestion-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .suggestion-chip {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .suggestion-chip:hover {
+            background: #1976d2;
+            color: white;
+        }
+
+        .status-tag.inactivo {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .auto-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .config-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: #f1f3f4;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .config-button:hover {
+            background: #e8eaed;
+            transform: scale(1.05);
+        }
+
+        .config-button:active {
+            transform: scale(0.95);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .header {
+                padding: 24px 16px 16px;
+            }
+            
+            .content {
+                padding: 0 16px 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Page -->
+        <div id="main-page" class="page active">
+            <div class="header">
+                <h1>Tus adelantos</h1>
+                <p>Obtén hoy el dinero de tus ventas</p>
+            </div>
+
+            <div class="content">
+                <div class="section">
+                    <h2>¿Cuánto dinero necesitas?</h2>
+                    
+                    <div class="input-types">
+                        <button class="input-type active" data-type="input">
+                            📝 Input
+                        </button>
+                        <button class="input-type" data-type="slider">
+                            🎚️ Slider
+                        </button>
+                        <button class="input-type" data-type="select">
+                            ⚙️ Select
+                        </button>
+                        <button class="input-type" data-type="radio">
+                            ☑️ Radio
+                        </button>
+                    </div>
+
+                    <div class="amount-card">
+                        <div class="amount-label">Disponible hasta $ 50.000</div>
+                        
+                        <!-- Input Type -->
+                        <div id="input-type" class="input-container">
+                            <div class="amount-input-container">
+                                <input type="text" class="amount-input" value="$ 50,000" id="amount-input">
+                            </div>
+                        </div>
+
+                        <!-- Slider Type -->
+                        <div id="slider-type" class="input-container hidden">
+                            <div class="amount-input-container">
+                                <div class="amount-input">$ <span id="slider-value">28,000</span></div>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" class="slider" id="amount-slider" min="1000" max="50000" value="28000" step="1000">
+                                <div class="slider-labels">
+                                    <span>$ 1.000</span>
+                                    <span>$ 25.000</span>
+                                    <span>$ 50.000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Select Type -->
+                        <div id="select-type" class="input-container hidden">
+                            <div class="select-container">
+                                <div class="select-dropdown" id="select-dropdown">
+                                    $ 5.000
+                                    <span style="float: right;">▼</span>
+                                </div>
+                                <div class="select-options" id="select-options">
+                                    <div class="select-option selected" data-value="5000">
+                                        <div>$ 5.000</div>
+                                        <div style="font-size: 12px; color: #666;">Para gastos básicos</div>
+                                    </div>
+                                    <div class="select-option" data-value="10000">
+                                        <div>$ 10.000</div>
+                                        <div style="font-size: 12px; color: #666;">Para compras importantes</div>
+                                    </div>
+                                    <div class="select-option" data-value="15000">
+                                        <div>$ 15.000</div>
+                                        <div style="font-size: 12px; color: #666;">Para proyectos medianos</div>
+                                    </div>
+                                    <div class="select-option" data-value="25000">
+                                        <div>$ 25.000</div>
+                                        <div style="font-size: 12px; color: #666;">Para inversiones</div>
+                                    </div>
+                                    <div class="select-option" data-value="35000">
+                                        <div>$ 35.000</div>
+                                        <div style="font-size: 12px; color: #666;">Para grandes compras</div>
+                                    </div>
+                                    <div class="select-option" data-value="50000">
+                                        <div>$ 50.000</div>
+                                        <div style="font-size: 12px; color: #666;">Monto máximo disponible</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Radio Type -->
+                        <div id="radio-type" class="input-container hidden">
+                            <div class="radio-options">
+                                <div class="radio-option" data-value="5000">
+                                    <div class="radio-content">
+                                        <div class="radio-amount">$ 5.000</div>
+                                    </div>
+                                    <div class="radio-tag tag-rapido">Rápido</div>
+                                </div>
+                                <div class="radio-option" data-value="15000">
+                                    <div class="radio-content">
+                                        <div class="radio-amount">$ 15.000</div>
+                                    </div>
+                                    <div class="radio-tag tag-popular">Popular</div>
+                                </div>
+                                <div class="radio-option" data-value="25000">
+                                    <div class="radio-content">
+                                        <div class="radio-amount">$ 25.000</div>
+                                    </div>
+                                    <div class="radio-tag tag-recomendado">Recomendado</div>
+                                </div>
+                                <div class="radio-option" data-value="50000">
+                                    <div class="radio-content">
+                                        <div class="radio-amount">$ 50.000</div>
+                                    </div>
+                                    <div class="radio-tag tag-maximo">Máximo</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="primary-button" id="adelantar-btn">Adelantar</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Pensados en ti</h2>
+                    <div class="card highlight">
+                        <div class="card-header">
+                            <div class="card-title">Para los gastos de fin de mes 💸</div>
+                        </div>
+                        <div class="card-subtitle">Adelanta R$ 15.000 en 7 días</div>
+                        <div class="card-details">
+                            <span class="card-label">Recibes</span>
+                            <span class="card-value">R$14.800</span>
+                        </div>
+                        <div class="card-details">
+                            <span class="card-label">Tasa</span>
+                            <span class="card-value">1,5%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="auto-section">
+                    <div class="auto-header">
+                        <h2>Adelantos automáticos</h2>
+                        <button class="config-button" onclick="showAutoConfigSheet('general')">⚙️</button>
+                    </div>
+                    <div class="auto-item">
+                        <div>
+                            <span class="status-tag">ACTIVO</span>
+                            <span class="auto-label">Para emergencias</span>
+                        </div>
+                        <div class="toggle on" onclick="toggleAutoOption(event, 'emergencias')"></div>
+                    </div>
+                    <div class="auto-item">
+                        <div>
+                            <span class="status-tag">ACTIVO</span>
+                            <span class="auto-label">Tasas más bajas</span>
+                        </div>
+                        <div class="toggle on" onclick="toggleAutoOption(event, 'tasas-bajas')"></div>
+                    </div>
+                    <div class="auto-item">
+                        <div>
+                            <span class="status-tag inactivo">INACTIVO</span>
+                            <span class="auto-label">Pagos programados</span>
+                        </div>
+                        <div class="toggle off" onclick="toggleAutoOption(event, 'pagos-programados')"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration Page -->
+        <div id="config-page" class="page">
+            <div class="config-header">
+                <button class="back-button" onclick="showMainPage()">←</button>
+                <div class="config-title">Configura tus adelantos</div>
+            </div>
+
+            <div class="content">
+                <div class="config-item">
+                    <div class="config-item-header">
+                        <div class="config-item-title">Para emergencias</div>
+                        <div class="toggle on"></div>
+                    </div>
+                    <div class="config-description">
+                        Si: mi dinero en cuenta es $ 0<br>
+                        Entonces: adelanta el total disponible
+                    </div>
+                    
+                    <div class="recommendation-section">
+                        <div class="recommendation-title">💡 Recomendaciones</div>
+                        <div class="recommendation-item">
+                            <span class="recommendation-label">Montante sugerido:</span>
+                            <span class="recommendation-value">$ 8.000 - $ 12.000</span>
+                        </div>
+                        <div class="recommendation-item">
+                            <span class="recommendation-label">Plazo óptimo:</span>
+                            <span class="recommendation-value">3-5 días</span>
+                        </div>
+                        <div class="recommendation-item">
+                            <span class="recommendation-label">Tasa recomendada:</span>
+                            <span class="recommendation-value">1.2% - 1.8%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-item">
+                    <div class="config-item-header">
+                        <div class="config-item-title">Tasa más bajas</div>
+                        <div class="toggle on"></div>
+                    </div>
+                    <div class="config-description">
+                        Si: la tasa es menor a 1,5%<br>
+                        Entonces: notificarme del adelanto
+                    </div>
+                    
+                    <div class="recommendation-section">
+                        <div class="recommendation-title">💡 Recomendaciones</div>
+                        <div class="recommendation-item">
+                            <span class="recommendation-label">Montante sugerido:</span>
+                            <span class="recommendation-value">$ 20.000 - $ 35.000</span>
+                        </div>
+                        <div class="recommendation-item">
+                            <span class="recommendation-label">Plazo óptimo:</span>
+                            <span class="recommendation-value">7-14 días</span>
+                        </div>
+                        <div class="recommendation-item">
+                            <span class="recommendation-label">Umbral de tasa:</span>
+                            <span class="recommendation-value">≤ 1.3%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-item">
+                    <div class="config-item-header">
+                        <div class="config-item-title">Pagos programados</div>
+                        <div class="toggle off"></div>
+                    </div>
+                    <div class="config-description">
+                        Si: hay una cuenta que vence en 3 días<br>
+                        Entonces: adelanta el valor de la cuenta
+                    </div>
+                    
+                    <div class="recommendation-section">
+                        <div class="recommendation-title">💡 Recomendaciones</div>
+                        <div class="recommendation-item">
+                            <span class="recommendation-label">Montante sugerido:</span>
+                            <span class="recommendation-value">Valor de la factura + 10%</span>
+                        </div>
+                        <div class="recommendation-item">
+                            <span class="recommendation-label">Plazo óptimo:</span>
+                            <span class="recommendation-value">1-2 días antes del vencimiento</span>
+                        </div>
+                        <div class="recommendation-item">
+                            <span class="recommendation-label">Tasa sugerida:</span>
+                            <span class="recommendation-value">1.0% - 1.4%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="custom-rule-section">
+                    <h2>Personaliza tu regla</h2>
+                    
+                    <div class="custom-rule-item">
+                        <div class="custom-rule-header">
+                            <div class="custom-rule-title">Nombre de la regla ✏️</div>
+                            <div class="toggle off"></div>
+                        </div>
+                        <div class="rule-inputs">
+                            <input type="text" class="rule-input" placeholder="Si:">
+                            <input type="text" class="rule-input" placeholder="Entonces:">
+                        </div>
+                        
+                        <div class="recommendation-section">
+                            <div class="recommendation-title">💡 Recomendaciones para regla personalizada</div>
+                            <div class="recommendation-item">
+                                <span class="recommendation-label">Montante sugerido:</span>
+                                <span class="recommendation-value">$ 5.000 - $ 25.000</span>
+                            </div>
+                            <div class="recommendation-item">
+                                <span class="recommendation-label">Plazo óptimo:</span>
+                                <span class="recommendation-value">3-10 días</span>
+                            </div>
+                            <div class="recommendation-item">
+                                <span class="recommendation-label">Tasa recomendada:</span>
+                                <span class="recommendation-value">1.1% - 1.6%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="add-rule-button">Nueva regla +</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Sheet for Confirmation -->
+    <div class="bottom-sheet-overlay" id="bottom-sheet-overlay">
+        <div class="bottom-sheet">
+            <div class="bottom-sheet-handle"></div>
+            <div class="bottom-sheet-title">Confirmar adelanto</div>
+            <div class="bottom-sheet-subtitle">Revisa los detalles de tu solicitud</div>
+            
+            <div class="confirmation-details">
+                <div class="detail-row">
+                    <span class="detail-label">Monto solicitado</span>
+                    <span class="detail-value" id="confirm-amount">$ 50,000</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Tasa aplicada</span>
+                    <span class="detail-value">1,5%</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Plazo</span>
+                    <span class="detail-value">7 días</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Recibes hoy</span>
+                    <span class="detail-value" id="confirm-receive">$ 49,250</span>
+                </div>
+            </div>
+            
+            <div class="bottom-sheet-buttons">
+                <button class="secondary-button" onclick="hideBottomSheet()">Cancelar</button>
+                <button class="primary-button" onclick="confirmAdelanto()">Confirmar adelanto</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Sheet for Auto Configuration -->
+    <div class="bottom-sheet-overlay" id="auto-config-overlay">
+        <div class="auto-config-sheet">
+            <div class="auto-config-header">
+                <div class="bottom-sheet-handle"></div>
+                <div class="bottom-sheet-title" id="auto-config-title">Configura adelantos automáticos</div>
+                <div class="bottom-sheet-subtitle" id="auto-config-subtitle">Personaliza las condiciones para tus adelantos</div>
+            </div>
+            
+            <div class="auto-config-content" id="auto-config-content">
+                <!-- Content will be dynamically generated -->
+            </div>
+            
+            <div style="padding: 0 24px 24px;">
+                <div class="bottom-sheet-buttons">
+                    <button class="secondary-button" onclick="hideAutoConfigSheet()">Cancelar</button>
+                    <button class="primary-button" onclick="saveAutoConfig()">Guardar configuración</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAmount = 50000;
+        let currentInputType = 'input';
+
+        // Input type switching
+        document.querySelectorAll('.input-type').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.input-type').forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Hide all input containers
+                document.querySelectorAll('.input-container').forEach(container => {
+                    container.classList.add('hidden');
+                });
+                
+                // Show selected input container
+                const type = this.getAttribute('data-type');
+                currentInputType = type;
+                document.getElementById(type + '-type').classList.remove('hidden');
+            });
+        });
+
+        // Slider functionality
+        const slider = document.getElementById('amount-slider');
+        const sliderValue = document.getElementById('slider-value');
+        
+        slider.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            currentAmount = value;
+            sliderValue.textContent = value.toLocaleString();
+        });
+
+        // Select functionality
+        const selectDropdown = document.getElementById('select-dropdown');
+        const selectOptions = document.getElementById('select-options');
+        
+        selectDropdown.addEventListener('click', function() {
+            selectOptions.style.display = selectOptions.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.querySelectorAll('.select-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const value = parseInt(this.getAttribute('data-value'));
+                const text = this.querySelector('div').textContent;
+                
+                currentAmount = value;
+                selectDropdown.innerHTML = text + '<span style="float: right;">▼</span>';
+                selectOptions.style.display = 'none';
+                
+                // Update selected state
+                document.querySelectorAll('.select-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Radio functionality
+        document.querySelectorAll('.radio-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const value = parseInt(this.getAttribute('data-value'));
+                currentAmount = value;
+                
+                // Update selected state
+                document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Input functionality
+        const amountInput = document.getElementById('amount-input');
+        amountInput.addEventListener('input', function() {
+            // Remove $ and commas, parse number
+            const value = parseInt(this.value.replace(/[$,]/g, ''));
+            if (!isNaN(value)) {
+                currentAmount = value;
+            }
+        });
+
+        // Bottom sheet functionality
+        const bottomSheetOverlay = document.getElementById('bottom-sheet-overlay');
+        const adelantarBtn = document.getElementById('adelantar-btn');
+
+        function showBottomSheet() {
+            // Update confirmation details
+            document.getElementById('confirm-amount').textContent = '$ ' + currentAmount.toLocaleString();
+            const receiveAmount = currentAmount * 0.985; // 1.5% fee
+            document.getElementById('confirm-receive').textContent = '$ ' + Math.round(receiveAmount).toLocaleString();
+            
+            bottomSheetOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideBottomSheet() {
+            bottomSheetOverlay.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function confirmAdelanto() {
+            alert('¡Adelanto confirmado! Recibirás el dinero en tu cuenta en unos minutos.');
+            hideBottomSheet();
+        }
+
+        adelantarBtn.addEventListener('click', showBottomSheet);
+
+        // Close bottom sheet when clicking overlay
+        bottomSheetOverlay.addEventListener('click', function(e) {
+            if (e.target === bottomSheetOverlay) {
+                hideBottomSheet();
+            }
+        });
+
+        // Page navigation
+        function showMainPage() {
+            document.getElementById('config-page').classList.remove('active');
+            document.getElementById('main-page').classList.add('active');
+        }
+
+        function showConfigPage() {
+            document.getElementById('main-page').classList.remove('active');
+            document.getElementById('config-page').classList.add('active');
+        }
+
+        // Toggle functionality
+        document.querySelectorAll('.toggle').forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('on');
+                this.classList.toggle('off');
+            });
+        });
+
+        // Close select dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!selectDropdown.contains(e.target) && !selectOptions.contains(e.target)) {
+                selectOptions.style.display = 'none';
+            }
+        });
+
+        // Auto Configuration Bottom Sheet
+        const autoConfigOverlay = document.getElementById('auto-config-overlay');
+        let currentConfigType = '';
+
+        const configTemplates = {
+            'general': {
+                title: 'Configura tus adelantos',
+                subtitle: 'Ajusta las configuraciones automáticas según tus necesidades',
+                options: [
+                    {
+                        id: 'emergencias',
+                        title: 'Para emergencias',
+                        description: 'Si: mi dinero en cuenta es $ 0\nEntonces: adelanta el total disponible',
+                        isActive: true,
+                        recommendations: {
+                            montante: '$ 8.000 - $ 12.000',
+                            plazo: '3-5 días',
+                            tasa: '1.2% - 1.8%'
+                        }
+                    },
+                    {
+                        id: 'tasas-bajas',
+                        title: 'Tasa más bajas',
+                        description: 'Si: la tasa es menor a 1,5%\nEntonces: notificarme del adelanto',
+                        isActive: true,
+                        recommendations: {
+                            montante: '$ 20.000 - $ 35.000',
+                            plazo: '7-14 días',
+                            umbral: '≤ 1.3%'
+                        }
+                    },
+                    {
+                        id: 'pagos-programados',
+                        title: 'Pagos programados',
+                        description: 'Si: hay una cuenta que vence en 3 días\nEntonces: adelanta el valor de la cuenta',
+                        isActive: false,
+                        recommendations: {
+                            montante: 'Valor de la factura + 10%',
+                            plazo: '1-2 días antes del vencimiento',
+                            tasa: '1.0% - 1.4%'
+                        }
+                    }
+                ],
+                customRule: {
+                    title: 'Personaliza tu regla',
+                    name: 'Nombre de la regla ✏️',
+                    condition: '',
+                    action: '',
+                    isActive: false,
+                    recommendations: {
+                        montante: '$ 5.000 - $ 25.000',
+                        plazo: '3-10 días',
+                        tasa: '1.1% - 1.6%'
+                    }
+                }
+            }
+        };
+
+        function showAutoConfigSheet(configType) {
+            currentConfigType = configType;
+            const config = configTemplates[configType];
+            
+            if (!config) return;
+            
+            document.getElementById('auto-config-title').textContent = config.title;
+            document.getElementById('auto-config-subtitle').textContent = config.subtitle;
+            
+            const content = document.getElementById('auto-config-content');
+            content.innerHTML = generateConfigContent(config);
+            
+            autoConfigOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function generateConfigContent(config) {
+            let html = '';
+            
+            // Generate main configuration options
+            config.options.forEach((option, index) => {
+                html += `
+                    <div class="config-item">
+                        <div class="config-item-header">
+                            <div class="config-item-title">${option.title}</div>
+                            <div class="toggle ${option.isActive ? 'on' : 'off'}" data-option-id="${option.id}"></div>
+                        </div>
+                        <div class="config-description">
+                            ${option.description.replace(/\n/g, '<br>')}
+                        </div>
+                        
+                        <div class="recommendation-section">
+                            <div class="recommendation-title">💡 Recomendaciones</div>
+                            ${Object.entries(option.recommendations).map(([key, value]) => 
+                                `<div class="recommendation-item">
+                                    <span class="recommendation-label">${key.charAt(0).toUpperCase() + key.slice(1)}:</span>
+                                    <span class="recommendation-value">${value}</span>
+                                </div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Generate custom rule section
+            if (config.customRule) {
+                html += `
+                    <div class="custom-rule-section">
+                        <h2>${config.customRule.title}</h2>
+                        
+                        <div class="custom-rule-item">
+                            <div class="custom-rule-header">
+                                <div class="custom-rule-title">${config.customRule.name}</div>
+                                <div class="toggle ${config.customRule.isActive ? 'on' : 'off'}" data-option-id="custom-rule"></div>
+                            </div>
+                            <div class="rule-inputs">
+                                <input type="text" class="rule-input" placeholder="Si:" value="${config.customRule.condition}">
+                                <input type="text" class="rule-input" placeholder="Entonces:" value="${config.customRule.action}">
+                            </div>
+                            
+                            <div class="recommendation-section">
+                                <div class="recommendation-title">💡 Recomendaciones para regla personalizada</div>
+                                ${Object.entries(config.customRule.recommendations).map(([key, value]) => 
+                                    `<div class="recommendation-item">
+                                        <span class="recommendation-label">${key.charAt(0).toUpperCase() + key.slice(1)}:</span>
+                                        <span class="recommendation-value">${value}</span>
+                                    </div>`
+                                ).join('')}
+                            </div>
+                        </div>
+
+                        <button class="add-rule-button" onclick="addNewRule()">Nueva regla +</button>
+                    </div>
+                `;
+            }
+            
+            return html;
+        }
+
+        function hideAutoConfigSheet() {
+            autoConfigOverlay.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function saveAutoConfig() {
+            const selectedOptions = document.querySelectorAll('.config-option.selected');
+            const configData = {};
+            
+            selectedOptions.forEach(option => {
+                const optionId = option.getAttribute('data-option-id');
+                const inputs = option.querySelectorAll('.config-input');
+                configData[optionId] = {};
+                
+                inputs.forEach(input => {
+                    const label = input.previousElementSibling.textContent.split('\n')[0].trim();
+                    configData[optionId][label] = input.value;
+                });
+            });
+            
+            console.log('Configuración guardada:', configData);
+            alert('✅ Configuración guardada exitosamente');
+            hideAutoConfigSheet();
+        }
+
+        function applyRecommendation(chip, value) {
+            const input = chip.closest('.config-input-group').querySelector('.config-input');
+            input.value = value;
+            
+            // Visual feedback
+            chip.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                chip.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        function applySuggestion(chip, suggestion) {
+            // Parse suggestion and apply to form
+            alert(`Aplicando sugerencia: ${suggestion}`);
+        }
+
+        // Close auto config sheet when clicking overlay
+        autoConfigOverlay.addEventListener('click', function(e) {
+            if (e.target === autoConfigOverlay) {
+                hideAutoConfigSheet();
+            }
+        });
+
+        // Toggle functionality for auto config options
+        function toggleAutoOption(event, optionType) {
+            event.stopPropagation();
+            const toggle = event.target;
+            const item = toggle.closest('.auto-item');
+            const statusTag = item.querySelector('.status-tag');
+            
+            // Toggle visual state
+            toggle.classList.toggle('on');
+            toggle.classList.toggle('off');
+            
+            // Update status tag
+            if (toggle.classList.contains('on')) {
+                statusTag.textContent = 'ACTIVO';
+                statusTag.classList.remove('inactivo');
+            } else {
+                statusTag.textContent = 'INACTIVO';
+                statusTag.classList.add('inactivo');
+            }
+        }
+
+        // Config option toggle in bottom sheet
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('toggle') && e.target.hasAttribute('data-option-id')) {
+                const toggle = e.target;
+                const optionId = toggle.getAttribute('data-option-id');
+                
+                // Toggle visual state
+                toggle.classList.toggle('on');
+                toggle.classList.toggle('off');
+                
+                // Update the configuration data
+                if (currentConfigType === 'general') {
+                    const config = configTemplates.general;
+                    if (optionId === 'custom-rule') {
+                        config.customRule.isActive = toggle.classList.contains('on');
+                    } else {
+                        const option = config.options.find(opt => opt.id === optionId);
+                        if (option) {
+                            option.isActive = toggle.classList.contains('on');
+                        }
+                    }
+                }
+            }
+        });
+
+        function addNewRule() {
+            alert('Funcionalidade de adicionar nova regra será implementada');
+        }
+    </script>
+</body>
+</html>

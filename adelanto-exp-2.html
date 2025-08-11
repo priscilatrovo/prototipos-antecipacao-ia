@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adelanto Exp 2 - Antecipação Inteligente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            padding: 20px 16px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .scenario-selector {
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .scenario-selector select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            color: #2c3e50;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .card-primary {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border: 2px solid #e2e8f0;
+        }
+
+        .card-secondary {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .balance-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .balance-amount {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .balance-available {
+            color: #22c55e;
+        }
+
+        .balance-partial {
+            color: #f59e0b;
+        }
+
+        .balance-blocked {
+            color: #ef4444;
+        }
+
+        .balance-none {
+            color: #64748b;
+        }
+
+        .balance-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-available {
+            background: #dcfce7;
+            color: #22c55e;
+        }
+
+        .status-partial {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+
+        .status-blocked {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .recommendation {
+            background: linear-gradient(90deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            border-left: 4px solid #0ea5e9;
+        }
+
+        .recommendation-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0369a1;
+            margin-bottom: 8px;
+        }
+
+        .recommendation-text {
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .future-preview {
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+
+        .future-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .future-item:last-child {
+            margin-bottom: 0;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .credit-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .credit-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .credit-option:hover {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+        }
+
+        .credit-option.recommended {
+            border-color: #22c55e;
+            background: #f0fdf4;
+        }
+
+        .credit-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .credit-info p {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .credit-rate {
+            text-align: right;
+        }
+
+        .credit-rate .rate {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .credit-rate .period {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .action-area {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            border: 2px solid #e2e8f0;
+        }
+
+        .action-area h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-tertiary {
+            background: white;
+            color: #475569;
+            border: 2px solid #e2e8f0;
+            box-shadow: none;
+        }
+
+        .btn-disabled {
+            background: #e2e8f0;
+            color: #64748b;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-automation {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+            position: relative;
+        }
+
+        .automation-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #dc2626;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            color: #1d4ed8;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Modal para Automação */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 340px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .automation-rule {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .automation-rule:hover {
+            border-color: #8b5cf6;
+            background: #faf5ff;
+        }
+
+        .automation-rule.active {
+            border-color: #8b5cf6;
+            background: #faf5ff;
+        }
+
+        .rule-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #1e293b;
+        }
+
+        .rule-description {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .custom-rule {
+            border: 2px dashed #d1d5db;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-modal {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 8px 4px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        @media (max-width: 375px) {
+            .container {
+                padding: 16px 12px;
+            }
+            
+            .card {
+                padding: 16px;
+            }
+            
+            .action-area {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Adelanto Inteligente</h1>
+            <p>Experiência 2 - Design Enxuto</p>
+        </div>
+
+        <!-- Seletor de Cenário -->
+        <div class="scenario-selector">
+            <select id="scenario" onchange="updateScenario()">
+                <option value="1">1. Pode antecipar tudo + tem crédito</option>
+                <option value="2">2. Pode antecipar tudo + não tem crédito</option>
+                <option value="3">3. Antecipação parcial + tem crédito</option>
+                <option value="4">4. Antecipação parcial + não tem crédito</option>
+                <option value="5">5. Sem dinheiro + ofertas de crédito</option>
+                <option value="6">6. Sem dinheiro + sem crédito</option>
+                <option value="7">7. Adelanto bloqueado + tem crédito</option>
+                <option value="8">8. Adelanto bloqueado + sem crédito</option>
+            </select>
+        </div>
+
+        <!-- Alertas -->
+        <div class="alert alert-warning hidden" id="warningAlert"></div>
+        <div class="alert alert-danger hidden" id="dangerAlert"></div>
+        <div class="alert alert-info hidden" id="infoAlert"></div>
+
+        <!-- Card Principal -->
+        <div class="card card-primary" id="mainCard">
+            <div class="card-title">
+                <span id="mainIcon">💰</span>
+                <span id="mainTitle">Seu Saldo Disponível</span>
+            </div>
+            
+            <div class="balance-section">
+                <div class="balance-amount balance-available" id="balanceAmount">R$ 2.500</div>
+                <div class="balance-subtitle" id="balanceSubtitle">Disponível para antecipação</div>
+                <div class="status-badge status-available" id="statusBadge">✓ Disponível</div>
+            </div>
+
+            <div class="recommendation" id="recommendationSection">
+                <div class="recommendation-title">🎯 Recomendação Inteligente</div>
+                <div class="recommendation-text" id="recommendationText">
+                    Baseado no seu histórico, sugerimos antecipar R$ 1.500 (60% do valor disponível) para manter fluxo saudável.
+                </div>
+            </div>
+
+            <div class="future-preview" id="futurePreview">
+                <div class="future-item">
+                    <span>📅 Próximos 7 dias:</span>
+                    <span>+R$ 800</span>
+                </div>
+                <div class="future-item">
+                    <span>💳 Débitos automáticos:</span>
+                    <span>-R$ 250</span>
+                </div>
+                <div class="future-item">
+                    <span>📊 Saldo projetado:</span>
+                    <span id="projectedBalance">R$ 1.550</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Secundário -->
+        <div class="card card-secondary" id="secondaryCard">
+            <div class="card-title" id="secondaryTitle">
+                <span>💳</span>
+                <span>Outras Opções</span>
+            </div>
+            
+            <div class="credit-options" id="creditOptions">
+                <div class="credit-option recommended">
+                    <div class="credit-info">
+                        <h4>🏆 Cartão de Crédito</h4>
+                        <p>Limite: R$ 5.000 • Disponível agora</p>
+                    </div>
+                    <div class="credit-rate">
+                        <div class="rate">8,5%</div>
+                        <div class="period">a.m.</div>
+                    </div>
+                </div>
+                
+                <div class="credit-option">
+                    <div class="credit-info">
+                        <h4>💰 Empréstimo Pessoal</h4>
+                        <p>Até R$ 10.000 • Aprovação 24h</p>
+                    </div>
+                    <div class="credit-rate">
+                        <div class="rate">3,2%</div>
+                        <div class="period">a.m.</div>
+                    </div>
+                </div>
+            </div>
+
+            <table class="comparison-table hidden" id="comparisonTable">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Taxa</th>
+                        <th>Disponibilidade</th>
+                        <th>Adequação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Adelanto</td>
+                        <td>3%</td>
+                        <td>Imediato</td>
+                        <td>⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td>Cartão</td>
+                        <td>8,5%</td>
+                        <td>Imediato</td>
+                        <td>⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td>Empréstimo</td>
+                        <td>3,2%</td>
+                        <td>24h</td>
+                        <td>⭐</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="empty-state hidden" id="emptyState">
+                <div class="icon">😔</div>
+                <h4>Nenhuma opção disponível</h4>
+                <p>Continue usando o app para gerar histórico e desbloquear novas ofertas.</p>
+            </div>
+        </div>
+
+        <!-- Área de Ação -->
+        <div class="action-area">
+            <h3>⚡ Ações Disponíveis</h3>
+            
+            <button class="btn btn-primary" id="advanceBtn" onclick="simulateAdvance()">
+                <span>💸</span> Adelantar Agora
+            </button>
+            
+            <button class="btn btn-automation" id="automationBtn" onclick="openAutomationModal()">
+                <span>🤖</span> Configurar Automatização
+                <div class="automation-badge">!</div>
+            </button>
+            
+            <button class="btn btn-secondary" id="compareBtn" onclick="toggleComparison()">
+                <span>⚖️</span> Comparar Opções
+            </button>
+            
+            <button class="btn btn-tertiary" id="requirementsBtn" onclick="showRequirements()">
+                <span>📋</span> Ver Requisitos
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Automação -->
+    <div class="modal hidden" id="automationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🤖 Automatização Inteligente</h3>
+                <p>Configure regras para adelantos automáticos</p>
+            </div>
+
+            <div class="automation-rule" onclick="selectRule(1)">
+                <div class="rule-title">💰 Por Saldo Mínimo</div>
+                <div class="rule-description">Adelantar quando saldo ficar abaixo de um valor</div>
+            </div>
+
+            <div class="automation-rule" onclick="selectRule(2)">
+                <div class="rule-title">📈 Por Valor Disponível</div>
+                <div class="rule-description">Adelantar quando houver valor específico para liberar</div>
+            </div>
+
+            <div class="automation-rule" onclick="selectRule(3)">
+                <div class="rule-title">📊 Por Taxa Favorável</div>
+                <div class="rule-description">Adelantar quando taxa estiver abaixo de limite</div>
+            </div>
+
+            <div class="automation-rule custom-rule" onclick="selectRule(4)">
+                <div class="rule-title">⚙️ Regra Personalizada</div>
+                <div class="rule-description">Combinar múltiplas condições</div>
+            </div>
+
+            <div class="hidden" id="ruleConfig">
+                <div class="input-group">
+                    <label for="ruleValue">Valor de referência:</label>
+                    <input type="number" id="ruleValue" placeholder="Ex: 10000">
+                </div>
+                
+                <div class="input-group">
+                    <label for="ruleFrequency">Frequência:</label>
+                    <select id="ruleFrequency">
+                        <option value="immediate">Imediato</option>
+                        <option value="daily">Diário</option>
+                        <option value="weekly">Semanal</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-modal" onclick="closeModal()" style="background: #e2e8f0; color: #64748b;">
+                    Cancelar
+                </button>
+                <button class="btn-modal" onclick="saveAutomation()" style="background: #8b5cf6; color: white;">
+                    Ativar Regra
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentScenario = 1;
+        let selectedRule = null;
+        let showingComparison = false;
+
+        const scenarios = {
+            1: {
+                balanceAmount: "R$ 2.500",
+                balanceSubtitle: "Disponível para antecipação total",
+                balanceClass: "balance-available",
+                statusBadge: "✓ Disponível",
+                statusClass: "status-available",
+                mainIcon: "💰",
+                mainTitle: "Seu Saldo Disponível",
+                showAdvanceBtn: true,
+                showAutomationBtn: true,
+                showCompareBtn: true,
+                showRequirementsBtn: false,
+                enableButtons: true,
+                showRecommendation: true,
+                showCreditOptions: true,
+                recommendationText: "Baseado no seu histórico, sugerimos antecipar R$ 1.500 (60% do valor disponível) para manter fluxo saudável.",
+                secondaryTitle: "Outras Opções de Crédito",
+                projectedBalance: "R$ 1.550"
+            },
+            2: {
+                balanceAmount: "R$ 2.500",
+                balanceSubtitle: "Disponível para antecipação total",
+                balanceClass: "balance-available",
+                statusBadge: "✓ Disponível",
+                statusClass: "status-available",
+                mainIcon: "💰",
+                mainTitle: "Seu Saldo Disponível",
+                showAdvanceBtn: true,
+                showAutomationBtn: true,
+                showCompareBtn: false,
+                showRequirementsBtn: false,
+                enableButtons: true,
+                showRecommendation: true,
+                showCreditOptions: false,
+                recommendationText: "Recomendamos antecipar R$ 1.500 para manter equilíbrio financeiro saudável.",
+                secondaryTitle: "Status do Adelanto",
+                projectedBalance: "R$ 1.550"
+            },
+            3: {
+                balanceAmount: "R$ 2.500",
+                balanceSubtitle: "Máximo R$ 1.800 disponível",
+                balanceClass: "balance-partial",
+                statusBadge: "⚠️ Parcial",
+                statusClass: "status-partial",
+                mainIcon: "⚠️",
+                mainTitle: "Antecipação Parcial",
+                showAdvanceBtn: true,
+                showAutomationBtn: true,
+                showCompareBtn: true,
+                showRequirementsBtn: false,
+                enableButtons: true,
+                showRecommendation: true,
+                showCreditOptions: true,
+                warningAlert: "Você pode antecipar apenas R$ 1.800 devido aos seus débitos programados.",
+                recommendationText: "Sugerimos antecipar R$ 1.200 (67% do disponível) mantendo margem de segurança.",
+                secondaryTitle: "Outras Opções de Crédito",
+                projectedBalance: "R$ 1.300"
+            },
+            4: {
+                balanceAmount: "R$ 2.500",
+                balanceSubtitle: "Máximo R$ 1.800 disponível",
+                balanceClass: "balance-partial",
+                statusBadge: "⚠️ Parcial",
+                statusClass: "status-partial",
+                mainIcon: "⚠️",
+                mainTitle: "Antecipação Parcial",
+                showAdvanceBtn: true,
+                showAutomationBtn: true,
+                showCompareBtn: false,
+                showRequirementsBtn: false,
+                enableButtons: true,
+                showRecommendation: true,
+                showCreditOptions: false,
+                warningAlert: "Você pode antecipar apenas R$ 1.800 devido aos seus débitos programados.",
+                recommendationText: "Sugerimos antecipar R$ 1.200 mantendo margem de segurança para gastos essenciais.",
+                secondaryTitle: "Limitações Atuais",
+                projectedBalance: "R$ 1.300"
+            },
+            5: {
+                balanceAmount: "R$ 0",
+                balanceSubtitle: "Nenhum valor disponível",
+                balanceClass: "balance-none",
+                statusBadge: "⭕ Indisponível",
+                statusClass: "status-blocked",
+                mainIcon: "💳",
+                mainTitle: "Opções de Crédito",
+                showAdvanceBtn: false,
+                showAutomationBtn: false,
+                showCompareBtn: true,
+                showRequirementsBtn: false,
+                enableButtons: false,
+                showRecommendation: false,
+                showCreditOptions: true,
+                infoAlert: "Não há saldos disponíveis para adelanto hoje. Veja as opções de crédito disponíveis.",
+                secondaryTitle: "Crédito Disponível",
+                projectedBalance: "R$ 0"
+            },
+            6: {
+                balanceAmount: "R$ 0",
+                balanceSubtitle: "Nenhum valor disponível",
+                balanceClass: "balance-none",
+                statusBadge: "⭕ Indisponível",
+                statusClass: "status-blocked",
+                mainIcon: "📱",
+                mainTitle: "Continue Usando",
+                showAdvanceBtn: false,
+                showAutomationBtn: false,
+                showCompareBtn: false,
+                showRequirementsBtn: false,
+                enableButtons: false,
+                showRecommendation: false,
+                showCreditOptions: false,
+                infoAlert: "Não há saldos disponíveis nem ofertas de crédito no momento. Continue usando o app para gerar histórico.",
+                secondaryTitle: "Próximos Passos",
+                projectedBalance: "R$ 0"
+            },
+            7: {
+                balanceAmount: "R$ 2.500",
+                balanceSubtitle: "Adelanto temporariamente bloqueado",
+                balanceClass: "balance-blocked",
+                statusBadge: "🚫 Bloqueado",
+                statusClass: "status-blocked",
+                mainIcon: "🚫",
+                mainTitle: "Adelanto Bloqueado",
+                showAdvanceBtn: false,
+                showAutomationBtn: false,
+                showCompareBtn: true,
+                showRequirementsBtn: true,
+                enableButtons: false,
+                showRecommendation: false,
+                showCreditOptions: true,
+                dangerAlert: "Adelanto bloqueado: necessário mínimo 3 transações nos últimos 30 dias.",
+                secondaryTitle: "Alternativas de Crédito",
+                projectedBalance: "R$ 2.500"
+            },
+            8: {
+                balanceAmount: "R$ 2.500",
+                balanceSubtitle: "Adelanto temporariamente bloqueado",
+                balanceClass: "balance-blocked",
+                statusBadge: "🚫 Bloqueado",
+                statusClass: "status-blocked",
+                mainIcon: "🚫",
+                mainTitle: "Adelanto Bloqueado",
+                showAdvanceBtn: false,
+                showAutomationBtn: false,
+                showCompareBtn: false,
+                showRequirementsBtn: true,
+                enableButtons: false,
+                showRecommendation: false,
+                showCreditOptions: false,
+                dangerAlert: "Adelanto bloqueado: necessário mínimo 3 transações nos últimos 30 dias.",
+                secondaryTitle: "Como Desbloquear",
+                projectedBalance: "R$ 2.500"
+            }
+        };
+
+        function updateScenario() {
+            const scenarioSelect = document.getElementById('scenario');
+            currentScenario = parseInt(scenarioSelect.value);
+            const scenario = scenarios[currentScenario];
+
+            // Update main card
+            document.getElementById('balanceAmount').textContent = scenario.balanceAmount;
+            document.getElementById('balanceAmount').className = `balance-amount ${scenario.balanceClass}`;
+            document.getElementById('balanceSubtitle').textContent = scenario.balanceSubtitle;
+            document.getElementById('statusBadge').textContent = scenario.statusBadge;
+            document.getElementById('statusBadge').className = `status-badge ${scenario.statusClass}`;
+            document.getElementById('mainIcon').textContent = scenario.mainIcon;
+            document.getElementById('mainTitle').textContent = scenario.mainTitle;
+            document.getElementById('projectedBalance').textContent = scenario.projectedBalance;
+
+            // Update alerts
+            document.getElementById('warningAlert').classList.add('hidden');
+            document.getElementById('dangerAlert').classList.add('hidden');
+            document.getElementById('infoAlert').classList.add('hidden');
+
+            if (scenario.warningAlert) {
+                document.getElementById('warningAlert').textContent = scenario.warningAlert;
+                document.getElementById('warningAlert').classList.remove('hidden');
+            }
+            if (scenario.dangerAlert) {
+                document.getElementById('dangerAlert').textContent = scenario.dangerAlert;
+                document.getElementById('dangerAlert').classList.remove('hidden');
+            }
+            if (scenario.infoAlert) {
+                document.getElementById('infoAlert').textContent = scenario.infoAlert;
+                document.getElementById('infoAlert').classList.remove('hidden');
+            }
+
+            // Update recommendation
+            const recommendationSection = document.getElementById('recommendationSection');
+            if (scenario.showRecommendation) {
+                recommendationSection.classList.remove('hidden');
+                document.getElementById('recommendationText').textContent = scenario.recommendationText;
+            } else {
+                recommendationSection.classList.add('hidden');
+            }
+
+            // Update secondary card
+            document.getElementById('secondaryTitle').textContent = scenario.secondaryTitle;
+            const creditOptions = document.getElementById('creditOptions');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (scenario.showCreditOptions) {
+                creditOptions.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+            } else {
+                creditOptions.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            }
+
+            // Update action buttons
+            updateActionButtons(scenario);
+        }
+
+        function updateActionButtons(scenario) {
+            const advanceBtn = document.getElementById('advanceBtn');
+            const automationBtn = document.getElementById('automationBtn');
+            const compareBtn = document.getElementById('compareBtn');
+            const requirementsBtn = document.getElementById('requirementsBtn');
+
+            // Advance button
+            if (scenario.showAdvanceBtn && scenario.enableButtons) {
+                advanceBtn.style.display = 'flex';
+                advanceBtn.className = 'btn btn-primary';
+                advanceBtn.disabled = false;
+            } else if (scenario.showAdvanceBtn) {
+                advanceBtn.style.display = 'flex';
+                advanceBtn.className = 'btn btn-disabled';
+                advanceBtn.disabled = true;
+            } else {
+                advanceBtn.style.display = 'none';
+            }
+
+            // Automation button
+            automationBtn.style.display = scenario.showAutomationBtn ? 'flex' : 'none';
+
+            // Compare button
+            compareBtn.style.display = scenario.showCompareBtn ? 'flex' : 'none';
+
+            // Requirements button
+            requirementsBtn.style.display = scenario.showRequirementsBtn ? 'flex' : 'none';
+        }
+
+        function simulateAdvance() {
+            if (scenarios[currentScenario].enableButtons) {
+                alert('✅ Simulando adelanto... Em uma implementação real, abriria tela de confirmação com valores e taxas.');
+            }
+        }
+
+        function openAutomationModal() {
+            document.getElementById('automationModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('automationModal').classList.add('hidden');
+            document.getElementById('ruleConfig').classList.add('hidden');
+            selectedRule = null;
+            // Reset visual state
+            document.querySelectorAll('.automation-rule').forEach(rule => {
+                rule.classList.remove('active');
+            });
+        }
+
+        function selectRule(ruleNumber) {
+            selectedRule = ruleNumber;
+            
+            // Update visual state
+            document.querySelectorAll('.automation-rule').forEach(rule => {
+                rule.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Show configuration
+            document.getElementById('ruleConfig').classList.remove('hidden');
+            
+            // Update placeholder text based on rule
+            const valueInput = document.getElementById('ruleValue');
+            const ruleTexts = {
+                1: 'Ex: 1000 (R$ 1.000)',
+                2: 'Ex: 5000 (R$ 5.000)',
+                3: 'Ex: 2.5 (2,5%)',
+                4: 'Ex: 1500 (valor personalizado)'
+            };
+            valueInput.placeholder = ruleTexts[ruleNumber];
+        }
+
+        function saveAutomation() {
+            if (selectedRule && document.getElementById('ruleValue').value) {
+                alert('✅ Regra de automatização ativada! Você receberá notificações quando as condições forem atendidas.');
+                closeModal();
+                
+                // Remove the notification badge
+                const badge = document.querySelector('.automation-badge');
+                if (badge) badge.style.display = 'none';
+            } else {
+                alert('⚠️ Por favor, selecione uma regra e defina um valor.');
+            }
+        }
+
+        function toggleComparison() {
+            const table = document.getElementById('comparisonTable');
+            const creditOptions = document.getElementById('creditOptions');
+            
+            showingComparison = !showingComparison;
+            
+            if (showingComparison) {
+                table.classList.remove('hidden');
+                creditOptions.classList.add('hidden');
+                document.getElementById('compareBtn').innerHTML = '<span>📋</span> Ver Opções Simples';
+            } else {
+                table.classList.add('hidden');
+                creditOptions.classList.remove('hidden');
+                document.getElementById('compareBtn').innerHTML = '<span>⚖️</span> Comparar Opções';
+            }
+        }
+
+        function showRequirements() {
+            alert('📋 Requisitos para Adelanto:\n\n• Mínimo 3 transações nos últimos 30 dias\n• Conta ativa há pelo menos 60 dias\n• Sem pendências financeiras\n\nContinue usando o app para atender aos requisitos!');
+        }
+
+        // Initialize with scenario 1
+        updateScenario();
+    </script>
+</body>
+</html> 

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empréstimos Personalizados - Com Design Tokens</title>
+    <link rel="stylesheet" href="style-tokens.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    <!-- TELA 1: Segmentação Inteligente por Estádio do Usuário -->
+    <section class="screen" id="user-segmentation">
+        <div class="container">
+            <header class="screen-header">
+                <h1>Ofertas Personalizadas</h1>
+                <p>Encontre o empréstimo ideal para seu perfil</p>
+            </header>
+
+            <div class="user-profiles">
+                <!-- Perfil Novo Usuário -->
+                <div class="profile-card active" data-profile="novo">
+                    <div class="profile-icon">
+                        <span class="material-icons">person_add</span>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Novo Usuário</h3>
+                        <p>Primeiros passos com segurança</p>
+                        <div class="profile-benefits">
+                            <span class="benefit">Até R$ 5.000</span>
+                            <span class="benefit">Taxa especial</span>
+                        </div>
+                    </div>
+                    <div class="profile-badge new">NOVO</div>
+                </div>
+
+                <!-- Perfil Reincidente -->
+                <div class="profile-card" data-profile="reincidente">
+                    <div class="profile-icon">
+                        <span class="material-icons">refresh</span>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Cliente Reincidente</h3>
+                        <p>Condições melhoradas</p>
+                        <div class="profile-benefits">
+                            <span class="benefit">Até R$ 15.000</span>
+                            <span class="benefit">Aprovação rápida</span>
+                        </div>
+                    </div>
+                    <div class="profile-badge returning">RETORNANDO</div>
+                </div>
+
+                <!-- Perfil Premium -->
+                <div class="profile-card" data-profile="premium">
+                    <div class="profile-icon">
+                        <span class="material-icons">star</span>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Cliente Premium</h3>
+                        <p>Benefícios exclusivos</p>
+                        <div class="profile-benefits">
+                            <span class="benefit">Até R$ 50.000</span>
+                            <span class="benefit">Menor taxa</span>
+                        </div>
+                    </div>
+                    <div class="profile-badge premium">PREMIUM</div>
+                </div>
+            </div>
+
+            <button class="primary-button">
+                <span class="material-icons">visibility</span>
+                Ver Ofertas Personalizadas
+            </button>
+
+            <div class="profile-preview">
+                <h4>Sua oferta atual:</h4>
+                <div class="offer-highlight">
+                    <span class="offer-amount">R$ 5.000</span>
+                    <span class="offer-rate">a partir de 2,99% a.m.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA 2: Préstamos por Necessidade Declarada -->
+    <section class="screen" id="loan-purpose">
+        <div class="container">
+            <header class="screen-header">
+                <h1>Por que você precisa do empréstimo?</h1>
+                <p>Escolha a opção que melhor descreve sua necessidade</p>
+            </header>
+
+            <div class="purpose-grid">
+                <div class="purpose-card" data-purpose="casa">
+                    <div class="purpose-icon">
+                        <span class="material-icons">home</span>
+                    </div>
+                    <h3>Casa</h3>
+                    <p>Reforma, móveis, decoração</p>
+                </div>
+
+                <div class="purpose-card" data-purpose="saude">
+                    <div class="purpose-icon">
+                        <span class="material-icons">local_hospital</span>
+                    </div>
+                    <h3>Saúde</h3>
+                    <p>Tratamentos, medicamentos</p>
+                </div>
+
+                <div class="purpose-card" data-purpose="educacao">
+                    <div class="purpose-icon">
+                        <span class="material-icons">school</span>
+                    </div>
+                    <h3>Educação</h3>
+                    <p>Cursos, faculdade, livros</p>
+                </div>
+
+                <div class="purpose-card" data-purpose="viagem">
+                    <div class="purpose-icon">
+                        <span class="material-icons">flight</span>
+                    </div>
+                    <h3>Viagem</h3>
+                    <p>Férias, turismo, lazer</p>
+                </div>
+
+                <div class="purpose-card" data-purpose="emergencia">
+                    <div class="purpose-icon">
+                        <span class="material-icons">warning</span>
+                    </div>
+                    <h3>Emergência</h3>
+                    <p>Gastos inesperados</p>
+                </div>
+
+                <div class="purpose-card" data-purpose="consolidacao">
+                    <div class="purpose-icon">
+                        <span class="material-icons">account_balance</span>
+                    </div>
+                    <h3>Consolidação</h3>
+                    <p>Quitar outras dívidas</p>
+                </div>
+            </div>
+
+            <div class="selected-purpose-info">
+                <div class="info-card">
+                    <h4>💡 Dica para Casa</h4>
+                    <p>Ofertas especiais para reformas com prazo estendido e taxas reduzidas.</p>
+                </div>
+            </div>
+
+            <button class="primary-button">
+                <span class="material-icons">search</span>
+                Ver Ofertas Específicas
+            </button>
+        </div>
+    </section>
+
+    <!-- TELA 3: Préstamos Escalonados (Gamificação) -->
+    <section class="screen" id="scaled-loans">
+        <div class="container">
+            <header class="screen-header">
+                <h1>Seu Progresso Financeiro</h1>
+                <p>Conquiste novos limites pagando em dia</p>
+            </header>
+
+            <div class="progress-section">
+                <div class="user-level">
+                    <div class="level-badge">
+                        <span class="material-icons">emoji_events</span>
+                        <span>Nível 2</span>
+                    </div>
+                    <h2>Parabéns, João!</h2>
+                    <p>Você desbloqueou um novo limite</p>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%;"></div>
+                    <div class="progress-markers">
+                        <div class="marker completed">
+                            <span class="material-icons">check_circle</span>
+                            <span>R$ 1.000</span>
+                        </div>
+                        <div class="marker completed">
+                            <span class="material-icons">check_circle</span>
+                            <span>R$ 3.000</span>
+                        </div>
+                        <div class="marker current">
+                            <span class="material-icons">radio_button_checked</span>
+                            <span>R$ 8.000</span>
+                        </div>
+                        <div class="marker">
+                            <span class="material-icons">radio_button_unchecked</span>
+                            <span>R$ 15.000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements">
+                    <h4>Suas Conquistas</h4>
+                    <div class="achievement-list">
+                        <div class="achievement earned">
+                            <span class="material-icons">military_tech</span>
+                            <span>Pagador Pontual</span>
+                        </div>
+                        <div class="achievement earned">
+                            <span class="material-icons">trending_up</span>
+                            <span>Em Crescimento</span>
+                        </div>
+                        <div class="achievement locked">
+                            <span class="material-icons">lock</span>
+                            <span>Cliente VIP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loan-offer">
+                <div class="offer-card">
+                    <h3>Seu Limite Atual</h3>
+                    <div class="offer-amount-large">R$ 8.000</div>
+                    <div class="offer-terms">
+                        <span>💰 Taxa: 2,49% a.m.</span>
+                        <span>📅 Até 24 meses</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="primary-button">
+                <span class="material-icons">request_quote</span>
+                Solicitar Empréstimo
+            </button>
+
+            <div class="motivation-text">
+                <p>🎯 <strong>Continue pagando em dia</strong> e desbloqueie R$ 15.000 no próximo nível!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA 4: Assistente Predictivo -->
+    <section class="screen" id="predictive-assistant">
+        <div class="container">
+            <div class="notification-card">
+                <div class="notification-header">
+                    <div class="notification-icon">
+                        <span class="material-icons">notifications</span>
+                    </div>
+                    <div class="notification-time">Agora</div>
+                </div>
+                
+                <div class="notification-content">
+                    <h2>💡 Oportunidade Detectada</h2>
+                    <p><strong>Olá Maria!</strong> Notamos que você recebe seu salário em 3 dias. Precisa de um adiantamento para algum gasto urgente?</p>
+                </div>
+
+                <div class="prediction-insights">
+                    <div class="insight-item">
+                        <span class="material-icons">analytics</span>
+                        <span>Baseado no seu histórico de gastos</span>
+                    </div>
+                    <div class="insight-item">
+                        <span class="material-icons">calendar_today</span>
+                        <span>Salário chega em 15/12</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-offer">
+                <div class="offer-preview">
+                    <h3>Adiantamento Inteligente</h3>
+                    <div class="offer-details">
+                        <div class="detail-row">
+                            <span>Valor disponível:</span>
+                            <span class="highlight">R$ 1.200</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Taxa:</span>
+                            <span class="highlight">0,99% a.m.</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Desconto automático:</span>
+                            <span class="highlight">15/12</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="primary-button">
+                        <span class="material-icons">flash_on</span>
+                        Aceitar Oferta (30 seg)
+                    </button>
+                    <button class="secondary-button">
+                        <span class="material-icons">tune</span>
+                        Personalizar
+                    </button>
+                </div>
+            </div>
+
+            <div class="financial-tips">
+                <h4>💡 Dicas Personalizadas</h4>
+                <div class="tips-list">
+                    <div class="tip-item">
+                        <span class="material-icons">lightbulb</span>
+                        <p>Você economizou R$ 200 no último mês! Continue assim.</p>
+                    </div>
+                    <div class="tip-item">
+                        <span class="material-icons">savings</span>
+                        <p>Considere criar uma reserva de emergência de R$ 500.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="assistant-actions">
+                <button class="action-button">
+                    <span class="material-icons">schedule</span>
+                    Lembrar Depois
+                </button>
+                <button class="action-button">
+                    <span class="material-icons">close</span>
+                    Dispensar
+                </button>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
